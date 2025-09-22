@@ -197,18 +197,41 @@ function updateInvalidQuestionsButton(invalidQuestions, totalQuestions) {
  */
 function startTest(filteredQuestions) {
   try {
-    // No validation - use all questions as provided
-    const validQuestions = filteredQuestions;
+    // Validate questions before starting test
+    const validQuestions = [];
     const invalidQuestions = [];
     
-    // Store no invalid questions
-    AppState.currentInvalidQuestions = [];
+    filteredQuestions.forEach((question, index) => {
+      const validation = validateQuestion(question);
+      if (validation.isValid) {
+        validQuestions.push(question);
+      } else {
+        invalidQuestions.push({
+          ...question,
+          id: question.id || index + 1,
+          reason: validation.reason
+        });
+      }
+    });
+    
+    // Store invalid questions for the button
+    AppState.currentInvalidQuestions = invalidQuestions;
     
     // Update the "View Invalid Questions" button
-    updateInvalidQuestionsButton([], filteredQuestions.length);
+    updateInvalidQuestionsButton(invalidQuestions, filteredQuestions.length);
     
-    // Clear any previous messages - no status message needed
-    document.getElementById("file-chosen").innerHTML = "";
+    // Check if we have any valid questions to proceed
+    if (validQuestions.length === 0) {
+      document.getElementById("file-chosen").innerHTML = `<span style='color:red;'>No valid questions found! All ${filteredQuestions.length} questions failed validation.</span>`;
+      return;
+    }
+    
+    // Inform user about validation results
+    if (invalidQuestions.length > 0) {
+      document.getElementById("file-chosen").innerHTML = `<span style='color:orange;'>Found ${invalidQuestions.length} invalid questions (excluded). Starting test with ${validQuestions.length} valid questions.</span>`;
+    } else {
+      document.getElementById("file-chosen").innerHTML = `<span style='color:green;'>All ${validQuestions.length} questions validated successfully.</span>`;
+    }
     
     // Clear previous content and status
     const container = document.getElementById("test");
@@ -725,32 +748,17 @@ function showAnswerFeedback(question, qDiv) {
   // Get question type using flexible field names
   const questionType = question.question_type || question.type;
   
-  console.log("=== showAnswerFeedback called ===");
-  console.log("Full question object:", question);
-  console.log("question.question_type:", question.question_type);
-  console.log("question.type:", question.type);
-  console.log("Resolved questionType:", questionType);
-  console.log("AppState.showCorrectAnswer:", AppState.showCorrectAnswer);
-  console.log("question.answer:", question.answer);
-  
   // Display the correct answer if enabled
   if (AppState.showCorrectAnswer) {
-    // Handle various question type formats more flexibly
-    if (questionType === "single" || questionType === "assertion" || questionType === "MCQ" || questionType === "TrueFalse" || questionType === "AssertionReason") {
+    if (questionType === "single" || questionType === "assertion") {
       const displayAnswer = Array.isArray(question.answer) ? question.answer.join(', ') : question.answer;
       qDiv.insertAdjacentHTML("beforeend", `<p class="correct-answer">✓ Correct answer: ${displayAnswer}</p>`);
-    } else if (questionType === "multiple" || questionType === "MCQ-Multiple") {
+    } else if (questionType === "multiple") {
       const correctAnswers = Array.isArray(question.answer) ? question.answer : [question.answer];
       qDiv.insertAdjacentHTML("beforeend", `<p class="correct-answer">✓ Correct answers: ${correctAnswers.join(', ')}</p>`);
-    } else if (questionType === "match" || questionType === "Match") {
+    } else if (questionType === "match") {
       const matchDisplay = Object.entries(question.matchPairs).map(([left, right]) => `${left} → ${right}`).join(', ');
       qDiv.insertAdjacentHTML("beforeend", `<p class="correct-answer">✓ Correct matches: ${matchDisplay}</p>`);
-    } else {
-      // Fallback: just display the answer regardless of type
-      const displayAnswer = Array.isArray(question.answer) ? question.answer.join(', ') : question.answer;
-      if (displayAnswer) {
-        qDiv.insertAdjacentHTML("beforeend", `<p class="correct-answer">✓ Correct answer: ${displayAnswer}</p>`);
-      }
     }
   }
   

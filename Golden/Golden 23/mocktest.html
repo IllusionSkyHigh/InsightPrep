@@ -5,26 +5,6 @@
   <title>InsightPrep - Where Preparation Meets Reflection</title>
   <style>
     /* ============================================
-       CURSOR FIX - Ensure no text cursor on labels
-    ============================================ */
-    
-    /* Universal cursor fix - highest priority */
-    label,
-    label *,
-    .question-card label,
-    .question-card label *,
-    input[type="radio"] + label,
-    input[type="checkbox"] + label,
-    input[type="radio"],
-    input[type="checkbox"] {
-      cursor: pointer !important;
-      -webkit-user-select: none !important;
-      -moz-user-select: none !important;
-      -ms-user-select: none !important;
-      user-select: none !important;
-    }
-
-    /* ============================================
        GLOBAL STYLES & LAYOUT
     ============================================ */
     html, body {
@@ -85,11 +65,6 @@
     /* Ensure all elements use border-box sizing */
     *, *::before, *::after {
       box-sizing: border-box;
-    }
-
-    /* Global cursor reset for interactive elements */
-    label, label *, input[type="radio"], input[type="checkbox"], button {
-      cursor: pointer !important;
     }
 
     /* ============================================
@@ -297,35 +272,7 @@
     }
     
     label { 
-      cursor: pointer !important; 
-    }
-
-    /* Ensure all clickable labels show pointer cursor */
-    .question-card label,
-    label[for],
-    input[type="radio"] + label,
-    input[type="checkbox"] + label {
-      cursor: pointer !important;
-    }
-
-    /* Additional specificity for form elements */
-    form label,
-    .question-card form label,
-    div label,
-    .filter-section label,
-    .controls label {
-      cursor: pointer !important;
-    }
-
-    /* Override any inherited text cursor */
-    * label {
-      cursor: pointer !important;
-    }
-
-    /* Ensure input elements themselves don't affect label cursor */
-    input[type="radio"],
-    input[type="checkbox"] {
-      cursor: pointer !important;
+      cursor: pointer; 
     }
 
     /* Fix text wrapping alignment for radio buttons and checkboxes */
@@ -706,74 +653,6 @@
       body.sticky-footer #swamys-copyright-card .copyright-toggle {
         display: none !important;
       }
-    }
-
-    /* ============================================
-       FINAL CURSOR OVERRIDE - Maximum Priority
-    ============================================ */
-    
-    /* Ultimate cursor fix with maximum specificity */
-    html body main .question-card label,
-    html body main .question-card label *,
-    html body main label,
-    html body main label *,
-    html body main input[type="radio"],
-    html body main input[type="checkbox"],
-    html body main .filter-section label,
-    html body main .controls label,
-    .correct,
-    .wrong,
-    .correct-answer,
-    .explanation,
-    .reference,
-    .topic-subtopic-info,
-    p.correct,
-    p.wrong,
-    p.correct-answer,
-    p.explanation,
-    p.reference {
-      cursor: pointer !important;
-      -webkit-user-select: none !important;
-      -moz-user-select: none !important;
-      -ms-user-select: none !important;
-      user-select: none !important;
-    }
-
-    /* Specifically target feedback text elements */
-    .question-card .correct,
-    .question-card .wrong,
-    .question-card .correct-answer,
-    .question-card .explanation,
-    .question-card .reference,
-    .question-card p {
-      cursor: default !important;
-      -webkit-user-select: none !important;
-      -moz-user-select: none !important;
-      -ms-user-select: none !important;
-      user-select: none !important;
-    }
-
-    /* Fix cursor for buttons including Try Again */
-    button,
-    .try-again-btn,
-    .custom-btn,
-    input[type="button"],
-    input[type="submit"] {
-      cursor: pointer !important;
-      -webkit-user-select: none !important;
-      -moz-user-select: none !important;
-      -ms-user-select: none !important;
-      user-select: none !important;
-    }
-
-    /* Additional fixes for Try Again button */
-    button[onclick*="tryAgain"],
-    .feedback-section button,
-    [data-action="try-again"] {
-      cursor: pointer !important;
-      user-select: none !important;
-      -webkit-user-select: none !important;
-      -ms-user-select: none !important;
     }
   </style>
   

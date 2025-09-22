@@ -545,31 +545,7 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
   startBtn.addEventListener("click", () => {
     console.log("=== Main Start Test button clicked ===");
     
-    // Read behavior options from checkboxes and update AppState (EXACT GOLDEN 22)
-    const tryAgainCb = document.getElementById('tryAgainOptionDb');
-    const topicRevealCb = document.getElementById('topicRevealOptionDb');
-    const immediateResultCb = document.getElementById('immediateResultOptionDb');
-    const correctAnswerCb = document.getElementById('correctAnswerOptionDb');
-    
-    if (tryAgainCb) AppState.allowTryAgain = tryAgainCb.checked;
-    if (topicRevealCb) AppState.showTopicSubtopic = topicRevealCb.checked;
-    if (immediateResultCb) AppState.showImmediateResult = immediateResultCb.checked;
-    if (correctAnswerCb) AppState.showCorrectAnswer = correctAnswerCb.checked;
-    
-    // Read explanation mode from radio buttons
-    const expRadio = document.querySelector('input[name="expMode"]:checked');
-    if (expRadio) {
-      AppState.explanationMode = parseInt(expRadio.value);
-    }
-    
-    // Save current options state before starting test (consistent with JSON mode)
-    if (typeof saveOptionsState === 'function') {
-      saveOptionsState();
-    } else {
-      console.warn('saveOptionsState function not found - state persistence may not work properly');
-    }
-    
-    // Save current options state after reading from UI
+    // Save current options state before starting test
     AppState.savedDbOptions = {
       selectedTopics: Array.from(topicDiv.querySelectorAll('.subtopic-checkbox:checked')).map(cb => ({
         topic: cb.dataset.topic,
@@ -666,6 +642,9 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
     
     // Process each question to add options and standardize format (following Golden 22 logic)
     questions = questions.map(q => {
+      let valid = true;
+      let invalidReason = "";
+      
       // Set basic fields for compatibility
       q.question = q.question_text; // Standardize question text field
       
@@ -690,6 +669,15 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
           q.type = (Array.isArray(q.answer) && q.answer.length > 1) ? 'multiple' : 'single';
         }
         
+        // Basic validation
+        if (q.options.length < 2) {
+          valid = false;
+          invalidReason = `MCQ with insufficient options (${q.options.length})`;
+        } else if (!q.answer || (Array.isArray(q.answer) && q.answer.length === 0)) {
+          valid = false;
+          invalidReason = "MCQ with no correct answer";
+        }
+        
       } else if (q.question_type === 'TrueFalse') {
         q.options = ["True", "False"];
         q.type = 'single';
@@ -698,6 +686,11 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
         const optRes = AppState.database.exec(`SELECT option_text, is_correct FROM options WHERE question_id = ${q.id}`);
         const correctOpt = optRes[0]?.values?.find(v => v[1] === 1 || v[1] === "1");
         q.answer = correctOpt ? correctOpt[0] : null;
+        
+        if (!q.answer || !["True", "False"].includes(q.answer)) {
+          valid = false;
+          invalidReason = `TrueFalse with invalid answer: ${q.answer}`;
+        }
         
       } else if (q.question_type === 'Match') {
         q.type = 'match';
@@ -711,6 +704,9 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
           });
           q.options = ["Refer to match pairs"]; // Placeholder for compatibility
           q.answer = q.matchPairs;
+        } else {
+          valid = false;
+          invalidReason = "Match question with no match pairs";
         }
         
       } else if (q.question_type === 'AssertionReason') {
@@ -721,21 +717,51 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
         q.options = optRes[0]?.values?.map(v => v[0]) || [];
         const correctOpt = optRes[0]?.values?.find(v => v[1] === 1 || v[1] === "1");
         q.answer = correctOpt ? correctOpt[0] : null;
+        
+        if (q.options.length !== 4) {
+          valid = false;
+          invalidReason = `AssertionReason should have 4 options, found ${q.options.length}`;
+        } else if (!q.answer) {
+          valid = false;
+          invalidReason = "AssertionReason with no correct answer";
+        }
+        
+      } else {
+        valid = false;
+        invalidReason = `Unsupported question type: ${q.question_type}`;
+      }
+      
+      // Mark question as valid/invalid
+      if (!valid) {
+        q._invalid = true;
+        q._invalidReason = invalidReason;
+        console.log(`❌ Question ${q.id} (${q.question_type}): INVALID - ${invalidReason}`);
+      } else {
+        console.log(`✅ Question ${q.id} (${q.question_type}): VALID - ${q.options?.length || 0} options`);
       }
       
       return q;
     });
     
-    console.log(`Question processing complete: ${questions.length} questions loaded`);
+    // Filter out invalid questions
+    const validQuestions = questions.filter(q => !q._invalid);
+    const invalidQuestions = questions.filter(q => q._invalid);
     
-    // Store all questions (no filtering)
-    AppState.currentInvalidQuestions = [];
+    console.log(`Question processing complete: ${validQuestions.length} valid, ${invalidQuestions.length} invalid`);
     
-    console.log(`Found ${questions.length} questions matching criteria`);
+    if (validQuestions.length === 0) {
+      alert("No valid questions found after processing. Please check your database content or adjust your filters.");
+      return;
+    }
+    
+    // Store invalid questions for potential display
+    AppState.currentInvalidQuestions = invalidQuestions;
+    
+    console.log(`Found ${validQuestions.length} valid questions matching criteria`);
     
     // Get number of questions and selection mode
     const numInput = document.getElementById("numQuestions");
-    const numQuestions = Math.min(parseInt(numInput.value) || 10, questions.length);
+    const numQuestions = Math.min(parseInt(numInput.value) || 10, validQuestions.length);
     const mode = modeDiv.querySelector('input[name="selectionMode"]:checked').value;
     
     // Store database mode flag
@@ -744,11 +770,11 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
     // Apply selection mode and create final question set
     let chosenQuestions;
     if (mode === 'random') {
-      chosenQuestions = shuffle(questions).slice(0, numQuestions);
+      chosenQuestions = shuffle(validQuestions).slice(0, numQuestions);
     } else if (mode === 'balanced') {
-      chosenQuestions = balancedSelection(questions, numQuestions);
+      chosenQuestions = balancedSelection(validQuestions, numQuestions);
     } else {
-      chosenQuestions = questions.slice(0, numQuestions);
+      chosenQuestions = validQuestions.slice(0, numQuestions);
     }
     
     console.log(`Selected ${chosenQuestions.length} questions using ${mode} mode`);
@@ -775,6 +801,11 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
     setTimeout(() => {
       console.log("=== ABOUT TO CALL startTest() ===");
       console.log("Final chosen questions count:", chosenQuestions.length);
+      
+      // Show invalid questions message if any were found
+      if (invalidQuestions.length > 0) {
+        document.getElementById("file-chosen").innerHTML = `<span style='color:orange;'>Found ${invalidQuestions.length} invalid questions (excluded). Starting test with ${chosenQuestions.length} valid questions.</span>`;
+      }
       
       panel.innerHTML = ""; // Clear filter panel before starting test
       document.getElementById("restart").style.display = "none"; // Hide restart until questions are shown
@@ -1368,7 +1399,7 @@ function updateMaxQuestions() {
       return obj;
     }) || [];
     
-    // No validation - count all questions
+    // For now, assume all questions are valid (we can add validation later)
     const totalValidQuestions = allQuestions.length;
     
     // Update the max questions info
