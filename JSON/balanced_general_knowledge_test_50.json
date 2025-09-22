@@ -1,0 +1,847 @@
+{
+  "title": "Balanced General Knowledge Test (50)",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "History",
+      "subtopic": "US Presidents",
+      "type": "single",
+      "question": "Who was the first President of the United States?",
+      "options": [
+        "George Washington",
+        "Thomas Jefferson",
+        "Abraham Lincoln",
+        "John Adams"
+      ],
+      "answer": "George Washington",
+      "explanation": "George Washington served as the first U.S. President from 1789 to 1797.",
+      "reference": "Britannica – George Washington"
+    },
+    {
+      "id": 2,
+      "topic": "Science",
+      "subtopic": "Chemistry",
+      "type": "single",
+      "question": "What is the chemical symbol for Sodium?",
+      "options": [
+        "So",
+        "Na",
+        "S",
+        "Sn"
+      ],
+      "answer": "Na",
+      "explanation": "The symbol 'Na' comes from the Latin 'Natrium'.",
+      "reference": "Periodic Table – IUPAC"
+    },
+    {
+      "id": 3,
+      "topic": "Geography",
+      "subtopic": "Countries & Nicknames",
+      "type": "single",
+      "question": "Which country is known as the Land of the Rising Sun?",
+      "options": [
+        "China",
+        "Japan",
+        "Thailand",
+        "South Korea"
+      ],
+      "answer": "Japan",
+      "explanation": "Japan is east of Asia and is traditionally called the Land of the Rising Sun.",
+      "reference": "NCERT Geography Class 6; Britannica – Japan"
+    },
+    {
+      "id": 4,
+      "topic": "Politics",
+      "subtopic": "United Nations",
+      "type": "single",
+      "question": "Who is the current Secretary-General of the United Nations (2025)?",
+      "options": [
+        "Ban Ki-moon",
+        "Kofi Annan",
+        "António Guterres",
+        "Boutros Boutros-Ghali"
+      ],
+      "answer": "António Guterres",
+      "explanation": "António Guterres has been serving as UN Secretary-General since 2017.",
+      "reference": "United Nations Official Website"
+    },
+    {
+      "id": 5,
+      "topic": "Economics",
+      "subtopic": "Currency & EU",
+      "type": "single",
+      "question": "Which country introduced the Euro currency?",
+      "options": [
+        "USA",
+        "UK",
+        "European Union",
+        "Canada"
+      ],
+      "answer": "European Union",
+      "explanation": "The Euro was introduced by the European Union in 1999.",
+      "reference": "European Central Bank"
+    },
+    {
+      "id": 6,
+      "topic": "History",
+      "subtopic": "Indian Dynasties",
+      "type": "single",
+      "question": "Who was the founder of the Maurya Dynasty?",
+      "options": [
+        "Ashoka",
+        "Chandragupta Maurya",
+        "Bindusara",
+        "Bimbisara"
+      ],
+      "answer": "Chandragupta Maurya",
+      "explanation": "Chandragupta Maurya founded the Maurya Empire in 321 BCE.",
+      "reference": "NCERT History Class 6; Britannica – Maurya Dynasty"
+    },
+    {
+      "id": 7,
+      "topic": "Science",
+      "subtopic": "Earth Science",
+      "type": "single",
+      "question": "What is the hardest natural substance on Earth?",
+      "options": [
+        "Diamond",
+        "Quartz",
+        "Topaz",
+        "Graphite"
+      ],
+      "answer": "Diamond",
+      "explanation": "Diamond, an allotrope of carbon, is the hardest natural substance.",
+      "reference": "Britannica – Diamond"
+    },
+    {
+      "id": 8,
+      "topic": "Geography",
+      "subtopic": "Rivers",
+      "type": "single",
+      "question": "Which is the longest river in the world?",
+      "options": [
+        "Amazon",
+        "Nile",
+        "Yangtze",
+        "Mississippi"
+      ],
+      "answer": "Nile",
+      "explanation": "The Nile is generally considered the longest river, though debates exist with the Amazon.",
+      "reference": "National Geographic – Rivers"
+    },
+    {
+      "id": 9,
+      "topic": "Politics",
+      "subtopic": "Indian Judiciary",
+      "type": "single",
+      "question": "Who appoints the Chief Justice of India?",
+      "options": [
+        "Prime Minister",
+        "Parliament",
+        "President of India",
+        "Governor"
+      ],
+      "answer": "President of India",
+      "explanation": "The President appoints the Chief Justice of India under Article 124 of the Constitution.",
+      "reference": "Constitution of India – Article 124"
+    },
+    {
+      "id": 10,
+      "topic": "Economics",
+      "subtopic": "Macroeconomics",
+      "type": "single",
+      "question": "What does GDP stand for?",
+      "options": [
+        "Gross Domestic Product",
+        "General Development Plan",
+        "Global Domestic Production",
+        "Gross Development Policy"
+      ],
+      "answer": "Gross Domestic Product",
+      "explanation": "GDP measures the value of goods and services produced within a country.",
+      "reference": "NCERT Economics Class 12; IMF"
+    },
+    {
+      "id": 11,
+      "topic": "History",
+      "subtopic": "Explorers",
+      "type": "single",
+      "question": "Who discovered sea route to India in 1498?",
+      "options": [
+        "Columbus",
+        "Magellan",
+        "Vasco da Gama",
+        "Marco Polo"
+      ],
+      "answer": "Vasco da Gama",
+      "explanation": "Vasco da Gama reached Calicut in 1498, establishing a sea route from Europe to India.",
+      "reference": "NCERT History Class 6; Britannica – Vasco da Gama"
+    },
+    {
+      "id": 12,
+      "topic": "Science",
+      "subtopic": "Human Body",
+      "type": "single",
+      "question": "Which vitamin is produced in the skin when exposed to sunlight?",
+      "options": [
+        "Vitamin A",
+        "Vitamin C",
+        "Vitamin D",
+        "Vitamin K"
+      ],
+      "answer": "Vitamin D",
+      "explanation": "Vitamin D is synthesized in the skin under UV light.",
+      "reference": "NCERT Biology Class 10; WHO"
+    },
+    {
+      "id": 13,
+      "topic": "Geography",
+      "subtopic": "Oceans",
+      "type": "single",
+      "question": "Which is the smallest ocean in the world?",
+      "options": [
+        "Atlantic",
+        "Indian",
+        "Southern",
+        "Arctic"
+      ],
+      "answer": "Arctic",
+      "explanation": "The Arctic Ocean is the smallest and shallowest of all oceans.",
+      "reference": "Britannica – Arctic Ocean"
+    },
+    {
+      "id": 14,
+      "topic": "Science",
+      "subtopic": "Astronomy",
+      "type": "multiple",
+      "question": "Which of the following are planets in our Solar System?",
+      "options": [
+        "Mercury",
+        "Pluto",
+        "Mars",
+        "Sun"
+      ],
+      "answer": [
+        "Mercury",
+        "Mars"
+      ],
+      "explanation": "Mercury and Mars are planets, Sun is a star and Pluto is a dwarf planet.",
+      "reference": "NASA – Solar System Exploration"
+    },
+    {
+      "id": 15,
+      "topic": "Geography",
+      "subtopic": "South America",
+      "type": "multiple",
+      "question": "Which countries are in South America?",
+      "options": [
+        "Brazil",
+        "Argentina",
+        "Kenya",
+        "Chile"
+      ],
+      "answer": [
+        "Brazil",
+        "Argentina",
+        "Chile"
+      ],
+      "explanation": "Brazil, Argentina, and Chile are in South America; Kenya is in Africa.",
+      "reference": "Britannica – South America"
+    },
+    {
+      "id": 16,
+      "topic": "Politics",
+      "subtopic": "UN Security Council",
+      "type": "multiple",
+      "question": "Which countries are permanent members of the UN Security Council?",
+      "options": [
+        "USA",
+        "India",
+        "Russia",
+        "China",
+        "France",
+        "UK"
+      ],
+      "answer": [
+        "USA",
+        "Russia",
+        "China",
+        "France",
+        "UK"
+      ],
+      "explanation": "The 5 permanent members are USA, Russia, China, France, and UK.",
+      "reference": "United Nations Official Website"
+    },
+    {
+      "id": 17,
+      "topic": "Economics",
+      "subtopic": "Energy",
+      "type": "multiple",
+      "question": "Which of the following are renewable energy sources?",
+      "options": [
+        "Solar",
+        "Wind",
+        "Coal",
+        "Hydropower"
+      ],
+      "answer": [
+        "Solar",
+        "Wind",
+        "Hydropower"
+      ],
+      "explanation": "Coal is non-renewable while solar, wind, and hydro are renewable.",
+      "reference": "IEA – Renewable Energy"
+    },
+    {
+      "id": 18,
+      "topic": "History",
+      "subtopic": "Cold War Era",
+      "type": "multiple",
+      "question": "Which leaders were associated with the Non-Aligned Movement?",
+      "options": [
+        "Nehru",
+        "Tito",
+        "Nasser",
+        "Churchill"
+      ],
+      "answer": [
+        "Nehru",
+        "Tito",
+        "Nasser"
+      ],
+      "explanation": "Jawaharlal Nehru (India), Josip Broz Tito (Yugoslavia), and Gamal Abdel Nasser (Egypt) were founding leaders.",
+      "reference": "Non-Aligned Movement History"
+    },
+    {
+      "id": 19,
+      "topic": "Science",
+      "subtopic": "Zoology",
+      "type": "multiple",
+      "question": "Which of the following are mammals?",
+      "options": [
+        "Whale",
+        "Dolphin",
+        "Shark",
+        "Tiger"
+      ],
+      "answer": [
+        "Whale",
+        "Dolphin",
+        "Tiger"
+      ],
+      "explanation": "Whales, dolphins, and tigers are mammals, sharks are fish.",
+      "reference": "Britannica – Mammals"
+    },
+    {
+      "id": 20,
+      "topic": "Geography",
+      "subtopic": "Borders",
+      "type": "multiple",
+      "question": "Which of these countries share a border with India?",
+      "options": [
+        "Pakistan",
+        "China",
+        "Nepal",
+        "Thailand"
+      ],
+      "answer": [
+        "Pakistan",
+        "China",
+        "Nepal"
+      ],
+      "explanation": "Thailand does not share a border with India.",
+      "reference": "Survey of India"
+    },
+    {
+      "id": 21,
+      "topic": "Politics",
+      "subtopic": "Indian Parliament",
+      "type": "multiple",
+      "question": "Which are parts of the Parliament of India?",
+      "options": [
+        "Lok Sabha",
+        "Rajya Sabha",
+        "President",
+        "Prime Minister"
+      ],
+      "answer": [
+        "Lok Sabha",
+        "Rajya Sabha",
+        "President"
+      ],
+      "explanation": "The Indian Parliament consists of Lok Sabha, Rajya Sabha, and the President.",
+      "reference": "Constitution of India"
+    },
+    {
+      "id": 22,
+      "topic": "Economics",
+      "subtopic": "International Institutions",
+      "type": "multiple",
+      "question": "Which organizations are part of Bretton Woods Institutions?",
+      "options": [
+        "World Bank",
+        "IMF",
+        "WTO",
+        "UNESCO"
+      ],
+      "answer": [
+        "World Bank",
+        "IMF"
+      ],
+      "explanation": "The Bretton Woods Institutions are World Bank and IMF.",
+      "reference": "World Bank – History"
+    },
+    {
+      "id": 23,
+      "topic": "History",
+      "subtopic": "French Revolution",
+      "type": "multiple",
+      "question": "Which events were part of the French Revolution?",
+      "options": [
+        "Storming of Bastille",
+        "Reign of Terror",
+        "Industrial Revolution",
+        "Tennis Court Oath"
+      ],
+      "answer": [
+        "Storming of Bastille",
+        "Reign of Terror",
+        "Tennis Court Oath"
+      ],
+      "explanation": "These were all events of the French Revolution.",
+      "reference": "NCERT History Class 9; Britannica – French Revolution"
+    },
+    {
+      "id": 24,
+      "topic": "Science",
+      "subtopic": "Physics",
+      "type": "multiple",
+      "question": "Which of these are examples of Newton’s Laws of Motion?",
+      "options": [
+        "A ball continues rolling until friction stops it",
+        "Rocket launch",
+        "A pushed cart accelerates",
+        "The Sun rising daily"
+      ],
+      "answer": [
+        "A ball continues rolling until friction stops it",
+        "Rocket launch",
+        "A pushed cart accelerates"
+      ],
+      "explanation": "The examples illustrate inertia, action-reaction, and force-acceleration.",
+      "reference": "NCERT Physics Class 9; Newton’s Laws"
+    },
+    {
+      "id": 25,
+      "topic": "Geography",
+      "subtopic": "Deserts",
+      "type": "multiple",
+      "question": "Which of these are deserts?",
+      "options": [
+        "Sahara",
+        "Gobi",
+        "Himalayas",
+        "Kalahari"
+      ],
+      "answer": [
+        "Sahara",
+        "Gobi",
+        "Kalahari"
+      ],
+      "explanation": "Himalayas are mountains, others are deserts.",
+      "reference": "Britannica – Deserts"
+    },
+    {
+      "id": 26,
+      "topic": "Economics",
+      "subtopic": "Indian Taxes",
+      "type": "multiple",
+      "question": "Which of these are direct taxes in India?",
+      "options": [
+        "Income Tax",
+        "Corporate Tax",
+        "GST",
+        "Wealth Tax"
+      ],
+      "answer": [
+        "Income Tax",
+        "Corporate Tax",
+        "Wealth Tax"
+      ],
+      "explanation": "GST is indirect, the others are direct taxes.",
+      "reference": "Indian Taxation System – Government of India"
+    },
+    {
+      "id": 27,
+      "topic": "Science",
+      "subtopic": "Astronomy",
+      "type": "assertion",
+      "question": "Assertion (A): Earth revolves around the Sun. Reason (R): The Sun is the center of the Solar System.",
+      "options": [
+        "A and R are true, R explains A",
+        "A true, R false",
+        "A false, R true",
+        "Both false"
+      ],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Heliocentric model explains Earth's revolution.",
+      "reference": "Copernican Theory; NCERT Geography Class 6"
+    },
+    {
+      "id": 28,
+      "topic": "Geography",
+      "subtopic": "Deserts",
+      "type": "assertion",
+      "question": "Assertion (A): The Sahara is the largest hot desert. Reason (R): It has extremely low rainfall.",
+      "options": [
+        "A and R are true, R explains A",
+        "A true, R false",
+        "A false, R true",
+        "Both false"
+      ],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Sahara’s climate is dry and arid.",
+      "reference": "Britannica – Sahara Desert"
+    },
+    {
+      "id": 29,
+      "topic": "Economics",
+      "subtopic": "Inflation",
+      "type": "assertion",
+      "question": "Assertion (A): Inflation reduces the value of money. Reason (R): Rising prices decrease purchasing power.",
+      "options": [
+        "A and R are true, R explains A",
+        "A true, R false",
+        "A false, R true",
+        "Both false"
+      ],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Inflation means goods cost more, reducing money’s value.",
+      "reference": "NCERT Economics Class 12; IMF"
+    },
+    {
+      "id": 30,
+      "topic": "Politics",
+      "subtopic": "Secularism",
+      "type": "assertion",
+      "question": "Assertion (A): India is a secular state. Reason (R): Citizens are free to follow any religion.",
+      "options": [
+        "A and R are true, R explains A",
+        "A true, R false",
+        "A false, R true",
+        "Both false"
+      ],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Secularism ensures freedom of religion.",
+      "reference": "Constitution of India"
+    },
+    {
+      "id": 31,
+      "topic": "History",
+      "subtopic": "Industrial Revolution",
+      "type": "assertion",
+      "question": "Assertion (A): The Industrial Revolution began in Britain. Reason (R): Britain had abundant coal and iron resources.",
+      "options": [
+        "A and R are true, R explains A",
+        "A true, R false",
+        "A false, R true",
+        "Both false"
+      ],
+      "answer": "A and R are true, R explains A",
+      "explanation": "These resources supported industrialization.",
+      "reference": "Britannica – Industrial Revolution"
+    },
+    {
+      "id": 32,
+      "topic": "Science",
+      "subtopic": "Sound",
+      "type": "assertion",
+      "question": "Assertion (A): Sound needs a medium to travel. Reason (R): It cannot propagate through vacuum.",
+      "options": [
+        "A and R are true, R explains A",
+        "A true, R false",
+        "A false, R true",
+        "Both false"
+      ],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Sound waves require air, water, or solid medium.",
+      "reference": "NCERT Physics Class 9"
+    },
+    {
+      "id": 33,
+      "topic": "Geography",
+      "subtopic": "Mountains",
+      "type": "assertion",
+      "question": "Assertion (A): Mount Everest is the tallest mountain above sea level. Reason (R): It lies in the Himalayas.",
+      "options": [
+        "A and R are true, R explains A",
+        "A true, R false",
+        "A false, R true",
+        "Both false"
+      ],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Everest is part of the Himalayan range.",
+      "reference": "National Geographic – Everest"
+    },
+    {
+      "id": 34,
+      "topic": "Economics",
+      "subtopic": "Monetary Policy",
+      "type": "assertion",
+      "question": "Assertion (A): RBI regulates India’s monetary policy. Reason (R): It controls credit and currency.",
+      "options": [
+        "A and R are true, R explains A",
+        "A true, R false",
+        "A false, R true",
+        "Both false"
+      ],
+      "answer": "A and R are true, R explains A",
+      "explanation": "RBI manages inflation and money supply.",
+      "reference": "Reserve Bank of India Handbook"
+    },
+    {
+      "id": 35,
+      "topic": "Politics",
+      "subtopic": "Indian Parliament",
+      "type": "assertion",
+      "question": "Assertion (A): The Indian Parliament is bicameral. Reason (R): It consists of Lok Sabha and Rajya Sabha.",
+      "options": [
+        "A and R are true, R explains A",
+        "A true, R false",
+        "A false, R true",
+        "Both false"
+      ],
+      "answer": "A and R are true, R explains A",
+      "explanation": "This is the definition of bicameral legislature.",
+      "reference": "Constitution of India"
+    },
+    {
+      "id": 36,
+      "topic": "History",
+      "subtopic": "Explorers",
+      "type": "assertion",
+      "question": "Assertion (A): Columbus discovered America in 1492. Reason (R): He was searching for a sea route to India.",
+      "options": [
+        "A and R are true, R explains A",
+        "A true, R false",
+        "A false, R true",
+        "Both false"
+      ],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Columbus reached the Caribbean while searching for India.",
+      "reference": "Britannica – Columbus"
+    },
+    {
+      "id": 37,
+      "topic": "Science",
+      "subtopic": "Photosynthesis",
+      "type": "assertion",
+      "question": "Assertion (A): Plants produce oxygen. Reason (R): They release oxygen during photosynthesis.",
+      "options": [
+        "A and R are true, R explains A",
+        "A true, R false",
+        "A false, R true",
+        "Both false"
+      ],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Photosynthesis uses CO2 and releases O2.",
+      "reference": "NCERT Biology Class 7"
+    },
+    {
+      "id": 38,
+      "topic": "Geography",
+      "subtopic": "Antarctica",
+      "type": "assertion",
+      "question": "Assertion (A): Antarctica is the coldest continent. Reason (R): It is covered by thick ice sheets.",
+      "options": [
+        "A and R are true, R explains A",
+        "A true, R false",
+        "A false, R true",
+        "Both false"
+      ],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Ice cover makes Antarctica the coldest region.",
+      "reference": "Britannica – Antarctica"
+    },
+    {
+      "id": 39,
+      "topic": "Geography",
+      "subtopic": "Mountains",
+      "type": "match",
+      "question": "Match the continents with their highest peaks:",
+      "matchPairs": {
+        "Asia": "Mount Everest",
+        "Africa": "Kilimanjaro",
+        "Europe": "Elbrus",
+        "South America": "Aconcagua"
+      },
+      "explanation": "Each continent has a highest mountain peak.",
+      "reference": "National Geographic – Mountains"
+    },
+    {
+      "id": 40,
+      "topic": "History",
+      "subtopic": "Leaders",
+      "type": "match",
+      "question": "Match the leaders with their countries:",
+      "matchPairs": {
+        "Mahatma Gandhi": "India",
+        "Nelson Mandela": "South Africa",
+        "Abraham Lincoln": "USA",
+        "Winston Churchill": "UK"
+      },
+      "explanation": "Prominent leaders associated with their nations.",
+      "reference": "Britannica – Leaders"
+    },
+    {
+      "id": 41,
+      "topic": "Science",
+      "subtopic": "Scientific Laws",
+      "type": "match",
+      "question": "Match the scientists with their contributions:",
+      "matchPairs": {
+        "Newton": "Law of Gravitation",
+        "Einstein": "Theory of Relativity",
+        "Darwin": "Theory of Evolution",
+        "Mendel": "Genetics"
+      },
+      "explanation": "Important scientific discoveries.",
+      "reference": "NCERT Science Class 9"
+    },
+    {
+      "id": 42,
+      "topic": "Economics",
+      "subtopic": "Global Institutions",
+      "type": "match",
+      "question": "Match the organizations with their headquarters:",
+      "matchPairs": {
+        "IMF": "Washington D.C.",
+        "World Bank": "Washington D.C.",
+        "WTO": "Geneva",
+        "UNESCO": "Paris"
+      },
+      "explanation": "Major global organizations and HQs.",
+      "reference": "Official Organization Websites"
+    },
+    {
+      "id": 43,
+      "topic": "Politics",
+      "subtopic": "Capitals",
+      "type": "match",
+      "question": "Match the countries with their capitals:",
+      "matchPairs": {
+        "France": "Paris",
+        "Japan": "Tokyo",
+        "Australia": "Canberra",
+        "Canada": "Ottawa"
+      },
+      "explanation": "Each country has its own capital.",
+      "reference": "Britannica – Capitals"
+    },
+    {
+      "id": 44,
+      "topic": "Geography",
+      "subtopic": "Rivers",
+      "type": "match",
+      "question": "Match the rivers with their continents:",
+      "matchPairs": {
+        "Nile": "Africa",
+        "Amazon": "South America",
+        "Yangtze": "Asia",
+        "Danube": "Europe"
+      },
+      "explanation": "Rivers and their locations.",
+      "reference": "NCERT Geography Class 9"
+    },
+    {
+      "id": 45,
+      "topic": "History",
+      "subtopic": "Wars",
+      "type": "match",
+      "question": "Match the wars with their years:",
+      "matchPairs": {
+        "World War I": "1914",
+        "World War II": "1939",
+        "American Civil War": "1861",
+        "French Revolution": "1789"
+      },
+      "explanation": "Major wars and their timelines.",
+      "reference": "History Texts"
+    },
+    {
+      "id": 46,
+      "topic": "Science",
+      "subtopic": "Elements",
+      "type": "match",
+      "question": "Match the elements with their symbols:",
+      "matchPairs": {
+        "Gold": "Au",
+        "Silver": "Ag",
+        "Iron": "Fe",
+        "Copper": "Cu"
+      },
+      "explanation": "Chemical elements and their symbols.",
+      "reference": "Periodic Table – IUPAC"
+    },
+    {
+      "id": 47,
+      "topic": "Economics",
+      "subtopic": "Currencies",
+      "type": "match",
+      "question": "Match the currencies with their countries:",
+      "matchPairs": {
+        "USA": "Dollar",
+        "Japan": "Yen",
+        "UK": "Pound",
+        "India": "Rupee"
+      },
+      "explanation": "National currencies.",
+      "reference": "IMF Handbook"
+    },
+    {
+      "id": 48,
+      "topic": "Politics",
+      "subtopic": "Sports",
+      "type": "match",
+      "question": "Match the sports with their origin countries:",
+      "matchPairs": {
+        "Cricket": "England",
+        "Sumo": "Japan",
+        "Baseball": "USA",
+        "Hockey": "India"
+      },
+      "explanation": "Each sport has a historic place of origin.",
+      "reference": "Sports Britannica"
+    },
+    {
+      "id": 49,
+      "topic": "Geography",
+      "subtopic": "Monuments",
+      "type": "match",
+      "question": "Match the monuments with their locations:",
+      "matchPairs": {
+        "Taj Mahal": "Agra",
+        "Eiffel Tower": "Paris",
+        "Great Wall": "China",
+        "Colosseum": "Rome"
+      },
+      "explanation": "Famous monuments and their places.",
+      "reference": "UNESCO World Heritage"
+    },
+    {
+      "id": 50,
+      "topic": "Science",
+      "subtopic": "Inventions",
+      "type": "match",
+      "question": "Match the inventions with inventors:",
+      "matchPairs": {
+        "Telephone": "Alexander Graham Bell",
+        "Light Bulb": "Thomas Edison",
+        "Airplane": "Wright Brothers",
+        "Radio": "Marconi"
+      },
+      "explanation": "Inventions that changed the world.",
+      "reference": "Britannica – Inventions"
+    }
+  ]
+}

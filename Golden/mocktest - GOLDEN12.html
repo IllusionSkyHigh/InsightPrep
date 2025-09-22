@@ -1,0 +1,1938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mock Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      background: #0078d7;
+      color: white;
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+    main {
+      max-width: 900px;
+      width: 95%;
+      margin: 20px auto;
+    }
+    .controls {
+      margin: 20px 0;
+      text-align: center;
+    }
+    #fileInput { display: none; }
+    .custom-btn {
+      background: #0078d7;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    .custom-btn:hover { background: #005ea3; }
+    .file-chosen {
+      margin: 10px auto;
+      padding: 10px;
+      background: #e6ffed;
+      border: 1px solid #00a854;
+      border-radius: 6px;
+      text-align: center;
+      font-weight: bold;
+      color: #006633;
+    }
+    .question-card {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      border: 2px solid transparent;
+    }
+    .question-card h3 { margin-top: 0; }
+    .correct { color: green; font-weight: bold; }
+    .wrong { color: red; font-weight: bold; }
+    .explanation { margin-top: 8px; font-style: italic; }
+    .reference { margin-top: 4px; font-size: 0.9em; color: #333; }
+    .disabled { pointer-events: none; opacity: 0.6; }
+    .active { border: 2px solid #0078d7; box-shadow: 0 0 8px rgba(0,120,215,0.6); }
+    .locked { pointer-events: none; opacity: 1 !important; }
+    button {
+      background: #0078d7;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95em;
+      margin-top: 8px;
+    }
+    button:hover { background: #005ea3; }
+    #restart, #newtest { margin: 20px 10px; display: none; }
+    #scoreboard {
+      margin: 20px 0;
+      font-size: 1.2em;
+      text-align: center;
+    }
+    #message {
+      font-size: 1.1em;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    #message.excellent { color: green; }
+    #message.good { color: #0078d7; }
+    #message.fair { color: orange; }
+    #message.poor { color: red; }
+    .filter-panel {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 10px 0 20px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .filter-panel h3 {
+      margin-top: 0;
+      color: #0078d7;
+    }
+    .filter-section { margin-bottom: 15px; }
+    label { cursor: pointer; }
+    .match-table {
+      display: table;
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
+    }
+    .match-row { display: table-row; }
+    .match-cell {
+      display: table-cell;
+      padding: 6px 8px;
+      vertical-align: middle;
+    }
+    .match-cell:first-child {
+      font-weight: bold;
+      width: 40%;
+    }
+    select {
+      width: 100%;
+      padding: 4px;
+    }
+    /* Tooltip styles */
+    .tooltip-container {
+      position: relative;
+      display: inline-block;
+    }
+    .tooltip {
+      visibility: hidden;
+      position: absolute;
+      z-index: 1000;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #fff3cd;
+      color: #856404;
+      border: 2px solid #ffeaa7;
+      border-radius: 8px;
+      padding: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      width: 400px;
+      max-width: 90vw;
+      max-height: 80vh;
+      overflow-y: auto;
+      font-size: 0.9em;
+      opacity: 0;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+    .tooltip::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -8px;
+      border-width: 8px;
+      border-style: solid;
+      border-color: #ffeaa7 transparent transparent transparent;
+    }
+    .tooltip-container:hover .tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
+    .tooltip h4 {
+      margin: 0 0 8px 0;
+      color: #856404;
+      font-size: 1em;
+      text-align: center;
+      border-bottom: 1px solid #856404;
+      padding: 8px 4px 4px 4px;
+      background-color: #fff3cd;
+      position: sticky;
+      top: 0;
+      z-index: 1002;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .tooltip-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 8px 0;
+      font-size: 0.85em;
+      position: relative;
+    }
+    .tooltip-table th {
+      background-color: #f8f4e6;
+      border: 1px solid #856404;
+      padding: 8px 6px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 0.8em;
+      position: sticky;
+      top: 40px;
+      z-index: 1001;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .tooltip-table td {
+      border: 1px solid #856404;
+      padding: 6px;
+      text-align: center;
+      font-size: 0.85em;
+      background-color: #fefcf7;
+    }
+    .tooltip-table tbody tr:nth-child(even) td {
+      background-color: #f9f6f0;
+    }
+    .tooltip-table tbody tr:hover td {
+      background-color: #f5f2e8;
+    }
+    .tooltip-table .random-row td {
+      font-style: italic;
+      background-color: #f0f0f0 !important;
+      border-top: 2px solid #999 !important;
+    }
+    .tooltip-summary {
+      margin-top: 10px;
+      padding: 8px;
+      border-top: 2px solid #856404;
+      font-weight: bold;
+      text-align: center;
+      font-size: 0.9em;
+      background-color: #f8f4e6;
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    #swamys-footer {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      z-index: 2000;
+      background: rgba(255,255,255,0.95);
+      color: #444;
+      font-size: 13px;
+      font-family: inherit;
+      padding: 8px 18px 8px 12px;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.07);
+      border-top-right-radius: 10px;
+      border-top: 1px solid #e0e0e0;
+      border-right: 1px solid #e0e0e0;
+      min-width: 340px;
+      max-width: 90vw;
+      line-height: 1.4;
+      pointer-events: none;
+      user-select: none;
+    }
+    #swamys-footer div { white-space: pre-line; }
+  </style>
+  <!-- Add sql.js library for SQLite in browser -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+</head>
+<body>
+  <header id="test-title">Mock Test Application</header>
+  <main>
+    <div class="controls">
+      <label for="fileInput" class="custom-btn" title="Select a test JSON file to begin. Loads questions and allows you to set filters before starting the test.">📂 Choose Test</label>
+      <input type="file" id="fileInput" accept=".json">
+      <button id="chooseDb" class="custom-btn" style="margin-left:10px;" title="Choose questions from the SQLite database. Allows you to set filters and select the number of questions.">🗄️ Choose from DB</button>
+      <button id="restart" style="display:none; margin-left:10px;" title="Restart the current test instantly using the same filters and explanation mode. Does not show the filter screen again.">🔄 Restart Test</button>
+    </div>
+    <div id="file-chosen"></div>
+    <div id="filter-panel"></div>
+    <div id="test"></div>
+    <div id="scoreboard"></div>
+    <div style="text-align:center;">
+      <button id="newtest" title="Select a new test file. Clears all current progress and lets you load a different set of questions.">📂 Select New Test</button>
+    </div>
+  </main>
+
+
+  <div id="swamys-copyright-card">
+    <div class="swamys-copyright-main">
+      Conceived, Architected, Designed &amp; Developed by <span class="swamys-copyright-author">Girish.V</span><br>
+      <span class="swamys-copyright-school">Swamy's Group of Schools, Chennai</span>
+    </div>
+    <div class="swamys-copyright-copy">
+      &copy; <span id="swamys-copyright-year"></span>. All rights reserved
+    </div>
+  </div>
+  <style>
+    #swamys-copyright-card {
+      position: fixed;
+      left: 18px;
+      bottom: 18px;
+      z-index: 9999;
+      background: rgba(245, 247, 250, 0.97);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+      border-radius: 10px;
+      padding: 12px 18px 10px 18px;
+      min-width: 220px;
+      max-width: 320px;
+      font-size: 0.98em;
+      color: #222;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      border: 1px solid #e0e0e0;
+      opacity: 0.93;
+      transition: box-shadow 0.2s;
+      pointer-events: none;
+      user-select: none;
+      text-align: left;
+      display: block;
+    }
+    body.sticky-footer #swamys-copyright-card {
+      position: sticky !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      margin: 0 auto !important;
+      width: 100vw !important;
+      min-width: 0 !important;
+      max-width: 100vw !important;
+      border-radius: 0 !important;
+      box-shadow: none !important;
+      background: #f8fafc !important;
+      border-top: 1px solid #e0e0e0 !important;
+      opacity: 1 !important;
+      padding: 12px 0 10px 0 !important;
+      text-align: center !important;
+      pointer-events: auto !important;
+      display: block !important;
+    }
+    body.hide-copyright-card #swamys-copyright-card {
+      display: none !important;
+    }
+    html, body {
+      height: 100%;
+      min-height: 100%;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    main {
+      flex: 1 0 auto;
+    }
+    /* Sticky footer for any window where content is less than full height */
+    @media (max-width: 700px) {
+      #swamys-copyright-card {
+        position: static !important;
+        left: unset !important;
+        bottom: unset !important;
+        width: 100vw !important;
+        min-width: 0 !important;
+        max-width: 100vw !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        background: #f8fafc !important;
+        border-top: 1px solid #e0e0e0 !important;
+        opacity: 1 !important;
+        margin: 0 !important;
+        padding: 12px 0 10px 0 !important;
+        text-align: center !important;
+        pointer-events: auto !important;
+      }
+      .swamys-copyright-main {
+        font-size: 1em;
+        margin-bottom: 2px;
+      }
+      .swamys-copyright-copy {
+        font-size: 0.93em;
+      }
+    }
+    @media (min-width: 701px) {
+      body.sticky-footer #swamys-copyright-card {
+        position: sticky !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        margin: 0 auto !important;
+        width: 100vw !important;
+        min-width: 0 !important;
+        max-width: 100vw !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        background: #f8fafc !important;
+        border-top: 1px solid #e0e0e0 !important;
+        opacity: 1 !important;
+        padding: 12px 0 10px 0 !important;
+        text-align: center !important;
+        pointer-events: auto !important;
+      }
+    }
+    .swamys-copyright-main {
+      font-weight: 500;
+      margin-bottom: 2px;
+      line-height: 1.3;
+    }
+    .swamys-copyright-author, .swamys-copyright-school {
+      color: #1976d2;
+      font-weight: 600;
+    }
+    .swamys-copyright-copy {
+      font-size: 0.93em;
+      color: #666;
+      margin-top: 2px;
+    }
+    @media (max-width: 700px) {
+      #swamys-copyright-card {
+        position: static !important;
+        left: unset !important;
+        bottom: unset !important;
+        width: 100vw !important;
+        min-width: 0 !important;
+        max-width: 100vw !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        background: #f8fafc !important;
+        border-top: 1px solid #e0e0e0 !important;
+        opacity: 1 !important;
+        margin: 0 !important;
+        padding: 12px 0 10px 0 !important;
+        text-align: center !important;
+        pointer-events: auto !important;
+      }
+      .swamys-copyright-main {
+        font-size: 1em;
+        margin-bottom: 2px;
+      }
+      .swamys-copyright-copy {
+        font-size: 0.93em;
+      }
+    }
+  </style>
+  <script>
+    // Show copyright card at bottom left only if browser is maximized; otherwise, sticky footer
+    function isWindowMaximized() {
+      // Heuristic: window outer size nearly equals screen size
+      return (
+        Math.abs(window.outerWidth - screen.availWidth) < 8 &&
+        Math.abs(window.outerHeight - screen.availHeight) < 8
+      );
+    }
+    function updateCopyrightCardPosition() {
+      const body = document.body;
+      if (isWindowMaximized()) {
+        body.classList.remove('sticky-footer');
+        body.classList.remove('hide-copyright-card');
+      } else {
+        // Show as sticky footer if not maximized and content is less than viewport
+        if (window.innerHeight > document.body.scrollHeight - 2) {
+          body.classList.add('sticky-footer');
+          body.classList.remove('hide-copyright-card');
+        } else {
+          // Hide card if not maximized and content is scrollable (avoid overlap)
+          body.classList.remove('sticky-footer');
+          body.classList.add('hide-copyright-card');
+        }
+      }
+    }
+    window.addEventListener('resize', updateCopyrightCardPosition);
+    window.addEventListener('DOMContentLoaded', updateCopyrightCardPosition);
+    setTimeout(updateCopyrightCardPosition, 200);
+    let questions = [];
+    // Set copyright year in footer
+    (function() {
+      var y = document.getElementById('swamys-copyright-year');
+      if (y) y.textContent = new Date().getFullYear();
+    })();
+    let originalData = null;
+    let score = 0;
+    let explanationMode = 1;
+    let db = null;
+    // Store last used filters for restart
+    let lastFilteredQuestions = null;
+    let lastExplanationMode = 1;
+
+    function resetWorkflow() {
+      // Clear all variables
+      questions = [];
+      originalData = null;
+      score = 0;
+      explanationMode = 1;
+
+      // Clear DOM
+      document.getElementById("test").innerHTML = "";
+      document.getElementById("scoreboard").innerHTML = "";
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("newtest").style.display = "none";
+      document.getElementById("file-chosen").innerHTML = "";
+      document.getElementById("filter-panel").innerHTML = "";
+      document.getElementById("test-title").textContent = "Mock Test Application";
+    }
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    document.getElementById("fileInput").addEventListener("change", function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      // If a test is already loaded, reset workflow instead of reload
+      if (originalData !== null || questions.length > 0) {
+        resetWorkflow();
+      }
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        try {
+          const data = JSON.parse(event.target.result);
+          originalData = data;
+          document.getElementById("file-chosen").innerHTML =
+            `✅ Test loaded: <strong>${data.title || file.name}</strong>`;
+          buildFilterPanel(data.questions);
+        } catch (err) {
+          alert("Invalid JSON file.");
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = ""; // allow re-selecting the same file again
+    });
+
+    function setupAllCheckbox(sectionDiv) {
+      const checkboxes = sectionDiv.querySelectorAll("input[type=checkbox]");
+      const allBox = checkboxes[0];
+      const children = Array.from(checkboxes).slice(1);
+
+      allBox.addEventListener("change", () => {
+        children.forEach(cb => cb.checked = allBox.checked);
+      });
+
+      children.forEach(cb => {
+        cb.addEventListener("change", () => {
+          if (children.every(c => c.checked)) {
+            allBox.checked = true;
+          } else {
+            allBox.checked = false;
+          }
+        });
+      });
+    }
+
+    function buildFilterPanel(allQuestions) {
+      const panel = document.getElementById("filter-panel");
+      panel.innerHTML = "";
+
+      const topics = [...new Set(allQuestions.map(q => q.topic))];
+      const types = [...new Set(allQuestions.map(q => q.type))];
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "filter-panel";
+
+      // Topics
+      const topicDiv = document.createElement("div");
+      topicDiv.className = "filter-section";
+      topicDiv.innerHTML = "<h3>Select Topics</h3>";
+      const allTopics = document.createElement("label");
+      allTopics.innerHTML = `<input type="checkbox" value="ALL" checked> ALL`;
+      topicDiv.appendChild(allTopics);
+      topics.forEach(t => {
+        const l = document.createElement("label");
+        l.style.display = "block";
+        l.innerHTML = `<input type="checkbox" value="${t}" checked> ${t}`;
+        topicDiv.appendChild(l);
+      });
+      setupAllCheckbox(topicDiv);
+
+      // Types
+      const typeDiv = document.createElement("div");
+      typeDiv.className = "filter-section";
+      typeDiv.innerHTML = "<h3>Select Question Types</h3>";
+      const allTypes = document.createElement("label");
+      allTypes.innerHTML = `<input type="checkbox" value="ALL" checked> ALL`;
+      typeDiv.appendChild(allTypes);
+      types.forEach(t => {
+        const l = document.createElement("label");
+        l.style.display = "block";
+        l.innerHTML = `<input type="checkbox" value="${t}" checked> ${t}`;
+        typeDiv.appendChild(l);
+      });
+      setupAllCheckbox(typeDiv);
+
+      // Explanation display mode
+      const expDiv = document.createElement("div");
+      expDiv.className = "filter-section";
+      expDiv.innerHTML = "<h3>Explanation & Reference Display</h3>";
+      expDiv.innerHTML += `
+        <label><input type="radio" name="expMode" value="1" checked> Only when wrong</label><br>
+        <label><input type="radio" name="expMode" value="2"> Both when right and wrong</label><br>
+        <label><input type="radio" name="expMode" value="3"> Do not display explanations</label>
+      `;
+
+      // Number of questions
+      const maxQuestions = allQuestions.length;
+      const numDiv = document.createElement("div");
+      numDiv.className = "filter-section";
+      numDiv.innerHTML = `<h3>Number of Questions</h3><input type=\"number\" id=\"numQuestions\" min=\"1\" value=\"${Math.min(10, maxQuestions)}\" max=\"${maxQuestions}\"> <span style=\"margin-left:10px; color:#0078d7; font-weight:bold;\">Max: ${maxQuestions} questions available for selection</span>`;
+
+      // Selection mode radio buttons
+      const modeDiv = document.createElement("div");
+      modeDiv.className = "filter-section";
+      modeDiv.style.marginTop = "10px";
+      modeDiv.innerHTML = `
+        <h3>Selection Mode</h3>
+        <label><input type="radio" name="selectionMode" value="random" checked> Random (default)</label><br>
+        <label><input type="radio" name="selectionMode" value="balanced"> Balanced (equal per topic/type)</label>
+      `;
+
+      // Start button
+      const startBtn = document.createElement("button");
+      startBtn.textContent = "Start Test";
+      
+      // Create tooltip container for balanced mode
+      const startBtnContainer = document.createElement("div");
+      startBtnContainer.className = "tooltip-container";
+      startBtnContainer.appendChild(startBtn);
+      
+      // Tooltip element (initially hidden)
+      const tooltip = document.createElement("div");
+      tooltip.className = "tooltip";
+      tooltip.style.display = "none";
+      startBtnContainer.appendChild(tooltip);
+      
+      // Function to update tooltip content for balanced mode
+      function updateBalancedTooltip() {
+        const mode = modeDiv.querySelector('input[name="selectionMode"]:checked').value;
+        if (mode === 'balanced') {
+          tooltip.style.display = "block";
+          
+          // Get current filter selections
+          let selectedTopics = [];
+          let selectedTypes = [];
+          const topicChecks = topicDiv.querySelectorAll("input[type=checkbox]");
+          if (topicChecks[0].checked) {
+            selectedTopics = topics;
+          } else {
+            topicChecks.forEach((cb, i) => {
+              if (i > 0 && cb.checked) selectedTopics.push(cb.value);
+            });
+          }
+          const typeChecks = typeDiv.querySelectorAll("input[type=checkbox]");
+          if (typeChecks[0].checked) {
+            selectedTypes = types;
+          } else {
+            typeChecks.forEach((cb, i) => {
+              if (i > 0 && cb.checked) selectedTypes.push(cb.value);
+            });
+          }
+          
+          const numInput = document.getElementById("numQuestions");
+          const requestedCount = Math.max(1, parseInt(numInput.value) || 10);
+          
+          // Calculate distribution preview
+          const buckets = {};
+          let totalAvailable = 0;
+          selectedTopics.forEach(topic => {
+            selectedTypes.forEach(type => {
+              const key = topic + '|' + type;
+              const count = allQuestions.filter(q => q.topic === topic && q.type === type).length;
+              if (count > 0) {
+                buckets[key] = count;
+                totalAvailable += count;
+              }
+            });
+          });
+          
+          const pairs = Object.keys(buckets);
+          let distributionHTML = "";
+          let totalDistributed = 0;
+          
+          if (pairs.length > 0) {
+            const perBucket = Math.max(1, Math.floor(requestedCount / pairs.length));
+            let remainingQuestions = requestedCount;
+            
+            distributionHTML = `
+              <h4>Balanced Distribution Preview</h4>
+              <table class="tooltip-table">
+                <tr>
+                  <th>Topic</th>
+                  <th>Type</th>
+                  <th>Will Select</th>
+                </tr>
+            `;
+            
+            // Only show rows for topic/type pairs that will actually have questions selected
+            pairs.forEach(key => {
+              const [topic, type] = key.split('|');
+              const available = buckets[key];
+              let willSelect = Math.min(perBucket, available, remainingQuestions);
+              if (remainingQuestions > 0 && willSelect > 0) {
+                totalDistributed += willSelect;
+                remainingQuestions -= willSelect;
+                
+                distributionHTML += `
+                  <tr>
+                    <td>${topic}</td>
+                    <td>${type}</td>
+                    <td>${willSelect}</td>
+                  </tr>
+                `;
+              }
+            });
+            
+            // Add random questions row if needed (JSON mode)
+            const randomCount = Math.max(0, requestedCount - totalDistributed);
+            if (randomCount > 0) {
+              distributionHTML += `
+                <tr class="random-row">
+                  <td colspan="2">Random questions</td>
+                  <td>${randomCount}</td>
+                </tr>
+              `;
+            }
+            
+            distributionHTML += "</table>";
+            
+            const summaryText = randomCount > 0 
+              ? `Total: ${requestedCount} questions (${totalDistributed} balanced + ${randomCount} random)`
+              : `Total: ${requestedCount} questions (all balanced)`;
+            
+            distributionHTML += `<div class="tooltip-summary">${summaryText}</div>`;
+          } else {
+            distributionHTML = `
+              <h4>Balanced Distribution Preview</h4>
+              <div style="text-align: center; color: #856404;">
+                No topic/type combinations available.<br>
+                Will select ${requestedCount} random questions.
+              </div>
+            `;
+          }
+          
+          tooltip.innerHTML = distributionHTML;
+        } else {
+          tooltip.style.display = "none";
+        }
+      }
+      
+      // Update tooltip when selection mode changes
+      modeDiv.addEventListener("change", updateBalancedTooltip);
+      
+      // Update tooltip when filters change
+      topicDiv.addEventListener("change", updateBalancedTooltip);
+      typeDiv.addEventListener("change", updateBalancedTooltip);
+      
+      // Update tooltip when number of questions changes
+      setTimeout(() => {
+        const numInput = document.getElementById("numQuestions");
+        if (numInput) {
+          numInput.addEventListener("input", updateBalancedTooltip);
+        }
+        updateBalancedTooltip(); // Initial update
+      }, 0);
+      
+      startBtn.addEventListener("click", () => {
+        // JSON mode: filter questions by selected topics/types
+        let selectedTopics = [];
+        let selectedTypes = [];
+        const topicChecks = topicDiv.querySelectorAll("input[type=checkbox]");
+        if (topicChecks[0].checked) {
+          selectedTopics = topics;
+        } else {
+          topicChecks.forEach((cb, i) => {
+            if (i > 0 && cb.checked) selectedTopics.push(cb.value);
+          });
+        }
+        const typeChecks = typeDiv.querySelectorAll("input[type=checkbox]");
+        if (typeChecks[0].checked) {
+          selectedTypes = types;
+        } else {
+          typeChecks.forEach((cb, i) => {
+            if (i > 0 && cb.checked) selectedTypes.push(cb.value);
+          });
+        }
+        const expChoice = expDiv.querySelector("input[name=expMode]:checked");
+        explanationMode = parseInt(expChoice.value);
+        // Filter questions
+        let filteredQuestions = allQuestions.filter(q => selectedTopics.includes(q.topic) && selectedTypes.includes(q.type));
+        const numInput = document.getElementById("numQuestions");
+        const maxQuestions = filteredQuestions.length;
+        let numQuestions = Math.max(1, Math.min(parseInt(numInput.value), maxQuestions));
+        if (numQuestions > maxQuestions) {
+          document.getElementById("file-chosen").innerHTML = `<span style='color:red;'>You requested ${numQuestions} questions, but only ${maxQuestions} are available for the selected criteria. Please reduce the number.</span>`;
+          return;
+        }
+        // Selection mode logic
+        const mode = modeDiv.querySelector('input[name="selectionMode"]:checked').value;
+        let chosenQuestions = [];
+        if (mode === 'balanced' && selectedTopics.length > 0 && selectedTypes.length > 0) {
+          // Balanced: distribute as evenly as possible across topic/type
+          // Build buckets for each topic/type pair
+          const buckets = {};
+          selectedTopics.forEach(topic => {
+            selectedTypes.forEach(type => {
+              const key = topic + '|' + type;
+              buckets[key] = filteredQuestions.filter(q => q.topic === topic && q.type === type);
+            });
+          });
+          const pairs = Object.keys(buckets).filter(k => buckets[k].length > 0);
+          if (pairs.length === 0) {
+            document.getElementById("file-chosen").innerHTML = `<span style='color:red;'>No questions available for selected filters.</span>`;
+            return;
+          }
+          if (pairs.length > numQuestions) {
+            document.getElementById("file-chosen").innerHTML = `<span style='color:red;'>Balanced mode: Number of topic/type pairs (${pairs.length}) exceeds number of questions requested (${numQuestions}). Please select more questions or fewer topics/types.</span>`;
+            return;
+          }
+          const perBucket = Math.floor(numQuestions / pairs.length);
+          let leftovers = numQuestions % pairs.length;
+          // Select from each bucket, keep order by topic/type
+          pairs.forEach(key => {
+            let take = perBucket + (leftovers > 0 ? 1 : 0);
+            let arr = buckets[key].slice();
+            arr = shuffle(arr);
+            // If not enough in bucket, take as many as possible
+            chosenQuestions = chosenQuestions.concat(arr.slice(0, Math.min(take, arr.length)));
+            if (leftovers > 0) leftovers--;
+          });
+          // If not enough, fill randomly from remaining
+          if (chosenQuestions.length < numQuestions) {
+            let remaining = filteredQuestions.filter(q => !chosenQuestions.includes(q));
+            remaining = shuffle(remaining);
+            chosenQuestions = chosenQuestions.concat(remaining.slice(0, numQuestions - chosenQuestions.length));
+          }
+          if (chosenQuestions.length === 0) {
+            document.getElementById("file-chosen").innerHTML = `<span style='color:red;'>Balanced mode: Could not select any questions for the chosen topic/type pairs. Please adjust your filters.</span>`;
+            return;
+          }
+        } else {
+          // Random: shuffle and pick N
+          filteredQuestions = shuffle(filteredQuestions);
+          chosenQuestions = filteredQuestions.slice(0, numQuestions);
+        }
+        document.getElementById("file-chosen").innerHTML = `Loaded ${chosenQuestions.length} questions. Preparing test UI...`;
+        setTimeout(() => {
+          panel.innerHTML = "";
+          document.getElementById("restart").style.display = "none";
+          startTest(chosenQuestions);
+        }, 500);
+      });
+      // Dynamic max count update for JSON mode
+      function updateMaxQuestionsJSON() {
+        let selectedTopics = [];
+        let selectedTypes = [];
+        const topicChecks = topicDiv.querySelectorAll("input[type=checkbox]");
+        if (topicChecks[0].checked) {
+          selectedTopics = topics;
+        } else {
+          topicChecks.forEach((cb, i) => {
+            if (i > 0 && cb.checked) selectedTopics.push(cb.value);
+          });
+        }
+        const typeChecks = typeDiv.querySelectorAll("input[type=checkbox]");
+        if (typeChecks[0].checked) {
+          selectedTypes = types;
+        } else {
+          typeChecks.forEach((cb, i) => {
+            if (i > 0 && cb.checked) selectedTypes.push(cb.value);
+          });
+        }
+        const filteredQuestions = allQuestions.filter(q => selectedTopics.includes(q.topic) && selectedTypes.includes(q.type));
+        const maxQuestions = filteredQuestions.length;
+        const numInput = document.getElementById("numQuestions");
+        numInput.max = maxQuestions;
+        if (parseInt(numInput.value) < 1) numInput.value = Math.min(10, maxQuestions);
+        if (parseInt(numInput.value) > maxQuestions) numInput.value = maxQuestions;
+        // Update max info
+        const maxInfo = numDiv.querySelector("span");
+        if (maxInfo) maxInfo.textContent = `Max: ${maxQuestions} questions available for selection`;
+        startBtn.disabled = (maxQuestions < 1 || parseInt(numInput.value) < 1 || parseInt(numInput.value) > maxQuestions);
+      }
+      topicDiv.addEventListener("change", updateMaxQuestionsJSON);
+      typeDiv.addEventListener("change", updateMaxQuestionsJSON);
+      setTimeout(() => {
+        const numInput = document.getElementById("numQuestions");
+        if (numInput) numInput.addEventListener("input", updateMaxQuestionsJSON);
+        updateMaxQuestionsJSON();
+      }, 0);
+
+      // Update max questions info and input limit dynamically
+      function updateMaxQuestions() {
+        // Get selected topics and types
+        let selectedTopics = [];
+        let selectedTypes = [];
+        const topicChecks = topicDiv.querySelectorAll("input[type=checkbox]");
+        if (topicChecks[0].checked) {
+          selectedTopics = topics;
+        } else {
+          topicChecks.forEach((cb, i) => {
+            if (i > 0 && cb.checked) selectedTopics.push(cb.value);
+          });
+        }
+        const typeChecks = typeDiv.querySelectorAll("input[type=checkbox]");
+        if (typeChecks[0].checked) {
+          selectedTypes = types;
+        } else {
+          typeChecks.forEach((cb, i) => {
+            if (i > 0 && cb.checked) selectedTypes.push(cb.value);
+          });
+        }
+        // Query DB for count
+        let sql = `SELECT COUNT(*) FROM questions WHERE topic IN (${selectedTopics.map(t => `'${t}'`).join(',')}) AND question_type IN (${selectedTypes.map(t => `'${t}'`).join(',')})`;
+        const res = db.exec(sql);
+        const maxQuestions = res[0]?.values[0][0] || 0;
+        document.getElementById("maxQuestionsInfo").textContent = `Max: ${maxQuestions} question${maxQuestions === 1 ? '' : 's'} available for selection`;
+        const numInput = document.getElementById("numQuestions");
+        numInput.max = maxQuestions;
+        // If max < 10, default to max, else default to 10
+        if (parseInt(numInput.value) < 1) numInput.value = Math.min(10, maxQuestions);
+        if (parseInt(numInput.value) > maxQuestions) numInput.value = maxQuestions;
+        // Disable start button if value < 1 or > max
+        startBtn.disabled = (maxQuestions < 1 || parseInt(numInput.value) < 1 || parseInt(numInput.value) > maxQuestions);
+      }
+      // Attach listeners to topic/type checkboxes and numQuestions input
+      topicDiv.addEventListener("change", updateMaxQuestions);
+      typeDiv.addEventListener("change", updateMaxQuestions);
+      setTimeout(() => {
+        const numInput = document.getElementById("numQuestions");
+        if (numInput) numInput.addEventListener("input", updateMaxQuestions);
+        updateMaxQuestions();
+      }, 0);
+  wrapper.appendChild(topicDiv);
+  wrapper.appendChild(typeDiv);
+  wrapper.appendChild(expDiv);
+  wrapper.appendChild(numDiv);
+  wrapper.appendChild(modeDiv);
+  wrapper.appendChild(startBtnContainer);
+  panel.appendChild(wrapper);
+    }
+
+    document.getElementById("chooseDb").addEventListener("click", async () => {
+      // Clear all DOMs and reset state before showing DB filter panel
+      document.getElementById("test").innerHTML = "";
+      document.getElementById("scoreboard").innerHTML = "";
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("newtest").style.display = "none";
+      document.getElementById("file-chosen").innerHTML = "";
+      document.getElementById("filter-panel").innerHTML = "";
+      // Prompt user to select the SQLite DB file
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = ".db";
+      input.style.display = "none";
+      document.body.appendChild(input);
+      input.click();
+      input.onchange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        document.getElementById("file-chosen").innerHTML = "Loading database file...";
+        try {
+          const arrayBuffer = await file.arrayBuffer();
+          const SQL = await initSqlJs({ locateFile: fileName => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${fileName}` });
+          db = new SQL.Database(new Uint8Array(arrayBuffer));
+          document.getElementById("file-chosen").innerHTML = "Database loaded. Fetching topics and question types...";
+          // Fetch topics and types
+          const topicsRes = db.exec("SELECT DISTINCT topic FROM questions");
+          const typesRes = db.exec("SELECT DISTINCT question_type FROM questions");
+          const countRes = db.exec("SELECT COUNT(*) FROM questions");
+          const totalQuestions = countRes[0]?.values[0][0] || 0;
+          const topics = topicsRes[0]?.values.map(v => v[0]) || [];
+          const types = typesRes[0]?.values.map(v => v[0]) || [];
+          if (topics.length === 0 || types.length === 0) {
+            document.getElementById("file-chosen").innerHTML = "No topics or question types found in the database.";
+            return;
+          }
+          document.getElementById("file-chosen").innerHTML = `Database ready. Total questions: <strong>${totalQuestions}</strong>. Please select filters and number of questions.`;
+          buildDbFilterPanel(topics, types);
+        } catch (err) {
+          document.getElementById("file-chosen").innerHTML = "Error loading database: " + err.message;
+        }
+        document.body.removeChild(input);
+      };
+    });
+
+    function buildDbFilterPanel(topics, types) {
+      const panel = document.getElementById("filter-panel");
+      panel.innerHTML = "";
+      const wrapper = document.createElement("div");
+      wrapper.className = "filter-panel";
+
+      // Topics
+      const topicDiv = document.createElement("div");
+      topicDiv.className = "filter-section";
+      topicDiv.innerHTML = "<h3>Select Topics</h3>";
+      const allTopics = document.createElement("label");
+      allTopics.innerHTML = `<input type=\"checkbox\" value=\"ALL\" checked> ALL`;
+      topicDiv.appendChild(allTopics);
+      topics.forEach(t => {
+        const l = document.createElement("label");
+        l.style.display = "block";
+        l.innerHTML = `<input type=\"checkbox\" value=\"${t}\" checked> ${t}`;
+        topicDiv.appendChild(l);
+      });
+      setupAllCheckbox(topicDiv);
+
+      // Types
+      const typeDiv = document.createElement("div");
+      typeDiv.className = "filter-section";
+      typeDiv.innerHTML = "<h3>Select Question Types</h3>";
+      const allTypes = document.createElement("label");
+      allTypes.innerHTML = `<input type=\"checkbox\" value=\"ALL\" checked> ALL`;
+      typeDiv.appendChild(allTypes);
+      types.forEach(t => {
+        const l = document.createElement("label");
+        l.style.display = "block";
+        l.innerHTML = `<input type=\"checkbox\" value=\"${t}\" checked> ${t}`;
+        typeDiv.appendChild(l);
+      });
+      setupAllCheckbox(typeDiv);
+
+      // Explanation display mode
+      const expDiv = document.createElement("div");
+      expDiv.className = "filter-section";
+      expDiv.innerHTML = "<h3>Explanation & Reference Display</h3>";
+      expDiv.innerHTML += `
+        <label><input type=\"radio\" name=\"expMode\" value=\"1\" checked> Only when wrong</label><br>
+        <label><input type=\"radio\" name=\"expMode\" value=\"2\"> Both when right and wrong</label><br>
+        <label><input type=\"radio\" name=\"expMode\" value=\"3\"> Do not display explanations</label>
+      `;
+
+      // Number of questions
+      const numDiv = document.createElement("div");
+      numDiv.className = "filter-section";
+      numDiv.innerHTML = `<h3>Number of Questions</h3><input type=\"number\" id=\"numQuestions\" min=\"1\" value=\"10\"> <span id=\"maxQuestionsInfo\" style=\"margin-left:10px; color:#0078d7; font-weight:bold;\"></span>`;
+
+      // Add total question count display at the top
+      const totalCountRes = db.exec('SELECT COUNT(*) FROM questions');
+      const totalQuestions = totalCountRes[0]?.values[0][0] || 0;
+      const totalCountDiv = document.createElement("div");
+      totalCountDiv.id = "db-total-question-count";
+      totalCountDiv.style = "margin-bottom: 10px; font-size: 1.1em; color: #0078d7; font-weight: bold; text-align: center;";
+      totalCountDiv.textContent = `Total questions in database: ${totalQuestions}`;
+      wrapper.appendChild(totalCountDiv);
+
+      // Selection mode radio buttons
+      const modeDiv = document.createElement("div");
+      modeDiv.className = "filter-section";
+      modeDiv.style.marginTop = "10px";
+      modeDiv.innerHTML = `
+        <h3>Selection Mode</h3>
+        <label><input type="radio" name="selectionMode" value="random" checked> Random (default)</label><br>
+        <label><input type="radio" name="selectionMode" value="balanced"> Balanced (equal per topic/type)</label>
+      `;
+
+      // Start button
+      const startBtn = document.createElement("button");
+      startBtn.textContent = "Start Test";
+      
+      // Create tooltip container for balanced mode
+      const startBtnContainer = document.createElement("div");
+      startBtnContainer.className = "tooltip-container";
+      startBtnContainer.appendChild(startBtn);
+      
+      // Tooltip element (initially hidden)
+      const tooltip = document.createElement("div");
+      tooltip.className = "tooltip";
+      tooltip.style.display = "none";
+      startBtnContainer.appendChild(tooltip);
+      
+      // Function to update tooltip content for balanced mode
+      function updateBalancedTooltip() {
+        const mode = modeDiv.querySelector('input[name="selectionMode"]:checked').value;
+        if (mode === 'balanced') {
+          tooltip.style.display = "block";
+          
+          // Get current filter selections
+          let selectedTopics = [];
+          let selectedTypes = [];
+          const topicChecks = topicDiv.querySelectorAll("input[type=checkbox]");
+          if (topicChecks[0].checked) {
+            selectedTopics = topics;
+          } else {
+            topicChecks.forEach((cb, i) => {
+              if (i > 0 && cb.checked) selectedTopics.push(cb.value);
+            });
+          }
+          const typeChecks = typeDiv.querySelectorAll("input[type=checkbox]");
+          if (typeChecks[0].checked) {
+            selectedTypes = types;
+          } else {
+            typeChecks.forEach((cb, i) => {
+              if (i > 0 && cb.checked) selectedTypes.push(cb.value);
+            });
+          }
+          
+          const numInput = document.getElementById("numQuestions");
+          const requestedCount = Math.max(1, parseInt(numInput.value) || 10);
+          
+          // Calculate distribution preview using database queries
+          const buckets = {};
+          let totalAvailable = 0;
+          selectedTopics.forEach(topic => {
+            selectedTypes.forEach(type => {
+              const key = topic + '|' + type;
+              const countSql = `SELECT COUNT(*) FROM questions WHERE topic = '${topic}' AND question_type = '${type}'`;
+              const countRes = db.exec(countSql);
+              const count = countRes[0]?.values[0][0] || 0;
+              if (count > 0) {
+                buckets[key] = count;
+                totalAvailable += count;
+              }
+            });
+          });
+          
+          const pairs = Object.keys(buckets);
+          let distributionHTML = "";
+          let totalDistributed = 0;
+          
+          if (pairs.length > 0) {
+            const perBucket = Math.max(1, Math.floor(requestedCount / pairs.length));
+            let remainingQuestions = requestedCount;
+            
+            distributionHTML = `
+              <h4>Balanced Distribution Preview</h4>
+              <table class="tooltip-table">
+                <tr>
+                  <th>Topic</th>
+                  <th>Type</th>
+                  <th>Will Select</th>
+                </tr>
+            `;
+            
+            // Only show rows for topic/type pairs that will actually have questions selected
+            pairs.forEach(key => {
+              const [topic, type] = key.split('|');
+              const available = buckets[key];
+              let willSelect = Math.min(perBucket, available, remainingQuestions);
+              if (remainingQuestions > 0 && willSelect > 0) {
+                totalDistributed += willSelect;
+                remainingQuestions -= willSelect;
+                
+                distributionHTML += `
+                  <tr>
+                    <td>${topic}</td>
+                    <td>${type}</td>
+                    <td>${willSelect}</td>
+                  </tr>
+                `;
+              }
+            });
+            
+            // Add random questions row if needed (DB mode)
+            const randomCount = Math.max(0, requestedCount - totalDistributed);
+            if (randomCount > 0) {
+              distributionHTML += `
+                <tr class="random-row">
+                  <td colspan="2">Random questions</td>
+                  <td>${randomCount}</td>
+                </tr>
+              `;
+            }
+            
+            distributionHTML += "</table>";
+            
+            const summaryText = randomCount > 0 
+              ? `Total: ${requestedCount} questions (${totalDistributed} balanced + ${randomCount} random)`
+              : `Total: ${requestedCount} questions (all balanced)`;
+            
+            distributionHTML += `<div class="tooltip-summary">${summaryText}</div>`;
+          } else {
+            distributionHTML = `
+              <h4>Balanced Distribution Preview</h4>
+              <div style="text-align: center; color: #856404;">
+                No topic/type combinations available.<br>
+                Will select ${requestedCount} random questions.
+              </div>
+            `;
+          }
+          
+          tooltip.innerHTML = distributionHTML;
+        } else {
+          tooltip.style.display = "none";
+        }
+      }
+      
+      // Update tooltip when selection mode changes
+      modeDiv.addEventListener("change", updateBalancedTooltip);
+      
+      // Update tooltip when filters change
+      topicDiv.addEventListener("change", updateBalancedTooltip);
+      typeDiv.addEventListener("change", updateBalancedTooltip);
+      
+      // Update tooltip when number of questions changes
+      setTimeout(() => {
+        const numInput = document.getElementById("numQuestions");
+        if (numInput) {
+          numInput.addEventListener("input", updateBalancedTooltip);
+        }
+        updateBalancedTooltip(); // Initial update
+      }, 0);
+      
+      startBtn.addEventListener("click", () => {
+        document.getElementById("file-chosen").innerHTML = "Loading questions from database and building test...";
+        // Get selected topics and types
+        let selectedTopics = [];
+        let selectedTypes = [];
+        const topicChecks = topicDiv.querySelectorAll("input[type=checkbox]");
+        if (topicChecks[0].checked) {
+          selectedTopics = topics;
+        } else {
+          topicChecks.forEach((cb, i) => {
+            if (i > 0 && cb.checked) selectedTopics.push(cb.value);
+          });
+        }
+        const typeChecks = typeDiv.querySelectorAll("input[type=checkbox]");
+        if (typeChecks[0].checked) {
+          selectedTypes = types;
+        } else {
+          typeChecks.forEach((cb, i) => {
+            if (i > 0 && cb.checked) selectedTypes.push(cb.value);
+          });
+        }
+
+        const expChoice = expDiv.querySelector("input[name=expMode]:checked");
+        explanationMode = parseInt(expChoice.value);
+
+        // Query DB for matching questions
+        let sql2 = `SELECT * FROM questions WHERE topic IN (${selectedTopics.map(t => `'${t}'`).join(',')}) AND question_type IN (${selectedTypes.map(t => `'${t}'`).join(',')})`;
+        const res2 = db.exec(sql2);
+        if (!res2.length) {
+          document.getElementById("file-chosen").innerHTML = "No questions found in the database for the selected filters.";
+          alert("No questions found in the database for the selected filters.");
+          return;
+        }
+        let allQuestions = res2[0]?.values.map(row => {
+          const obj = {};
+          res2[0].columns.forEach((col, i) => obj[col] = row[i]);
+          return obj;
+        }) || [];
+        // Build valid question objects
+        let validQuestions = [];
+        allQuestions.forEach(q => {
+          let valid = false;
+          // MCQ and MCQ-Scenario: fetch options
+          if (q.question_type === 'MCQ' || q.question_type === 'MCQ-Scenario') {
+            const optRes = db.exec(`SELECT option_text, is_correct FROM options WHERE question_id = ${q.id}`);
+            q.options = optRes[0]?.values.map(v => v[0]) || [];
+            q.answer = optRes[0]?.values.filter(v => v[1] === 1).map(v => v[0]);
+            if (q.answer.length === 1) q.answer = q.answer[0];
+            valid = q.options.length > 0;
+            // For MCQ-Scenario, treat as single or multiple as per answer
+            if (q.question_type === 'MCQ-Scenario') {
+              q.type = (Array.isArray(q.answer) && q.answer.length > 1) ? 'multiple' : 'single';
+            } else {
+              q.type = (Array.isArray(q.answer) && q.answer.length > 1) ? 'multiple' : 'single';
+            }
+          }
+          // TrueFalse: set options and answer
+          if (q.question_type === 'TrueFalse') {
+            q.options = ["True", "False"];
+            // Fetch correct answer from options table
+            const optRes = db.exec(`SELECT option_text, is_correct FROM options WHERE question_id = ${q.id}`);
+            const correctOpt = optRes[0]?.values.find(v => v[1] === 1);
+            q.answer = correctOpt ? correctOpt[0] : null;
+            valid = true;
+            q.type = 'single';
+          }
+          // Match: fetch pairs
+          if (q.question_type === 'Match') {
+            const matchRes = db.exec(`SELECT left_text, right_text FROM match_pairs WHERE question_id = ${q.id}`);
+            q.matchPairs = {};
+            q.matchPairsRaw = matchRes;
+            if (matchRes[0] && matchRes[0].values && matchRes[0].values.length > 0) {
+              matchRes[0].values.forEach(v => { q.matchPairs[v[0]] = v[1]; });
+              valid = Object.keys(q.matchPairs).length > 0;
+            } else {
+              valid = false;
+            }
+            q.type = 'match';
+          }
+          // AssertionReason: fetch assertion/reason/correct_option
+          if (q.question_type === 'AssertionReason') {
+            const arRes = db.exec(`SELECT assertion, reason, correct_option FROM assertion_reason WHERE question_id = ${q.id}`);
+            if (arRes[0]?.values.length) {
+              q.assertion = arRes[0].values[0][0];
+              q.reason = arRes[0].values[0][1];
+              q.answer = arRes[0].values[0][2];
+              // Standard options for assertion-reason
+              q.options = [
+                "Both A and R are true, and R explains A",
+                "Both A and R are true, but R does not explain A",
+                "A is true, R is false",
+                "A is false, R is true",
+                "Both A and R are false"
+              ];
+              valid = true;
+            }
+            q.type = 'assertion';
+          }
+          q.question = q.question_text;
+          // Only push if valid
+          if (valid) validQuestions.push(q);
+        });
+
+        // Selection mode logic
+        const mode = modeDiv.querySelector('input[name="selectionMode"]:checked').value;
+        let chosenQuestions = [];
+        const numInput = document.getElementById("numQuestions");
+        const numQuestions = Math.max(1, Math.min(parseInt(numInput.value), parseInt(numInput.max)));
+        
+        if (mode === 'balanced' && selectedTopics.length > 0 && selectedTypes.length > 0) {
+          // Balanced: Try to distribute evenly across topic/type pairs, then fill remainder randomly
+          const buckets = {};
+          selectedTopics.forEach(topic => {
+            selectedTypes.forEach(type => {
+              const key = topic + '|' + type;
+              const questionsForPair = validQuestions.filter(q => q.topic === topic && q.question_type === type);
+              if (questionsForPair.length > 0) {
+                buckets[key] = questionsForPair;
+              }
+            });
+          });
+          
+          const pairs = Object.keys(buckets);
+          if (pairs.length > 0) {
+            // Distribute questions as evenly as possible across available pairs
+            const perBucket = Math.max(1, Math.floor(numQuestions / pairs.length));
+            let remainingQuestions = numQuestions;
+            
+            pairs.forEach(key => {
+              if (remainingQuestions > 0) {
+                let arr = shuffle(buckets[key].slice());
+                let take = Math.min(perBucket, arr.length, remainingQuestions);
+                chosenQuestions = chosenQuestions.concat(arr.slice(0, take));
+                remainingQuestions -= take;
+              }
+            });
+            
+            // If we still need more questions, fill randomly from remaining
+            if (chosenQuestions.length < numQuestions) {
+              let remaining = validQuestions.filter(q => !chosenQuestions.includes(q));
+              remaining = shuffle(remaining);
+              chosenQuestions = chosenQuestions.concat(remaining.slice(0, numQuestions - chosenQuestions.length));
+            }
+          } else {
+            // No pairs found, fall back to random
+            chosenQuestions = shuffle(validQuestions).slice(0, numQuestions);
+          }
+        } else {
+          // Random: shuffle and pick N
+          validQuestions = shuffle(validQuestions);
+          chosenQuestions = validQuestions.slice(0, numQuestions);
+        }
+        if (chosenQuestions.length === 0) {
+          document.getElementById("file-chosen").innerHTML = "No valid questions found for the selected filters. Please try different options.";
+          return;
+        }
+        document.getElementById("file-chosen").innerHTML = `Loaded ${chosenQuestions.length} questions. Preparing test UI...`;
+        setTimeout(() => {
+          panel.innerHTML = ""; // Clear filter panel before starting test
+          document.getElementById("restart").style.display = "none"; // Hide restart until questions are shown
+          startTest(chosenQuestions);
+        }, 500);
+      });
+
+      // Update max questions info and input limit dynamically
+      function updateMaxQuestions() {
+        // Get selected topics and types
+        let selectedTopics = [];
+        let selectedTypes = [];
+        const topicChecks = topicDiv.querySelectorAll("input[type=checkbox]");
+        if (topicChecks[0].checked) {
+          selectedTopics = topics;
+        } else {
+          topicChecks.forEach((cb, i) => {
+            if (i > 0 && cb.checked) selectedTopics.push(cb.value);
+          });
+        }
+        const typeChecks = typeDiv.querySelectorAll("input[type=checkbox]");
+        if (typeChecks[0].checked) {
+          selectedTypes = types;
+        } else {
+          typeChecks.forEach((cb, i) => {
+            if (i > 0 && cb.checked) selectedTypes.push(cb.value);
+          });
+        }
+        // Query DB for count
+        let sql = `SELECT COUNT(*) FROM questions WHERE topic IN (${selectedTopics.map(t => `'${t}'`).join(',')}) AND question_type IN (${selectedTypes.map(t => `'${t}'`).join(',')})`;
+        const res = db.exec(sql);
+        const maxQuestions = res[0]?.values[0][0] || 0;
+        document.getElementById("maxQuestionsInfo").textContent = `Max: ${maxQuestions} question${maxQuestions === 1 ? '' : 's'} available for selection`;
+        const numInput = document.getElementById("numQuestions");
+        numInput.max = maxQuestions;
+        // If max < 10, default to max, else default to 10
+        if (parseInt(numInput.value) < 1) numInput.value = Math.min(10, maxQuestions);
+        if (parseInt(numInput.value) > maxQuestions) numInput.value = maxQuestions;
+        // Disable start button if value < 1 or > max
+        startBtn.disabled = (maxQuestions < 1 || parseInt(numInput.value) < 1 || parseInt(numInput.value) > maxQuestions);
+      }
+      // Attach listeners to topic/type checkboxes and numQuestions input
+      topicDiv.addEventListener("change", updateMaxQuestions);
+      typeDiv.addEventListener("change", updateMaxQuestions);
+      setTimeout(() => {
+        const numInput = document.getElementById("numQuestions");
+        if (numInput) numInput.addEventListener("input", updateMaxQuestions);
+        updateMaxQuestions();
+      }, 0);
+  wrapper.appendChild(topicDiv);
+  wrapper.appendChild(typeDiv);
+  wrapper.appendChild(expDiv);
+  wrapper.appendChild(numDiv);
+  wrapper.appendChild(modeDiv);
+  wrapper.appendChild(startBtnContainer);
+  panel.appendChild(wrapper);
+    }
+
+    // Utility: Show total question count in DB in file-chosen area for debugging
+    function showTotalDbQuestions() {
+      if (!db) return;
+      const res = db.exec('SELECT COUNT(*) FROM questions');
+      const total = res[0]?.values[0][0] || 0;
+      document.getElementById('file-chosen').innerHTML = `<span style='color:#0078d7; font-weight:bold;'>Total questions in DB: ${total}</span>`;
+    }
+    // Call this after DB loads
+    if (typeof showTotalDbQuestions === 'function') setTimeout(showTotalDbQuestions, 500);
+
+    function startTest(filteredQuestions) {
+      try {
+        document.getElementById("file-chosen").innerHTML = "";
+        const container = document.getElementById("test");
+        container.innerHTML = "";
+        document.getElementById("restart").style.display = "inline-block";
+        document.getElementById("newtest").style.display = "none";
+        document.getElementById("scoreboard").innerHTML = "";
+        score = 0;
+        document.getElementById("test-title").textContent = originalData?.title || "Mock Test";
+        // Scroll to top when test begins
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        // Absolute random shuffle for questions
+        const shuffledQuestions = shuffle(filteredQuestions.map(q => ({ ...q })));
+        // Absolute random shuffle for options in every question
+        questions = shuffledQuestions.map(q => {
+          if (q.options) q.options = shuffle([...q.options]);
+          return q;
+        });
+        // Save last used filters for restart
+        lastFilteredQuestions = questions.map(q => ({ ...q }));
+        lastExplanationMode = explanationMode;
+        renderTest(questions);
+      } catch (err) {
+        document.getElementById("file-chosen").innerHTML = `<pre style='color:red;'>Error rendering test: ${err.message}</pre>`;
+        document.getElementById("test").innerHTML = "";
+      }
+    }
+
+    function renderTest(questions) {
+      try {
+        if (!Array.isArray(questions) || questions.length === 0) {
+          document.getElementById("file-chosen").innerHTML = `<pre style='color:red;'>Error: No questions to display. Please check your filters or database content.</pre>`;
+          document.getElementById("test").innerHTML = "";
+          return;
+        }
+        const container = document.getElementById("test");
+        container.innerHTML = "";
+
+        questions.forEach((q, qIndex) => {
+          const qDiv = document.createElement("div");
+          qDiv.className = "question-card";
+          qDiv.id = `q-${q.id}`;
+          qDiv.style.position = 'relative';
+
+          const qTitle = document.createElement("h3");
+          qTitle.textContent = `${qIndex + 1}. ${q.question}`;
+          qDiv.appendChild(qTitle);
+
+          if ((q.type === "single" || q.type === "assertion" || q.type === "MCQ-Scenario") && Array.isArray(q.options)) {
+            q.options.forEach(opt => {
+              const label = document.createElement("label");
+              label.style.display = "block";
+              const input = document.createElement("input");
+              input.type = "radio";
+              input.name = `q${q.id}`;
+              input.value = opt;
+              input.addEventListener("change", () => {
+                handleAnswer(q, [opt], qDiv, qIndex);
+              });
+              label.appendChild(input);
+              label.append(" " + opt);
+              qDiv.appendChild(label);
+            });
+          } else if (q.type === "multiple" && Array.isArray(q.options)) {
+            q.options.forEach(opt => {
+              const label = document.createElement("label");
+              label.style.display = "block";
+              const input = document.createElement("input");
+              input.type = "checkbox";
+              input.name = `q${q.id}`;
+              input.value = opt;
+              label.appendChild(input);
+              label.append(" " + opt);
+              qDiv.appendChild(label);
+            });
+
+            const submitBtn = document.createElement("button");
+            submitBtn.textContent = "Submit Answer";
+            submitBtn.title = "Submit your selected answers for this question. You can select multiple options.";
+            submitBtn.addEventListener("click", () => {
+              const selected = Array.from(qDiv.querySelectorAll(`input[name="q${q.id}"]:checked`)).map(inp => inp.value);
+              handleAnswer(q, selected, qDiv, qIndex);
+            });
+            qDiv.appendChild(submitBtn);
+          } else if (q.type === "match" && q.matchPairs && typeof q.matchPairs === 'object' && Object.keys(q.matchPairs).length > 0) {
+            const keys = Object.keys(q.matchPairs);
+            const values = shuffle(Object.values(q.matchPairs));
+
+            const table = document.createElement("div");
+            table.className = "match-table";
+
+            const selects = [];
+
+            keys.forEach(k => {
+              const row = document.createElement("div");
+              row.className = "match-row";
+              
+              const left = document.createElement("div");
+              left.className = "match-cell";
+              left.textContent = k;
+              
+              const right = document.createElement("div");
+              right.className = "match-cell";
+              const select = document.createElement("select");
+              
+              const placeholder = document.createElement("option");
+              placeholder.value = "";
+              placeholder.textContent = "<Select One>";
+              placeholder.disabled = true;
+              placeholder.selected = true;
+              select.appendChild(placeholder);
+              
+              values.forEach(v => {
+                const opt = document.createElement("option");
+                opt.value = v;
+                opt.textContent = v;
+                select.appendChild(opt);
+              });
+              
+              right.appendChild(select);
+              row.appendChild(left);
+              row.appendChild(right);
+              
+              selects.push(select);
+              table.appendChild(row);
+            });
+
+            qDiv.appendChild(table);
+
+            const submitBtn = document.createElement("button");
+            submitBtn.textContent = "Submit Matches";
+            submitBtn.title = "Submit your selected matches for this question. Match each item on the left to the correct option on the right.";
+            submitBtn.disabled = true;
+
+            selects.forEach(sel => {
+              sel.addEventListener("change", () => {
+                submitBtn.disabled = selects.some(s => !s.value);
+              });
+            });
+            
+            submitBtn.addEventListener("click", () => {
+              const userMatches = {};
+              keys.forEach((k, i) => {
+                userMatches[k] = selects[i].value;
+              });
+              handleAnswer(q, userMatches, qDiv, qIndex);
+            });
+            qDiv.appendChild(submitBtn);
+          } else {
+            qDiv.innerHTML += `<div style='color:red;'>Error: Question data is incomplete or malformed.</div>`;
+          }
+
+          container.appendChild(qDiv);
+        });
+
+        // After all question cards are created, set disabled/active classes
+        questions.slice(1).forEach(q => {
+          const el = document.getElementById(`q-${q.id}`);
+          if (el) el.classList.add("disabled");
+        });
+        const firstEl = document.getElementById(`q-${questions[0]?.id}`);
+        if (firstEl) firstEl.classList.add("active");
+      } catch (err) {
+        document.getElementById("file-chosen").innerHTML = `<pre style='color:red;'>Error rendering questions: ${err.message}</pre>`;
+        document.getElementById("test").innerHTML = "";
+      }
+    }
+
+    function handleAnswer(question, chosen, qDiv, qIndex) {
+      if (qDiv.classList.contains("locked")) return;
+
+      qDiv.classList.remove("active");
+      qDiv.classList.add("locked");
+
+      let isCorrect = false;
+
+      if (question.type === "single" || question.type === "assertion") {
+        isCorrect = (chosen[0] === question.answer);
+      }
+      else if (question.type === "multiple") {
+        const correct = new Set(question.answer);
+        const selected = new Set(chosen);
+        isCorrect = (correct.size === selected.size && [...correct].every(x => selected.has(x)));
+      }
+      else if (question.type === "match") {
+        isCorrect = JSON.stringify(chosen) === JSON.stringify(question.matchPairs);
+      }
+
+  // Remove any previous try-again container
+  const prevTryContainer = qDiv.querySelector('.try-again-container');
+  if (prevTryContainer) prevTryContainer.remove();
+
+      // Remove all visible try again buttons for all questions
+      document.querySelectorAll('[id^="try-again-outer-container-"]').forEach(el => {
+        if (el && el.parentNode) el.parentNode.removeChild(el);
+      });
+      if (isCorrect) {
+        qDiv.insertAdjacentHTML("beforeend", `<p class="correct">✅ Correct!</p>`);
+        score++;
+        // Unlock next question or show score
+        const nextQ = document.getElementById(`q-${questions[qIndex + 1]?.id}`);
+        if (nextQ) {
+          // Only enable the next question, keep all others after it disabled
+          nextQ.classList.remove("disabled");
+          nextQ.classList.remove("locked");
+          nextQ.classList.add("active");
+          
+          // Ensure all questions after the next one remain disabled
+          for (let i = qIndex + 2; i < questions.length; i++) {
+            const laterQ = document.getElementById(`q-${questions[i].id}`);
+            if (laterQ) {
+              laterQ.classList.add('disabled');
+              laterQ.classList.remove('active');
+              laterQ.classList.remove('locked');
+            }
+          }
+        } else {
+          showFinalScore();
+        }
+        // Always highlight next question after any answer
+        setTimeout(() => {
+          document.querySelectorAll('.question-card').forEach(card => card.style.boxShadow = '');
+          if (nextQ) nextQ.style.boxShadow = '0 0 0 3px #2196f3';
+        }, 10);
+      } else {
+        // Show wrong message
+        qDiv.insertAdjacentHTML("beforeend", `<p class=\"wrong\">❌ <b>Wrong.</b></p>`);
+        
+        // Enable the next question after wrong answer too, but keep all others disabled
+        const nextQ = document.getElementById(`q-${questions[qIndex + 1]?.id}`);
+        if (nextQ) {
+          nextQ.classList.remove("disabled");
+          nextQ.classList.remove("locked");
+          nextQ.classList.remove("active"); // Don't make it active yet, user can choose to continue or retry
+          
+          // Ensure all questions after the next one remain disabled
+          for (let i = qIndex + 2; i < questions.length; i++) {
+            const laterQ = document.getElementById(`q-${questions[i].id}`);
+            if (laterQ) {
+              laterQ.classList.add('disabled');
+              laterQ.classList.remove('active');
+              laterQ.classList.remove('locked');
+            }
+          }
+        }
+        
+        // Place Try Again button just below and close to the card, only if answered wrong
+        // Remove any previous try again container for this card
+        const prevTryAgain = document.getElementById('try-again-outer-container-' + qIndex);
+        if (prevTryAgain && prevTryAgain.parentNode) {
+          prevTryAgain.parentNode.removeChild(prevTryAgain);
+        }
+        const newOuter = document.createElement('div');
+        newOuter.id = 'try-again-outer-container-' + qIndex;
+        newOuter.style.display = 'flex';
+        newOuter.style.justifyContent = 'flex-end';
+        newOuter.style.marginTop = '-16px'; // bring closer to card
+        newOuter.style.marginBottom = '24px';
+        newOuter.style.width = qDiv.offsetWidth ? qDiv.offsetWidth + 'px' : '100%';
+        const tryBtn = document.createElement('button');
+        tryBtn.textContent = 'Try again';
+        tryBtn.className = 'try-again-btn';
+  tryBtn.style.background = '#ff9800';
+  tryBtn.style.color = 'black';
+        tryBtn.style.border = 'none';
+        tryBtn.style.borderRadius = '4px';
+        tryBtn.style.padding = '4px 12px';
+        tryBtn.style.fontWeight = 'bold';
+        tryBtn.style.cursor = 'pointer';
+        tryBtn.title = 'Try this question again with shuffled options.';
+        tryBtn.onclick = function() {
+          // Remove the try again button container immediately
+          const tryAgainContainer = document.getElementById('try-again-outer-container-' + qIndex);
+          if (tryAgainContainer && tryAgainContainer.parentNode) {
+            tryAgainContainer.parentNode.removeChild(tryAgainContainer);
+          }
+          Array.from(qDiv.children).forEach((el, idx) => { if (idx > 0) qDiv.removeChild(el); });
+          qDiv.classList.remove('locked');
+          let qCopy = { ...question };
+          if (qCopy.options) qCopy.options = shuffle([...qCopy.options]);
+          if (qCopy.type === 'match' && qCopy.matchPairs) {
+            qCopy = { ...qCopy, matchPairs: { ...qCopy.matchPairs } };
+          }
+          renderSingleQuestion(qCopy, qDiv, qIndex);
+          // Highlight the retried card only after pressing Try again
+          setTimeout(() => {
+            document.querySelectorAll('.question-card').forEach(card => card.style.boxShadow = '');
+            qDiv.style.boxShadow = '0 0 0 3px #2196f3';
+          }, 10);
+        };
+        newOuter.appendChild(tryBtn);
+        // Insert after the card
+        if (qDiv.parentNode) {
+          if (qDiv.nextSibling) {
+            qDiv.parentNode.insertBefore(newOuter, qDiv.nextSibling);
+          } else {
+            qDiv.parentNode.appendChild(newOuter);
+          }
+        }
+        // Always highlight and activate next question after any answer (even if wrong)
+        setTimeout(() => {
+          document.querySelectorAll('.question-card').forEach(card => card.style.boxShadow = '');
+          if (nextQ) {
+            nextQ.style.boxShadow = '0 0 0 3px #2196f3';
+            nextQ.classList.add("active"); // Make next question active after wrong answer too
+          }
+        }, 10);
+        // Optionally, show correct answer and explanation only after all attempts, or keep as is
+        if (explanationMode === 2 || (explanationMode === 1 && !isCorrect)) {
+          if (question.explanation) {
+            qDiv.insertAdjacentHTML("beforeend", `<p class="explanation">💡 Explanation: ${question.explanation}</p>`);
+          }
+          if (question.reference) {
+            qDiv.insertAdjacentHTML("beforeend", `<p class="reference">📖 Reference: ${question.reference}</p>`);
+          }
+        }
+      }
+    }
+
+    // Helper to re-render a single question in place (for Try Again)
+    function renderSingleQuestion(q, qDiv, qIndex) {
+    // Remove all children except the title
+    Array.from(qDiv.children).forEach((el, idx) => { if (idx > 0) qDiv.removeChild(el); });
+    // Always reset state for retry
+    qDiv.classList.remove('locked');
+    qDiv.classList.remove('active');
+    // Remove any previous try again button for this card (ensure it disappears on retry)
+    const prevTryAgain = document.getElementById('try-again-outer-container-' + qIndex);
+    if (prevTryAgain && prevTryAgain.parentNode) {
+      prevTryAgain.parentNode.removeChild(prevTryAgain);
+    }
+    
+    // Disable all questions below this one and remove any try-again buttons
+    for (let i = qIndex + 1; i < questions.length; i++) {
+      const nextQDiv = document.getElementById(`q-${questions[i].id}`);
+      if (nextQDiv) {
+        nextQDiv.classList.add('disabled');
+        nextQDiv.classList.remove('locked');
+        nextQDiv.classList.remove('active');
+        
+        // Remove any existing try-again buttons for questions below
+        const nextTryAgain = document.getElementById('try-again-outer-container-' + i);
+        if (nextTryAgain && nextTryAgain.parentNode) {
+          nextTryAgain.parentNode.removeChild(nextTryAgain);
+        }
+        
+        // Remove correct/wrong status messages from questions below
+        const correctMsg = nextQDiv.querySelector('.correct');
+        const wrongMsg = nextQDiv.querySelector('.wrong');
+        if (correctMsg) correctMsg.remove();
+        if (wrongMsg) wrongMsg.remove();
+        
+        // Remove explanation and reference from questions below
+        const explanation = nextQDiv.querySelector('.explanation');
+        const reference = nextQDiv.querySelector('.reference');
+        if (explanation) explanation.remove();
+        if (reference) reference.remove();
+      }
+    }
+    
+    // Ensure relative positioning for try again button
+    qDiv.style.position = 'relative';
+      if ((q.type === "single" || q.type === "assertion") && Array.isArray(q.options)) {
+        q.options.forEach(opt => {
+          const label = document.createElement("label");
+          label.style.display = "block";
+          const input = document.createElement("input");
+          input.type = "radio";
+          input.name = `q${q.id}_retry`;
+          input.value = opt;
+          input.addEventListener("change", () => {
+            handleAnswer(q, [opt], qDiv, qIndex);
+          });
+          label.appendChild(input);
+          label.append(" " + opt);
+          qDiv.appendChild(label);
+        });
+      }
+      else if (q.type === "multiple" && Array.isArray(q.options)) {
+        q.options.forEach(opt => {
+          const label = document.createElement("label");
+          label.style.display = "block";
+          const input = document.createElement("input");
+          input.type = "checkbox";
+          input.name = `q${q.id}_retry`;
+          input.value = opt;
+          label.appendChild(input);
+          label.append(" " + opt);
+          qDiv.appendChild(label);
+        });
+        const submitBtn = document.createElement("button");
+        submitBtn.textContent = "Submit Answer";
+        submitBtn.title = "Submit your selected answers for this question. You can select multiple options.";
+        submitBtn.addEventListener("click", () => {
+          const selected = Array.from(qDiv.querySelectorAll("input[type=checkbox][name='q" + q.id + "_retry']:checked"))
+            .map(cb => cb.value);
+          handleAnswer(q, selected, qDiv, qIndex);
+        });
+        qDiv.appendChild(submitBtn);
+      }
+      else if (q.type === "match" && q.matchPairs && typeof q.matchPairs === 'object' && Object.keys(q.matchPairs).length > 0) {
+        const keys = Object.keys(q.matchPairs);
+        const values = shuffle(Object.values(q.matchPairs));
+        const table = document.createElement("div");
+        table.className = "match-table";
+        const selects = [];
+        keys.forEach(k => {
+          const row = document.createElement("div");
+          row.className = "match-row";
+          const left = document.createElement("div");
+          left.className = "match-cell";
+          left.textContent = k;
+          const right = document.createElement("div");
+          right.className = "match-cell";
+          const select = document.createElement("select");
+          const placeholder = document.createElement("option");
+          placeholder.value = "";
+          placeholder.textContent = "<Select One>";
+          placeholder.disabled = true;
+          placeholder.selected = true;
+          select.appendChild(placeholder);
+          values.forEach(v => {
+            const opt = document.createElement("option");
+            opt.value = v;
+            opt.textContent = v;
+            select.appendChild(opt);
+          });
+          selects.push(select);
+          right.appendChild(select);
+          row.appendChild(left);
+          row.appendChild(right);
+          table.appendChild(row);
+        });
+        qDiv.appendChild(table);
+        const submitBtn = document.createElement("button");
+        submitBtn.textContent = "Submit Matches";
+        submitBtn.title = "Submit your selected matches for this question. Match each item on the left to the correct option on the right.";
+        submitBtn.disabled = true;
+        selects.forEach(sel => {
+          sel.addEventListener("change", () => {
+            const allFilled = selects.every(s => s.value !== "");
+            submitBtn.disabled = !allFilled;
+          });
+        });
+        submitBtn.addEventListener("click", () => {
+          const selections = {};
+          keys.forEach((k, i) => {
+            selections[k] = selects[i].value;
+          });
+          handleAnswer(q, selections, qDiv, qIndex);
+        });
+        qDiv.appendChild(submitBtn);
+      }
+
+      // Highlight this card if not locked (for retry)
+      setTimeout(() => {
+        document.querySelectorAll('.question-card').forEach(card => card.style.boxShadow = '');
+        if (!qDiv.classList.contains('locked')) {
+          qDiv.style.boxShadow = '0 0 0 3px #2196f3';
+        }
+      }, 10);
+  }
+
+    function showFinalScore() {
+      const total = questions.length;
+      const percent = Math.round((score / total) * 100);
+
+      let message = "";
+      let cssClass = "";
+
+      if (percent >= 90) {
+        message = "🌟 Outstanding performance! You’ve clearly mastered the material.";
+        cssClass = "excellent";
+      } else if (percent >= 70) {
+        message = "👍 Well done! You have a strong grasp, revise the missed parts.";
+        cssClass = "good";
+      } else if (percent >= 50) {
+        message = "😊 Decent effort! Review the gaps and practice more.";
+        cssClass = "fair";
+      } else {
+        message = "🙌 Keep trying! Revise basics and practice step by step.";
+        cssClass = "poor";
+      }
+
+      document.getElementById("scoreboard").innerHTML = `
+        <div><strong>Your Score:</strong> ${score} / ${total} (${percent}%)</div>
+        <div id="message" class="${cssClass}">${message}</div>
+      `;
+
+      document.getElementById("restart").style.display = "inline-block";
+      document.getElementById("newtest").style.display = "inline-block";
+    }
+
+    document.getElementById("restart").addEventListener("click", () => {
+      // Use last filters and explanation mode for restart
+      if (lastFilteredQuestions && lastFilteredQuestions.length > 0) {
+        explanationMode = lastExplanationMode;
+        startTest(lastFilteredQuestions);
+      } else {
+        startTest(originalData.questions);
+      }
+    });
+
+    document.getElementById("newtest").addEventListener("click", () => {
+      document.getElementById("test").innerHTML = "";
+      document.getElementById("scoreboard").innerHTML = "";
+      document.getElementById("restart").style.display = "none";
+      document.getElementById("newtest").style.display = "none";
+      document.getElementById("file-chosen").innerHTML = "";
+      document.getElementById("filter-panel").innerHTML = "";
+      resetWorkflow();
+      document.getElementById("fileInput").value = ""; // reset file input
+    });
+
+    // Set current year in footer
+    document.addEventListener('DOMContentLoaded', function() {
+      var y = new Date().getFullYear();
+      var el = document.getElementById('swamys-copyright-year');
+      if (el) el.textContent = y;
+    });
+  </script>
+</body>
+</html>

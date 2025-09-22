@@ -1,0 +1,253 @@
+{
+  "title": "General Knowledge Test (20 Questions)",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Science",
+      "subtopic": "Astronomy",
+      "type": "single",
+      "question": "Which planet is known as the Red Planet?",
+      "options": ["Jupiter", "Mars", "Venus", "Saturn"],
+      "answer": "Mars",
+      "explanation": "Mars appears red due to iron oxide dust on its surface.",
+      "reference": "NCERT Science"
+    },
+    {
+      "id": 2,
+      "topic": "History",
+      "subtopic": "Indian Independence",
+      "type": "single",
+      "question": "Who was the first President of India?",
+      "options": ["Jawaharlal Nehru", "Dr. Rajendra Prasad", "S. Radhakrishnan", "Mahatma Gandhi"],
+      "answer": "Dr. Rajendra Prasad",
+      "explanation": "Dr. Rajendra Prasad was the first President of India from 1950 to 1962.",
+      "reference": "Indian Polity"
+    },
+    {
+      "id": 3,
+      "topic": "Geography",
+      "subtopic": "World Capitals",
+      "type": "single",
+      "question": "What is the capital city of Australia?",
+      "options": ["Sydney", "Melbourne", "Canberra", "Brisbane"],
+      "answer": "Canberra",
+      "explanation": "Canberra is the capital of Australia, chosen as a compromise between Sydney and Melbourne.",
+      "reference": "World Atlas"
+    },
+    {
+      "id": 4,
+      "topic": "Science",
+      "subtopic": "Physics",
+      "type": "single",
+      "question": "Who discovered gravity?",
+      "options": ["Albert Einstein", "Galileo Galilei", "Isaac Newton", "Niels Bohr"],
+      "answer": "Isaac Newton",
+      "explanation": "Sir Isaac Newton discovered gravity after observing a falling apple.",
+      "reference": "Physics Textbook"
+    },
+    {
+      "id": 5,
+      "topic": "Science",
+      "subtopic": "Astronomy",
+      "type": "assertion",
+      "question": "Assertion (A): The Earth revolves around the Sun. Reason (R): The Sun orbits the Earth once a year.",
+      "options": [
+        "A and R are true, R explains A",
+        "A and R are true, R does not explain A",
+        "A is true, R is false",
+        "A is false, R is true"
+      ],
+      "answer": "A is true, R is false",
+      "explanation": "The Earth revolves around the Sun, but the Sun does not orbit the Earth. The reason is false.",
+      "reference": "NCERT Science"
+    },
+    {
+      "id": 6,
+      "topic": "Biology",
+      "subtopic": "Plant Biology",
+      "type": "assertion",
+      "question": "Assertion (A): Photosynthesis produces oxygen. Reason (R): Plants absorb carbon dioxide for photosynthesis.",
+      "options": [
+        "A and R are true, R explains A",
+        "A and R are true, R does not explain A",
+        "A is true, R is false",
+        "A is false, R is true"
+      ],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Both assertion and reason are true, and the reason correctly explains the assertion.",
+      "reference": "NCERT Biology"
+    },
+    {
+      "id": 7,
+      "topic": "Science",
+      "subtopic": "Famous Scientists",
+      "type": "match",
+      "question": "Match scientists with their discoveries.",
+      "matchPairs": {
+        "Newton": "Law of Gravitation",
+        "Einstein": "Theory of Relativity",
+        "Pasteur": "Germ Theory",
+        "Darwin": "Theory of Evolution"
+      },
+      "explanation": "Newton, Einstein, Pasteur, and Darwin are linked with their contributions.",
+      "reference": "Science Encyclopedia"
+    },
+    {
+      "id": 8,
+      "topic": "Science",
+      "subtopic": "Human Biology",
+      "type": "single",
+      "question": "The human body has 206 bones.",
+      "options": ["True", "False"],
+      "answer": "True",
+      "explanation": "An adult human skeleton typically consists of 206 bones.",
+      "reference": "Biology"
+    },
+    {
+      "id": 9,
+      "topic": "Geography",
+      "subtopic": "Landmarks",
+      "type": "single",
+      "question": "The Great Wall of China is visible from the Moon.",
+      "options": ["True", "False"],
+      "answer": "False",
+      "explanation": "The Great Wall is not visible from the Moon with the naked eye; this is a common myth.",
+      "reference": "Myths & Facts"
+    },
+    {
+      "id": 10,
+      "topic": "History",
+      "subtopic": "Indian Independence",
+      "type": "single",
+      "question": "Who is known as the Father of the Nation in India?",
+      "options": ["Mahatma Gandhi", "Subhas Chandra Bose", "Bhagat Singh", "Jawaharlal Nehru"],
+      "answer": "Mahatma Gandhi",
+      "explanation": "Mahatma Gandhi is called the Father of the Nation for leading India's independence movement.",
+      "reference": "Indian Freedom Struggle"
+    },
+    {
+      "id": 11,
+      "topic": "Geography",
+      "subtopic": "Oceans",
+      "type": "single",
+      "question": "Which is the largest ocean on Earth?",
+      "options": ["Atlantic Ocean", "Indian Ocean", "Pacific Ocean", "Arctic Ocean"],
+      "answer": "Pacific Ocean",
+      "explanation": "The Pacific Ocean is the largest, covering more area than all land combined.",
+      "reference": "World Atlas"
+    },
+    {
+      "id": 12,
+      "topic": "History",
+      "subtopic": "Indian Culture",
+      "type": "single",
+      "question": "Who wrote the national anthem of India?",
+      "options": ["Bankim Chandra Chatterjee", "Rabindranath Tagore", "Sarojini Naidu", "Mahatma Gandhi"],
+      "answer": "Rabindranath Tagore",
+      "explanation": "Rabindranath Tagore composed Jana Gana Mana, adopted as India's national anthem.",
+      "reference": "Indian Literature"
+    },
+    {
+      "id": 13,
+      "topic": "Science",
+      "subtopic": "Human Biology",
+      "type": "single",
+      "question": "Which gas do humans exhale during respiration?",
+      "options": ["Oxygen", "Carbon Dioxide", "Nitrogen", "Hydrogen"],
+      "answer": "Carbon Dioxide",
+      "explanation": "Humans exhale carbon dioxide as a waste product of respiration.",
+      "reference": "NCERT Biology"
+    },
+    {
+      "id": 14,
+      "topic": "Physics",
+      "subtopic": "Electricity",
+      "type": "assertion",
+      "question": "Assertion (A): Lightning is caused by electric charges. Reason (R): Clouds rub against each other to generate static electricity.",
+      "options": [
+        "A and R are true, R explains A",
+        "A and R are true, R does not explain A",
+        "A is true, R is false",
+        "A is false, R is true"
+      ],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Both are true and the reason explains the assertion correctly.",
+      "reference": "NCERT Physics"
+    },
+    {
+      "id": 15,
+      "topic": "Physics",
+      "subtopic": "Sound Waves",
+      "type": "assertion",
+      "question": "Assertion (A): Sound cannot travel through space. Reason (R): Space has no medium for sound waves to propagate.",
+      "options": [
+        "A and R are true, R explains A",
+        "A and R are true, R does not explain A",
+        "A is true, R is false",
+        "A is false, R is true"
+      ],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Both assertion and reason are true, and the reason explains why sound cannot travel in space.",
+      "reference": "NCERT Physics"
+    },
+    {
+      "id": 16,
+      "topic": "Biology",
+      "subtopic": "Animal Classification",
+      "type": "single",
+      "question": "Sharks are mammals.",
+      "options": ["True", "False"],
+      "answer": "False",
+      "explanation": "Sharks are fish, not mammals, as they lay eggs and breathe through gills.",
+      "reference": "NCERT Biology"
+    },
+    {
+      "id": 17,
+      "topic": "Geography",
+      "subtopic": "Mountains",
+      "type": "single",
+      "question": "Mount Everest is the tallest mountain above sea level.",
+      "options": ["True", "False"],
+      "answer": "True",
+      "explanation": "Mount Everest is the tallest mountain above sea level at 8848 meters.",
+      "reference": "World Geography"
+    },
+    {
+      "id": 18,
+      "topic": "Geography",
+      "subtopic": "World Capitals",
+      "type": "match",
+      "question": "Match countries with their capitals.",
+      "matchPairs": {
+        "India": "New Delhi",
+        "Japan": "Tokyo",
+        "France": "Paris",
+        "Canada": "Ottawa"
+      },
+      "explanation": "India, Japan, France, and Canada matched with their capitals.",
+      "reference": "World Atlas"
+    },
+    {
+      "id": 19,
+      "topic": "Biology",
+      "subtopic": "Animal Behavior",
+      "type": "single",
+      "question": "Which is the fastest land animal?",
+      "options": ["Lion", "Cheetah", "Tiger", "Horse"],
+      "answer": "Cheetah",
+      "explanation": "The cheetah is the fastest land animal, capable of speeds up to 100 km/h.",
+      "reference": "Animal Facts"
+    },
+    {
+      "id": 20,
+      "topic": "Science",
+      "subtopic": "Inventions",
+      "type": "single",
+      "question": "Who invented the telephone?",
+      "options": ["Thomas Edison", "Alexander Graham Bell", "Nikola Tesla", "Guglielmo Marconi"],
+      "answer": "Alexander Graham Bell",
+      "explanation": "Alexander Graham Bell is credited with inventing the telephone in 1876.",
+      "reference": "Inventions"
+    }
+  ]
+}

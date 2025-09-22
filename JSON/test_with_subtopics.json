@@ -1,0 +1,115 @@
+{
+  "title": "Test with Subtopics",
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Science",
+      "subtopic": "Physics",
+      "type": "single",
+      "question": "What is the acceleration due to gravity on Earth?",
+      "options": ["9.8 m/s²", "10 m/s²", "8.9 m/s²", "11 m/s²"],
+      "answer": "9.8 m/s²",
+      "explanation": "The standard acceleration due to gravity on Earth is approximately 9.8 m/s².",
+      "reference": "Physics Textbook"
+    },
+    {
+      "id": 2,
+      "topic": "Science",
+      "subtopic": "Chemistry",
+      "type": "single",
+      "question": "What is the chemical symbol for Gold?",
+      "options": ["Go", "Gd", "Au", "Ag"],
+      "answer": "Au",
+      "explanation": "Gold's chemical symbol is Au, derived from its Latin name 'aurum'.",
+      "reference": "Chemistry Reference"
+    },
+    {
+      "id": 3,
+      "topic": "Science",
+      "subtopic": "Biology",
+      "type": "single",
+      "question": "What is the powerhouse of the cell?",
+      "options": ["Nucleus", "Mitochondria", "Ribosome", "Chloroplast"],
+      "answer": "Mitochondria",
+      "explanation": "Mitochondria are known as the powerhouse of the cell as they generate ATP.",
+      "reference": "Biology Textbook"
+    },
+    {
+      "id": 4,
+      "topic": "History",
+      "subtopic": "Ancient History",
+      "type": "single",
+      "question": "Who was the first emperor of Rome?",
+      "options": ["Julius Caesar", "Augustus", "Nero", "Trajan"],
+      "answer": "Augustus",
+      "explanation": "Augustus (originally Octavian) was the first Roman Emperor.",
+      "reference": "History Reference"
+    },
+    {
+      "id": 5,
+      "topic": "History",
+      "subtopic": "Modern History",
+      "type": "single",
+      "question": "In which year did World War II end?",
+      "options": ["1944", "1945", "1946", "1947"],
+      "answer": "1945",
+      "explanation": "World War II ended in 1945 with the surrender of Japan.",
+      "reference": "History Textbook"
+    },
+    {
+      "id": 6,
+      "topic": "Geography",
+      "subtopic": "Physical Geography",
+      "type": "single",
+      "question": "What is the highest mountain in the world?",
+      "options": ["K2", "Mount Everest", "Kangchenjunga", "Lhotse"],
+      "answer": "Mount Everest",
+      "explanation": "Mount Everest is the highest mountain in the world at 8,848.86 meters.",
+      "reference": "Geography Atlas"
+    },
+    {
+      "id": 7,
+      "topic": "Geography",
+      "subtopic": "Political Geography",
+      "type": "single",
+      "question": "What is the capital of Canada?",
+      "options": ["Toronto", "Vancouver", "Ottawa", "Montreal"],
+      "answer": "Ottawa",
+      "explanation": "Ottawa is the capital city of Canada.",
+      "reference": "World Atlas"
+    },
+    {
+      "id": 8,
+      "topic": "Mathematics",
+      "subtopic": "Algebra",
+      "type": "single",
+      "question": "What is the value of x in the equation 2x + 3 = 11?",
+      "options": ["3", "4", "5", "6"],
+      "answer": "4",
+      "explanation": "Solving: 2x + 3 = 11, so 2x = 8, therefore x = 4.",
+      "reference": "Algebra Textbook"
+    },
+    {
+      "id": 9,
+      "topic": "Mathematics",
+      "subtopic": "Geometry",
+      "type": "single",
+      "question": "What is the area of a circle with radius 5?",
+      "options": ["25π", "10π", "15π", "20π"],
+      "answer": "25π",
+      "explanation": "Area of circle = πr², so with r=5, area = π(5)² = 25π.",
+      "reference": "Geometry Reference"
+    },
+    {
+      "id": 10,
+      "topic": "Mathematics",
+      "subtopic": "Statistics",
+      "type": "single",
+      "question": "What is the mean of the numbers 2, 4, 6, 8, 10?",
+      "options": ["5", "6", "7", "8"],
+      "answer": "6",
+      "explanation": "Mean = (2+4+6+8+10)/5 = 30/5 = 6.",
+      "reference": "Statistics Guide"
+    }
+  ]
+}
