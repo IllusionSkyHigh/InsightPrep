@@ -241,8 +241,8 @@ function startTest(filteredQuestions) {
     AppState.score = 0;
     AppState.questionResults = []; // Reset question results for new test
     
-    // Set application title
-    document.getElementById("test-title").innerHTML = "InsightPrep<br><span style='font-size: 0.75em; font-weight: normal; color: #e6f3ff; margin-top: 5px; display: inline-block;'>Where Preparation Meets Reflection</span>";
+    // Set application title - preserve logo using utility function
+    updateHeaderTitle();
     
     // Scroll to top when test begins
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -510,7 +510,8 @@ function handleAnswer(question, chosen, qDiv, qIndex) {
   let isCorrect = false;
   
   // Get question type using flexible field names
-  const questionType = question.question_type || question.type;
+  // Prioritize standardized 'type' field over raw 'question_type' field
+  const questionType = question.type || question.question_type;
 
   // Validate answer based on question type
   if (questionType === "single" || questionType === "assertion") {

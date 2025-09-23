@@ -17,3 +17,24 @@ Thumbs.db
 # IDE settings
 .vscode/
 .idea/
+
+# Test, debug, and verification files
+*test*.js
+*test*.py
+*debug*.js
+*debug*.py
+*fix*.js
+*fix*.py
+*verification*.js
+*verification*.py
+*enhancement*.js
+*backup*.js
+*backup*.py
+*copy*.js
+*copy*.py
+*sample*.js
+*sample*.py
+*mock*.js
+*mock*.py
+DB Files/Testing*.db
+!DB Files/Testing.db

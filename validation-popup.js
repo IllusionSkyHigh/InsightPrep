@@ -428,6 +428,89 @@ function suggestCorrectQuestionType(currentType, questionText) {
 }
 
 // ============================================
+// DUPLICATE DELETION HELPER FUNCTIONS
+// ============================================
+
+// Helper function to delete duplicate options (exact same text and correctness)
+function deleteDuplicateOptions(questionId) {
+  console.log(`Deleting duplicate options for question ${questionId}`);
+  
+  // Find duplicates and keep only the first occurrence (lowest id)
+  const deleteDuplicatesSQL = `
+    DELETE FROM options 
+    WHERE question_id = ${questionId} 
+    AND id NOT IN (
+      SELECT MIN(id) 
+      FROM options 
+      WHERE question_id = ${questionId}
+      GROUP BY option_text, is_correct
+    )
+  `;
+  
+  const result = AppState.database.exec(deleteDuplicatesSQL);
+  const changes = AppState.database.getRowsModified();
+  console.log(`Deleted ${changes} duplicate options for question ${questionId}`);
+  return changes;
+}
+
+// Helper function to delete conflicting options (same text, different correctness)
+function deleteConflictingOptions(questionId, reason) {
+  console.log(`Deleting conflicting options for question ${questionId}`);
+  
+  // Extract the option text from the reason string
+  const optionMatch = reason.match(/"([^"]+)"/);
+  if (!optionMatch) {
+    throw new Error('Could not extract option text from reason');
+  }
+  const optionText = optionMatch[1];
+  
+  // Keep only the first occurrence (by id) of the conflicting option
+  const deleteConflictsSQL = `
+    DELETE FROM options 
+    WHERE question_id = ${questionId} 
+    AND option_text = ?
+    AND id NOT IN (
+      SELECT MIN(id) 
+      FROM options 
+      WHERE question_id = ${questionId} 
+      AND option_text = ?
+    )
+  `;
+  
+  // Use prepared statement to handle special characters in option text
+  const stmt = AppState.database.prepare(deleteConflictsSQL);
+  stmt.bind([optionText, optionText]);
+  const result = stmt.step();
+  const changes = AppState.database.getRowsModified();
+  stmt.free();
+  
+  console.log(`Deleted ${changes} conflicting options for question ${questionId}`);
+  return changes;
+}
+
+// Helper function to delete duplicate match_pairs
+function deleteDuplicateMatchPairs(questionId) {
+  console.log(`Deleting duplicate match_pairs for question ${questionId}`);
+  
+  // Find duplicates and keep only the first occurrence (lowest id)
+  const deleteDuplicatesSQL = `
+    DELETE FROM match_pairs 
+    WHERE question_id = ${questionId} 
+    AND id NOT IN (
+      SELECT MIN(id) 
+      FROM match_pairs 
+      WHERE question_id = ${questionId}
+      GROUP BY left_text, right_text
+    )
+  `;
+  
+  const result = AppState.database.exec(deleteDuplicatesSQL);
+  const changes = AppState.database.getRowsModified();
+  console.log(`Deleted ${changes} duplicate match_pairs for question ${questionId}`);
+  return changes;
+}
+
+// ============================================
 // FIX FUNCTION IMPLEMENTATIONS
 // ============================================
 
@@ -547,7 +630,7 @@ window.fixOrphanQuestion = function(questionId, missingData) {
   alert(`Question ${questionId} needs ${missingData}. Please use the question editor to add the missing ${missingData}.`);
 };
 
-// Function to delete individual duplicate row - NEEDS TO BE PROPERLY IMPLEMENTED
+// Function to delete individual duplicate row
 window.deleteDuplicateRow = function(questionId, reason, buttonElement) {
   console.log(`🗑️ DELETE ATTEMPT: Question ${questionId}, Reason: ${reason}`);
   
@@ -567,24 +650,66 @@ window.deleteDuplicateRow = function(questionId, reason, buttonElement) {
       button.style.background = '#ccc';
       button.innerHTML = '🔄 Deleting...';
       
-      // TODO: Implement actual delete logic here
-      console.log(`TODO: Implement delete logic for Question ${questionId}`);
-      console.log(`Reason: ${reason}`);
-      console.log(`Button element:`, button);
-      console.log(`Row element:`, row);
-      
-      // For now, just show that it's not implemented
-      setTimeout(() => {
+      try {
+        let deletedCount = 0;
+        let errorMessage = '';
+        
+        // Determine what type of duplicate to delete based on reason
+        if (reason.includes('Duplicate option (exact)')) {
+          // Remove duplicate options with exact same text and correctness
+          deletedCount = deleteDuplicateOptions(questionId);
+        } else if (reason.includes('Conflicting option correctness')) {
+          // Remove conflicting options (same text, different correctness)
+          deletedCount = deleteConflictingOptions(questionId, reason);
+        } else if (reason.includes('Duplicate left') || reason.includes('Duplicate right') || reason.includes('Duplicate match pair')) {
+          // Remove duplicate match_pairs
+          deletedCount = deleteDuplicateMatchPairs(questionId);
+        } else {
+          throw new Error(`Unknown duplicate type: ${reason}`);
+        }
+        
+        if (deletedCount > 0) {
+          // Success - update button and row
+          button.style.background = '#4caf50';
+          button.innerHTML = '✅ Deleted!';
+          
+          // Update the entire row to show the fix
+          const reasonCell = row.cells[5]; // Last column with reason
+          const originalText = reasonCell.firstChild.textContent;
+          
+          // Update reason to show deleted status
+          reasonCell.innerHTML = `
+            <span style="text-decoration: line-through; opacity: 0.6;">${originalText}</span><br>
+            <strong style="color: #4caf50;">✅ CLEANED: ${deletedCount} duplicate entr${deletedCount === 1 ? 'y' : 'ies'} removed</strong>
+          `;
+          
+          // Add visual effect to the row
+          row.style.background = '#e8f5e8';
+          row.style.border = '2px solid #4caf50';
+          
+          showFloatingMessage(`✅ Cleaned Question ${questionId}: ${deletedCount} duplicate entr${deletedCount === 1 ? 'y' : 'ies'} removed`, 'success');
+          
+        } else {
+          // No duplicates found (possibly already cleaned)
+          button.style.background = '#2196f3';
+          button.innerHTML = '✅ Already Clean';
+          showFloatingMessage(`ℹ️ Question ${questionId}: No duplicates found to remove`, 'info');
+        }
+        
+      } catch (error) {
+        console.error('Error deleting duplicates:', error);
+        
+        // Error - restore button
         button.disabled = false;
         button.style.background = '#f44336';
-        button.innerHTML = '❌ Not Implemented';
-        showFloatingMessage(`❌ Delete function not yet implemented for Question ${questionId}`, 'error');
+        button.innerHTML = '❌ Error';
+        showFloatingMessage(`❌ Error cleaning Question ${questionId}: ${error.message}`, 'error');
         
         setTimeout(() => {
           button.style.background = '#f44336';
           button.innerHTML = '🗑️ Delete This';
         }, 3000);
-      }, 1000);
+      }
     }
   );
 };
@@ -736,7 +861,7 @@ ${content}`], { type: 'text/plain' });
   URL.revokeObjectURL(url);
 }
 
-// Function to clear database duplicates - NEEDS TO BE PROPERLY IMPLEMENTED
+// Function to clear database duplicates - Complete implementation
 function clearDatabaseDuplicates(overlayToClose) {
   console.log(`🗑️ BULK DELETE ATTEMPT`);
   
@@ -766,17 +891,118 @@ function clearDatabaseDuplicates(overlayToClose) {
         deleteBtn.innerHTML = '🔄 Deleting All...';
       }
       
-      // TODO: Implement actual bulk delete logic here
-      console.log(`TODO: Implement bulk delete logic`);
-      
-      // For now, just show that it's not implemented
-      setTimeout(() => {
+      try {
+        let totalDeleted = 0;
+        let operationResults = [];
+        
+        // 1. Delete duplicate options (exact same text and correctness)
+        console.log('Step 1: Deleting duplicate options...');
+        const deleteDuplicateOptionsSQL = `
+          DELETE FROM options 
+          WHERE id NOT IN (
+            SELECT MIN(id) 
+            FROM options 
+            GROUP BY question_id, option_text, is_correct
+          )
+        `;
+        
+        AppState.database.exec(deleteDuplicateOptionsSQL);
+        const optionsDeleted = AppState.database.getRowsModified();
+        totalDeleted += optionsDeleted;
+        operationResults.push(`${optionsDeleted} duplicate options`);
+        console.log(`Deleted ${optionsDeleted} duplicate options`);
+        
+        // 2. Delete conflicting options (same text, different correctness) - keep first occurrence
+        console.log('Step 2: Deleting conflicting options...');
+        const deleteConflictingOptionsSQL = `
+          DELETE FROM options 
+          WHERE id NOT IN (
+            SELECT MIN(id) 
+            FROM options 
+            GROUP BY question_id, option_text
+          )
+        `;
+        
+        AppState.database.exec(deleteConflictingOptionsSQL);
+        const conflictingDeleted = AppState.database.getRowsModified() - optionsDeleted; // Subtract previous to get just this operation
+        totalDeleted += conflictingDeleted;
+        if (conflictingDeleted > 0) {
+          operationResults.push(`${conflictingDeleted} conflicting options`);
+        }
+        console.log(`Deleted ${conflictingDeleted} conflicting options`);
+        
+        // 3. Delete duplicate match_pairs
+        console.log('Step 3: Deleting duplicate match_pairs...');
+        const deleteDuplicateMatchPairsSQL = `
+          DELETE FROM match_pairs 
+          WHERE id NOT IN (
+            SELECT MIN(id) 
+            FROM match_pairs 
+            GROUP BY question_id, left_text, right_text
+          )
+        `;
+        
+        AppState.database.exec(deleteDuplicateMatchPairsSQL);
+        const matchPairsDeleted = AppState.database.getRowsModified() - (optionsDeleted + conflictingDeleted);
+        totalDeleted += matchPairsDeleted;
+        if (matchPairsDeleted > 0) {
+          operationResults.push(`${matchPairsDeleted} duplicate match_pairs`);
+        }
+        console.log(`Deleted ${matchPairsDeleted} duplicate match_pairs`);
+        
+        // Success - update button and show results
+        if (deleteBtn) {
+          deleteBtn.style.background = '#4caf50';
+          deleteBtn.innerHTML = '✅ All Cleaned!';
+          deleteBtn.disabled = true; // Keep disabled since all duplicates are now gone
+        }
+        
+        // Create detailed success message
+        let detailMessage = '';
+        if (totalDeleted > 0) {
+          detailMessage = `Successfully removed ${totalDeleted} duplicate entries:\n• ${operationResults.join('\n• ')}`;
+        } else {
+          detailMessage = 'No duplicates found to remove. Database is already clean!';
+        }
+        
+        showFloatingMessage(`✅ Bulk cleanup completed: ${totalDeleted} entries removed`, 'success');
+        
+        // Also show a more detailed modal with results
+        setTimeout(() => {
+          createResultModal('Bulk Delete Complete', detailMessage, totalDeleted);
+        }, 1000);
+        
+        // Update the duplicates section in the popup to reflect changes
+        setTimeout(() => {
+          const duplicatesSection = document.querySelector('.question-card'); // Find the duplicates section
+          if (duplicatesSection) {
+            // Update the header to show completion
+            const header = duplicatesSection.querySelector('div[style*="background: #f44336"]');
+            if (header) {
+              header.style.background = '#4caf50';
+              header.innerHTML = `
+                <div>
+                  <h3 style="margin: 0; font-size: 1.2em;">✅ Duplicates Cleaned</h3>
+                  <p style="margin: 5px 0 0 0; font-size: 0.9em; opacity: 0.9;">
+                    Successfully removed ${totalDeleted} duplicate entries.
+                  </p>
+                </div>
+                <div style="color: #e8f5e8; font-size: 1.2em;">✓</div>
+              `;
+            }
+          }
+        }, 1500);
+        
+      } catch (error) {
+        console.error('Error during bulk delete:', error);
+        
+        // Error - restore button
         if (deleteBtn) {
           deleteBtn.disabled = false;
           deleteBtn.style.background = '#f44336';
-          deleteBtn.innerHTML = '❌ Not Implemented';
+          deleteBtn.innerHTML = '❌ Error';
         }
-        showFloatingMessage(`❌ Bulk delete function not yet implemented`, 'error');
+        showFloatingMessage(`❌ Bulk delete error: ${error.message}`, 'error');
         
         setTimeout(() => {
           if (deleteBtn) {
@@ -784,7 +1010,68 @@ function clearDatabaseDuplicates(overlayToClose) {
             deleteBtn.innerHTML = '🧹 Delete All Dupes';
           }
         }, 3000);
-      }, 2000);
+      }
     }
   );
+}
+
+// Helper function to create a detailed results modal
+function createResultModal(title, message, totalDeleted) {
+  const modalOverlay = document.createElement('div');
+  modalOverlay.style.cssText = `
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5); z-index: 10003; display: flex;
+    align-items: center; justify-content: center;
+  `;
+  
+  const modal = document.createElement('div');
+  modal.style.cssText = `
+    background: white; border-radius: 8px; padding: 0; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    max-width: 600px; width: 90%; animation: slideIn 0.3s ease-out;
+  `;
+  
+  const bgColor = totalDeleted > 0 ? '#4caf50' : '#2196f3';
+  const icon = totalDeleted > 0 ? '🧹' : 'ℹ️';
+  
+  modal.innerHTML = `
+    <style>
+      @keyframes slideIn {
+        from { transform: scale(0.9); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+      }
+    </style>
+    <div style="background: ${bgColor}; color: white; padding: 20px; border-radius: 8px 8px 0 0;">
+      <h3 style="margin: 0; font-size: 1.3em;">${icon} ${title}</h3>
+    </div>
+    <div style="padding: 25px;">
+      <div style="white-space: pre-line; line-height: 1.6; margin-bottom: 20px; font-size: 1.05em;">
+        ${message}
+      </div>
+      <div style="text-align: center;">
+        <button id="result-modal-close" style="
+          background: ${bgColor}; color: white; border: none; padding: 12px 24px;
+          border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 1em;
+        ">Close</button>
+      </div>
+    </div>
+  `;
+  
+  modalOverlay.appendChild(modal);
+  document.body.appendChild(modalOverlay);
+  
+  // Event handlers
+  const closeBtn = modal.querySelector('#result-modal-close');
+  
+  const closeModal = () => {
+    modal.style.animation = 'slideIn 0.2s ease-in reverse';
+    setTimeout(() => document.body.removeChild(modalOverlay), 200);
+  };
+  
+  closeBtn.onclick = closeModal;
+  modalOverlay.onclick = (e) => {
+    if (e.target === modalOverlay) closeModal();
+  };
+  
+  // Focus close button
+  setTimeout(() => closeBtn.focus(), 100);
 }
