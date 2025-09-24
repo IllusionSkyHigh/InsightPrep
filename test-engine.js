@@ -241,6 +241,11 @@ function startTest(filteredQuestions) {
     AppState.score = 0;
     AppState.questionResults = []; // Reset question results for new test
     
+    // Initialize exam mode timer if needed
+    if (AppState.isExamMode) {
+      initializeExamTimer();
+    }
+    
     // Set application title - preserve logo using utility function
     updateHeaderTitle();
     
@@ -995,4 +1000,130 @@ function revealDelayedResults() {
       });
     }
   }, 100);
+}
+
+// Exam Mode Timer Functions
+let examTimer = null;
+let examStartTime = null;
+let examDurationMinutes = 90;
+
+function initializeExamTimer() {
+  if (!AppState.isExamMode || !AppState.examDuration) {
+    return;
+  }
+  
+  // Use exam duration from AppState
+  examDurationMinutes = AppState.examDuration;
+  
+  // Create timer display
+  createTimerDisplay();
+  
+  // Start the timer
+  startExamTimer();
+}
+
+function createTimerDisplay() {
+  // Remove existing timer if any
+  const existingTimer = document.getElementById('exam-timer');
+  if (existingTimer) existingTimer.remove();
+  
+  // Create timer display
+  const timerDiv = document.createElement('div');
+  timerDiv.id = 'exam-timer';
+  timerDiv.style.cssText = `
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background: #fff;
+    border: 2px solid #0078d7;
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-family: 'Courier New', monospace;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 1000;
+  `;
+  timerDiv.innerHTML = `⏱️ ${formatTime(examDurationMinutes * 60)}`;
+  
+  document.body.appendChild(timerDiv);
+}
+
+function startExamTimer() {
+  examStartTime = Date.now();
+  const totalSeconds = examDurationMinutes * 60;
+  
+  examTimer = setInterval(() => {
+    const elapsed = Math.floor((Date.now() - examStartTime) / 1000);
+    const remaining = Math.max(0, totalSeconds - elapsed);
+    
+    updateTimerDisplay(remaining);
+    
+    if (remaining === 0) {
+      clearInterval(examTimer);
+      handleTimeUp();
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay(seconds) {
+  const timerDiv = document.getElementById('exam-timer');
+  if (timerDiv) {
+    const timeText = formatTime(seconds);
+    
+    // Change color based on time remaining
+    if (seconds <= 300) { // Last 5 minutes
+      timerDiv.style.borderColor = '#ff4444';
+      timerDiv.style.color = '#ff4444';
+      if (seconds <= 60) { // Last minute
+        timerDiv.style.background = '#ffe6e6';
+      }
+    }
+    
+    timerDiv.innerHTML = `⏱️ ${timeText}`;
+  }
+}
+
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+
+function handleTimeUp() {
+  alert('Time\'s up! Your exam will now be submitted.');
+  
+  // Auto-submit the exam
+  showExamResults();
+}
+
+function showExamResults() {
+  // Clear timer
+  if (examTimer) {
+    clearInterval(examTimer);
+    examTimer = null;
+  }
+  
+  const timerDiv = document.getElementById('exam-timer');
+  if (timerDiv) timerDiv.remove();
+  
+  // Calculate and show final results
+  calculateFinalScore();
+  
+  // Show results with exam-specific messaging
+  const scoreboardElement = document.getElementById("scoreboard");
+  if (scoreboardElement) {
+    scoreboardElement.innerHTML = `
+      <h2>🎯 Exam Complete!</h2>
+      <div style="background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 10px 0;">
+        <p><strong>Exam Duration:</strong> ${examDurationMinutes} minutes</p>
+        <p><strong>Questions Completed:</strong> ${AppState.questions.length}</p>
+        <p><strong>Final Score:</strong> ${AppState.score} / ${AppState.questions.length}</p>
+        <p><strong>Percentage:</strong> ${Math.round((AppState.score / AppState.questions.length) * 100)}%</p>
+      </div>
+    ` + scoreboardElement.innerHTML;
+    
+    scoreboardElement.scrollIntoView({ behavior: 'smooth' });
+  }
 }

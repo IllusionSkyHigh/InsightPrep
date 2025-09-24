@@ -542,6 +542,33 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
 
   wrapper.appendChild(expDiv);
 
+  // Study Mode Toggle - Between Learning and Exam Practice modes
+  const modeToggleDiv = document.createElement("div");
+  modeToggleDiv.className = "filter-section";
+  modeToggleDiv.innerHTML = `
+    <h3>Study Mode Selection</h3>
+    <div style="display: flex; gap: 20px; align-items: center; margin-bottom: 15px;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <input type="radio" id="learning-mode" name="studyMode" value="learning" checked>
+        <label for="learning-mode" style="margin: 0;">📚 Learning Mode</label>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <input type="radio" id="exam-mode" name="studyMode" value="exam">
+        <label for="exam-mode" style="margin: 0;">🎯 Exam Practice Mode</label>
+      </div>
+    </div>
+    <div style="font-size: 0.9em; color: #666; background: #f9f9f9; padding: 10px; border-radius: 4px;">
+      <div id="learning-mode-desc">
+        <strong>Learning Mode:</strong> Practice with immediate feedback and explanations. Unlimited questions.
+      </div>
+      <div id="exam-mode-desc" style="display: none;">
+        <strong>Exam Practice Mode:</strong> Timed exam simulation with final scoring. Maximum 100 questions. No immediate feedback during the exam.
+      </div>
+    </div>
+  `;
+  
+  wrapper.appendChild(modeToggleDiv);
+
   // Test Behavior Options (EXACT GOLDEN 22) - respect saved state
   const behaviorDiv = document.createElement("div");
   behaviorDiv.className = "filter-section";
@@ -576,7 +603,9 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
     const immediateResultCheckbox = document.getElementById("immediateResultOptionDb");
     const correctAnswerCheckbox = document.getElementById("correctAnswerOptionDb");
     const tryAgainCheckbox = document.getElementById("tryAgainOptionDb");
-    const explanationRadios = expDiv.querySelectorAll('input[name="expMode"]');
+    const expSection = Array.from(wrapper.querySelectorAll('.filter-section')).find(div => 
+      div.querySelector('h3')?.textContent.includes('Explanation'));
+    const explanationRadios = expSection ? expSection.querySelectorAll('input[name="expMode"]') : [];
     
     if (immediateResultCheckbox && tryAgainCheckbox && correctAnswerCheckbox) {
       immediateResultCheckbox.addEventListener("change", () => {
@@ -602,6 +631,188 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
     }
   }, 0);
 
+  // Function to update exam duration display based on question count
+  function updateExamDurationDisplay() {
+    const examModeRadio = document.getElementById("exam-mode");
+    if (examModeRadio && examModeRadio.checked) {
+      const numInput = document.getElementById("numQuestions");
+      
+      if (numInput) {
+        const questionCount = parseInt(numInput.value) || 1;
+        const durationMinutes = Math.round(questionCount * 1.5);
+        
+        // Find or create the duration display field
+        let durationDisplay = document.getElementById("exam-duration-display");
+        if (!durationDisplay) {
+          // Create the duration display field in bottom right of wrapper
+          durationDisplay = document.createElement("div");
+          durationDisplay.id = "exam-duration-display";
+          durationDisplay.style.cssText = `
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 0.9em;
+            color: #1976d2;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 10;
+          `;
+          
+          // Make sure wrapper has relative positioning for absolute positioning to work
+          wrapper.style.position = "relative";
+          wrapper.appendChild(durationDisplay);
+        }
+        
+        durationDisplay.innerHTML = `⏱️ Exam Duration: ${durationMinutes} minutes`;
+        durationDisplay.style.display = "block";
+        
+        console.log(`Updated exam duration display to ${durationMinutes} minutes for ${questionCount} questions`);
+      }
+    } else {
+      // Hide duration display in learning mode
+      const durationDisplay = document.getElementById("exam-duration-display");
+      if (durationDisplay) {
+        durationDisplay.style.display = "none";
+      }
+    }
+  }
+
+  // Add mode toggle event listeners
+  setTimeout(() => {
+    const learningModeRadio = document.getElementById("learning-mode");
+    const examModeRadio = document.getElementById("exam-mode");
+    const learningModeDesc = document.getElementById("learning-mode-desc");
+    const examModeDesc = document.getElementById("exam-mode-desc");
+    const numInput = document.getElementById("numQuestions");
+    
+    function updateModeDisplay() {
+      // Find sections by class since we don't have direct references
+      const expSection = Array.from(wrapper.querySelectorAll('.filter-section')).find(div => 
+        div.querySelector('h3')?.textContent.includes('Explanation'));
+      const behaviorSection = Array.from(wrapper.querySelectorAll('.filter-section')).find(div => 
+        div.querySelector('h3')?.textContent.includes('Behavior'));
+    
+      if (examModeRadio && examModeRadio.checked) {
+        // Exam mode: hide explanations, hide behavior section completely
+        if (learningModeDesc) learningModeDesc.style.display = "none";
+        if (examModeDesc) examModeDesc.style.display = "block";
+        if (expSection) expSection.style.display = "none";
+        if (behaviorSection) behaviorSection.style.display = "none"; // Hide behavior section completely
+        
+        // Limit questions to 100 for exam mode
+        if (numInput) {
+          const currentValue = parseInt(numInput.value) || 10;
+          if (currentValue > 100) {
+            numInput.value = 100;
+            // Trigger input event to update duration display
+            numInput.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+          numInput.max = 100;
+          // Force update the max attribute in the DOM
+          numInput.setAttribute('max', '100');
+          console.log(`Set exam mode max limit to 100, current max attribute: ${numInput.getAttribute('max')}`);
+        }
+        
+        // Update quick answer buttons for exam mode
+        if (typeof updateMaxQuestions === 'function') {
+          updateMaxQuestions();
+        }
+      } else {
+        // Learning mode: show all options
+        if (learningModeDesc) learningModeDesc.style.display = "block";
+        if (examModeDesc) examModeDesc.style.display = "none";
+        if (expSection) expSection.style.display = "block";
+        if (behaviorSection) behaviorSection.style.display = "block"; // Show behavior section again
+        
+        // Restore original behavior section for learning mode
+        if (behaviorSection) {
+          const savedBehavior = {
+            allowTryAgain: true,
+            showTopicSubtopic: true,
+            showImmediateResult: true,
+            showCorrectAnswer: true
+          };
+          
+          const tryAgainDisabled = !savedBehavior.showImmediateResult;
+          const tryAgainChecked = savedBehavior.allowTryAgain && !tryAgainDisabled;
+          
+          behaviorSection.innerHTML = `
+            <h3>Test Behavior Options</h3>
+            <label><input type="checkbox" id="tryAgainOptionDb" ${tryAgainChecked ? 'checked' : ''} ${tryAgainDisabled ? 'disabled' : ''}> Allow "Try Again" for incorrect answers</label><br>
+            <label><input type="checkbox" id="topicRevealOptionDb" ${savedBehavior.showTopicSubtopic ? 'checked' : ''}> Show Topic/Subtopic when answering</label><br>
+            <label><input type="checkbox" id="immediateResultOptionDb" ${savedBehavior.showImmediateResult ? 'checked' : ''}> Show result immediately after each answer</label><br>
+            <label><input type="checkbox" id="correctAnswerOptionDb" ${savedBehavior.showCorrectAnswer ? 'checked' : ''}> Show correct answer when wrong</label>
+            <div style="margin-top: 8px; padding: 8px; background: #f0f8ff; border-radius: 4px; font-size: 0.9em; color: #666;">
+              <em>Note: If "immediate result" is OFF, results and selected options will be revealed after the final score</em>
+            </div>
+          `;
+          
+          // Re-setup immediate result change handler after restoring learning mode
+          setTimeout(() => {
+            const immediateResultCheckbox = document.getElementById("immediateResultOptionDb");
+            const correctAnswerCheckbox = document.getElementById("correctAnswerOptionDb");
+            const tryAgainCheckbox = document.getElementById("tryAgainOptionDb");
+            const expSection = Array.from(wrapper.querySelectorAll('.filter-section')).find(div => 
+              div.querySelector('h3')?.textContent.includes('Explanation'));
+            const explanationRadios = expSection ? expSection.querySelectorAll('input[name="expMode"]') : [];
+            
+            if (immediateResultCheckbox && tryAgainCheckbox && correctAnswerCheckbox) {
+              immediateResultCheckbox.addEventListener("change", () => {
+                if (!immediateResultCheckbox.checked) {
+                  tryAgainCheckbox.checked = false;
+                  tryAgainCheckbox.disabled = true;
+                } else {
+                  tryAgainCheckbox.disabled = false;
+                  if (!correctAnswerCheckbox.checked && !tryAgainCheckbox.checked) {
+                    correctAnswerCheckbox.checked = true;
+                    tryAgainCheckbox.checked = true;
+                  }
+                  if (explanationRadios[2] && explanationRadios[2].checked) {
+                    explanationRadios[1].checked = true;
+                  }
+                }
+              });
+            }
+          }, 0);
+        }
+        
+        // Restore normal max questions
+        if (numInput) {
+          numInput.max = 1000;
+          // Force update the max attribute in the DOM
+          numInput.setAttribute('max', '1000');
+          console.log(`Restored learning mode max limit to 1000, current max attribute: ${numInput.getAttribute('max')}`);
+        }
+        
+        // Update quick answer buttons for learning mode
+        if (typeof updateMaxQuestions === 'function') {
+          updateMaxQuestions();
+        }
+      }
+      
+      // Update start button text based on current mode
+      updateStartButtonText();
+      
+      // Update exam duration display based on current mode
+      updateExamDurationDisplay();
+    }
+    
+    if (learningModeRadio && examModeRadio) {
+      learningModeRadio.addEventListener("change", updateModeDisplay);
+      examModeRadio.addEventListener("change", updateModeDisplay);
+      
+      // Initialize display
+      updateModeDisplay();
+      
+      // Initialize exam duration display
+      updateExamDurationDisplay();
+    }
+  }, 0);
+
   // Number of Questions section (EXACT GOLDEN 22) - respect saved state
   const numDiv = document.createElement("div");
   numDiv.className = "filter-section";
@@ -618,10 +829,15 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
     const numInput = document.getElementById("numQuestions");
     if (numInput) {
       numInput.addEventListener("input", function() {
-        const maxQuestions = parseInt(this.max) || 1000;
+        // Check if we're in exam mode to enforce 100 limit
+        const examModeRadio = document.getElementById("exam-mode");
+        const isExamMode = examModeRadio && examModeRadio.checked;
+        const examModeLimit = isExamMode ? 100 : 1000;
+        
+        const maxQuestions = Math.min(parseInt(this.max) || 1000, examModeLimit);
         const currentValue = parseInt(this.value) || 0;
         
-        console.log(`Input validation: current=${currentValue}, max=${maxQuestions}`);
+        console.log(`Input validation: current=${currentValue}, max=${maxQuestions}, examMode=${isExamMode}`);
         
         // Enforce minimum value (must be at least 1)
         if (currentValue < 1) {
@@ -629,7 +845,7 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
           this.value = 1;
         }
         
-        // Enforce maximum value (cannot exceed available questions)
+        // Enforce maximum value (cannot exceed available questions or exam limit)
         if (currentValue > maxQuestions) {
           console.log(`Value too large (${currentValue} > ${maxQuestions}), setting to ${maxQuestions}`);
           this.value = maxQuestions;
@@ -637,14 +853,22 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
         
         // Update tooltip after validation
         updateBalancedTooltip();
+        
+        // Update exam duration display if in exam mode
+        updateExamDurationDisplay();
       });
       
       // Also add blur event for additional validation
       numInput.addEventListener("blur", function() {
-        const maxQuestions = parseInt(this.max) || 1000;
+        // Check if we're in exam mode to enforce 100 limit
+        const examModeRadio = document.getElementById("exam-mode");
+        const isExamMode = examModeRadio && examModeRadio.checked;
+        const examModeLimit = isExamMode ? 100 : 1000;
+        
+        const maxQuestions = Math.min(parseInt(this.max) || 1000, examModeLimit);
         const currentValue = parseInt(this.value) || 0;
         
-        console.log(`Blur validation: current=${currentValue}, max=${maxQuestions}`);
+        console.log(`Blur validation: current=${currentValue}, max=${maxQuestions}, examMode=${isExamMode}`);
         
         if (currentValue < 1) {
           console.log("Blur: Value too small, setting to 1");
@@ -653,6 +877,9 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
           console.log(`Blur: Value too large (${currentValue} > ${maxQuestions}), setting to ${maxQuestions}`);
           this.value = maxQuestions;
         }
+        
+        // Update exam duration display after blur validation too
+        updateExamDurationDisplay();
       });
     }
   }, 0);
@@ -675,7 +902,8 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
 
   // Start button and button container (EXACT GOLDEN 22)
   const startBtn = document.createElement("button");
-  startBtn.textContent = "Start Test";
+  startBtn.textContent = window.startButtonText || "Start Test";
+  startBtn.id = "mainStartTestBtn";
   
   // Add the main Start Test button click handler
   startBtn.addEventListener("click", () => {
@@ -703,6 +931,27 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
       saveOptionsState();
     } else {
       console.warn('saveOptionsState function not found - state persistence may not work properly');
+    }
+    
+    // Check if exam mode is selected
+    const examModeRadio = document.getElementById('exam-mode');
+    if (examModeRadio && examModeRadio.checked) {
+      // Exam mode: override behavior options
+      AppState.allowTryAgain = false;
+      AppState.showTopicSubtopic = false;
+      AppState.showImmediateResult = false;
+      AppState.showCorrectAnswer = false;
+      AppState.explanationMode = 3; // No explanations during exam
+      AppState.isExamMode = true;
+      
+      // Get exam duration from behavior section
+      const examDurationInput = document.getElementById('exam-duration-behavior');
+      AppState.examDuration = examDurationInput ? parseInt(examDurationInput.value) : 90;
+      
+      console.log(`Starting in Exam Mode - ${AppState.examDuration} minutes, feedback disabled`);
+    } else {
+      AppState.isExamMode = false;
+      console.log("Starting in Learning Mode - normal feedback enabled");
     }
     
     // Get selected types
@@ -1090,6 +1339,29 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
     } else {
       tooltip.style.display = "none";
     }
+  }
+  
+  // Function to update start button text based on mode
+  function updateStartButtonText() {
+    const examModeRadio = document.getElementById("exam-mode");
+    const isExamMode = examModeRadio && examModeRadio.checked;
+    const buttonText = isExamMode ? "Start Exam" : "Start Test";
+    
+    // Update both start buttons
+    const topStartBtn = document.getElementById("topStartTestBtn");
+    if (topStartBtn) {
+      topStartBtn.textContent = buttonText;
+    }
+    
+    const mainStartBtn = document.getElementById("mainStartTestBtn");
+    if (mainStartBtn) {
+      mainStartBtn.textContent = buttonText;
+    }
+    
+    // Store the text for when buttons are created
+    window.startButtonText = buttonText;
+    
+    console.log(`Updated start button text to: ${buttonText}`);
   }
   
   // Update tooltip when selection mode changes
@@ -1753,13 +2025,28 @@ function updateMaxQuestions() {
     // Update the "Answer all" button and create quick selection buttons
     const answerAllBtnDb = document.getElementById("answerAllBtnDb");
     if (answerAllBtnDb && totalValidQuestions > 0) {
-      answerAllBtnDb.textContent = `Answer all ${totalValidQuestions}`;
-      answerAllBtnDb.title = `Set question count to maximum available (${totalValidQuestions})`;
+      // Check if exam mode is active
+      const examModeRadio = document.getElementById("exam-mode");
+      const isExamMode = examModeRadio && examModeRadio.checked;
+      
+      // In exam mode, limit to 50 questions max
+      const effectiveMaxQuestions = isExamMode ? Math.min(50, totalValidQuestions) : totalValidQuestions;
+      
+      if (isExamMode) {
+        answerAllBtnDb.textContent = `Answer ${effectiveMaxQuestions}`;
+        answerAllBtnDb.title = `Set question count to maximum for exam mode (${effectiveMaxQuestions})`;
+      } else {
+        answerAllBtnDb.textContent = `Answer all ${totalValidQuestions}`;
+        answerAllBtnDb.title = `Set question count to maximum available (${totalValidQuestions})`;
+      }
+      
       answerAllBtnDb.style.display = "inline-block";
       answerAllBtnDb.onclick = () => {
         const numInput = document.getElementById("numQuestions");
         if (numInput) {
-          numInput.value = totalValidQuestions;
+          numInput.value = effectiveMaxQuestions;
+          // Trigger input event to update duration display
+          numInput.dispatchEvent(new Event('input', { bubbles: true }));
         }
       };
       
@@ -1769,20 +2056,30 @@ function updateMaxQuestions() {
       existingQuickButtons.forEach(btn => btn.remove());
       
       // Only create quick selection buttons if there are questions available
-      if (totalValidQuestions > 0) {
+      if (effectiveMaxQuestions > 0) {
         // Generate quick selection values in descending order
         const quickSelectionValues = [];
-        if (totalValidQuestions > 50) {
-          // If maxcount > 50, start from 50 and go down to 10 (already descending)
+        if (isExamMode) {
+          // For exam mode: show 50, 40, 30, 20, 10 (limited to actual available)
           for (let i = 50; i >= 10; i -= 10) {
-            if (i <= totalValidQuestions) {
+            if (i <= effectiveMaxQuestions) {
               quickSelectionValues.push(i);
             }
           }
         } else {
-          // If maxcount <= 50, generate buttons for multiples of 10 in descending order
-          for (let i = Math.floor(totalValidQuestions / 10) * 10; i >= 10; i -= 10) {
-            quickSelectionValues.push(i);
+          // For learning mode: use original logic
+          if (totalValidQuestions > 50) {
+            // If maxcount > 50, start from 50 and go down to 10 (already descending)
+            for (let i = 50; i >= 10; i -= 10) {
+              if (i <= totalValidQuestions) {
+                quickSelectionValues.push(i);
+              }
+            }
+          } else {
+            // If maxcount <= 50, generate buttons for multiples of 10 in descending order
+            for (let i = Math.floor(totalValidQuestions / 10) * 10; i >= 10; i -= 10) {
+              quickSelectionValues.push(i);
+            }
           }
         }
         
@@ -1797,6 +2094,8 @@ function updateMaxQuestions() {
             const numInput = document.getElementById("numQuestions");
             if (numInput) {
               numInput.value = value;
+              // Trigger input event to update duration display
+              numInput.dispatchEvent(new Event('input', { bubbles: true }));
             }
           };
           
@@ -1821,8 +2120,12 @@ function updateMaxQuestions() {
       const currentValue = parseInt(numInput.value) || 0;
       if (currentValue < 1) {
         numInput.value = Math.min(10, totalValidQuestions);
+        // Trigger input event to update duration display
+        numInput.dispatchEvent(new Event('input', { bubbles: true }));
       } else if (currentValue > totalValidQuestions) {
         numInput.value = totalValidQuestions;
+        // Trigger input event to update duration display
+        numInput.dispatchEvent(new Event('input', { bubbles: true }));
       }
     }
     

@@ -766,17 +766,291 @@ function clearDatabaseDuplicates(overlayToClose) {
         deleteBtn.innerHTML = '🔄 Deleting All...';
       }
       
-      // TODO: Implement actual bulk delete logic here
-      console.log(`TODO: Implement bulk delete logic`);
-      
-      // For now, just show that it's not implemented
-      setTimeout(() => {
+      // Implement actual bulk delete logic
+      try {
+        console.log('🗑️ Starting bulk deletion process...');
+        
+        // CRITICAL: Count ALL duplicates BEFORE doing ANY deletions
+        // This prevents deletion operations from affecting each other's counts
+        let totalDuplicatesToDelete = 0;
+        
+        console.log('=== PHASE 1: COUNTING ALL DUPLICATES ===');
+        
+        // Count duplicate GROUPS (same as validation logic), not individual records
+        
+        // 1. Count duplicate option groups (exact duplicates)
+        let duplicateOptionGroups = 0;
+        try {
+          const duplicateOptionsQuery = `
+            SELECT question_id, option_text, is_correct, COUNT(*) as dup_count
+            FROM options
+            GROUP BY question_id, option_text, is_correct
+            HAVING COUNT(*) > 1
+          `;
+          const duplicateOptions = AppState.database.exec(duplicateOptionsQuery);
+          if (duplicateOptions[0]?.values) {
+            duplicateOptionGroups = duplicateOptions[0].values.length; // Count groups, not individual records
+          }
+          console.log(`Found ${duplicateOptionGroups} duplicate option groups`);
+        } catch (e) {
+          console.error('Error counting duplicate options:', e);
+        }
+        
+        // 2. Count conflicting option groups (same text, different correctness)
+        let conflictingOptionGroups = 0;
+        try {
+          const conflictingOptionsQuery = `
+            SELECT question_id, option_text, COUNT(*) as total_count
+            FROM options
+            GROUP BY question_id, option_text
+            HAVING COUNT(DISTINCT is_correct) > 1
+          `;
+          const conflictingOptions = AppState.database.exec(conflictingOptionsQuery);
+          if (conflictingOptions[0]?.values) {
+            conflictingOptionGroups = conflictingOptions[0].values.length; // Count groups
+          }
+          console.log(`Found ${conflictingOptionGroups} conflicting option groups`);
+        } catch (e) {
+          console.error('Error counting conflicting options:', e);
+        }
+        
+        // 3. Count duplicate match pair groups
+        let duplicateMatchGroups = 0;
+        try {
+          const duplicateMatchQuery = `
+            SELECT question_id, left_text, right_text, COUNT(*) as dup_count
+            FROM match_pairs
+            GROUP BY question_id, left_text, right_text
+            HAVING COUNT(*) > 1
+          `;
+          const duplicateMatches = AppState.database.exec(duplicateMatchQuery);
+          if (duplicateMatches[0]?.values) {
+            duplicateMatchGroups = duplicateMatches[0].values.length; // Count groups
+          }
+          console.log(`Found ${duplicateMatchGroups} duplicate match pair groups`);
+        } catch (e) {
+          console.error('Error counting duplicate match pairs:', e);
+        }
+        
+        // 4. Count duplicate left text groups
+        let duplicateLeftGroups = 0;
+        try {
+          const duplicateLeftQuery = `
+            SELECT question_id, left_text, COUNT(*) as dup_count
+            FROM match_pairs
+            GROUP BY question_id, left_text
+            HAVING COUNT(*) > 1
+          `;
+          const duplicateLeft = AppState.database.exec(duplicateLeftQuery);
+          if (duplicateLeft[0]?.values) {
+            duplicateLeftGroups = duplicateLeft[0].values.length; // Count groups
+          }
+          console.log(`Found ${duplicateLeftGroups} duplicate left text groups`);
+        } catch (e) {
+          console.error('Error counting duplicate left text:', e);
+        }
+        
+        // 5. Count duplicate right text groups
+        let duplicateRightGroups = 0;
+        try {
+          const duplicateRightQuery = `
+            SELECT question_id, right_text, COUNT(*) as dup_count
+            FROM match_pairs
+            GROUP BY question_id, right_text
+            HAVING COUNT(*) > 1
+          `;
+          const duplicateRight = AppState.database.exec(duplicateRightQuery);
+          if (duplicateRight[0]?.values) {
+            duplicateRightGroups = duplicateRight[0].values.length; // Count groups
+          }
+          console.log(`Found ${duplicateRightGroups} duplicate right text groups`);
+        } catch (e) {
+          console.error('Error counting duplicate right text:', e);
+        }
+        
+        // Calculate total BEFORE any deletions (counting groups like validation does)
+        totalDuplicatesToDelete = duplicateOptionGroups + conflictingOptionGroups + duplicateMatchGroups + duplicateLeftGroups + duplicateRightGroups;
+        
+        console.log('=== COUNTING SUMMARY (Groups, like validation) ===');
+        console.log(`Duplicate option groups: ${duplicateOptionGroups}`);
+        console.log(`Conflicting option groups: ${conflictingOptionGroups}`);
+        console.log(`Duplicate match pair groups: ${duplicateMatchGroups}`);
+        console.log(`Duplicate left text groups: ${duplicateLeftGroups}`);
+        console.log(`Duplicate right text groups: ${duplicateRightGroups}`);
+        console.log(`TOTAL DUPLICATE GROUPS TO RESOLVE: ${totalDuplicatesToDelete}`);
+        console.log(`This should match the validation count of 23`);
+        
+        console.log('=== PHASE 2: PERFORMING DELETIONS ===');
+        
+        // Now perform the actual deletions (order matters to avoid conflicts)
+        // Delete in reverse order of dependency
+        
+        // 5. Delete duplicate right text first
+        if (duplicateRightGroups > 0) {
+          AppState.database.exec(`
+            DELETE FROM match_pairs 
+            WHERE rowid NOT IN (
+              SELECT MIN(rowid) 
+              FROM match_pairs 
+              GROUP BY question_id, right_text
+            )
+          `);
+          console.log(`✅ Resolved ${duplicateRightGroups} duplicate right text groups`);
+        }
+        
+        // 4. Delete duplicate left text
+        if (duplicateLeftGroups > 0) {
+          AppState.database.exec(`
+            DELETE FROM match_pairs 
+            WHERE rowid NOT IN (
+              SELECT MIN(rowid) 
+              FROM match_pairs 
+              GROUP BY question_id, left_text
+            )
+          `);
+          console.log(`✅ Resolved ${duplicateLeftGroups} duplicate left text groups`);
+        }
+        
+        // 3. Delete duplicate match pairs
+        if (duplicateMatchGroups > 0) {
+          AppState.database.exec(`
+            DELETE FROM match_pairs 
+            WHERE rowid NOT IN (
+              SELECT MIN(rowid) 
+              FROM match_pairs 
+              GROUP BY question_id, left_text, right_text
+            )
+          `);
+          console.log(`✅ Resolved ${duplicateMatchGroups} duplicate match pair groups`);
+        }
+        
+        // 2. Delete conflicting options
+        if (conflictingOptionGroups > 0) {
+          AppState.database.exec(`
+            DELETE FROM options 
+            WHERE rowid NOT IN (
+              SELECT MIN(rowid) 
+              FROM options 
+              GROUP BY question_id, option_text
+            )
+          `);
+          console.log(`✅ Resolved ${conflictingOptionGroups} conflicting option groups`);
+        }
+        
+        // 1. Delete duplicate options last
+        if (duplicateOptionGroups > 0) {
+          AppState.database.exec(`
+            DELETE FROM options 
+            WHERE rowid NOT IN (
+              SELECT MIN(rowid) 
+              FROM options 
+              GROUP BY question_id, option_text, is_correct
+            )
+          `);
+          console.log(`✅ Resolved ${duplicateOptionGroups} duplicate option groups`);
+        }
+        
+        const totalDeleted = totalDuplicatesToDelete;
+        console.log(`✅ DELETION COMPLETE: ${totalDeleted} duplicate issues resolved`);
+        
+        // Update the duplicates section to show it's cleaned
+        updateDuplicatesSectionAfterDeletion(totalDeleted);
+        
+        // Update button state and add save functionality
+        if (deleteBtn) {
+          if (totalDeleted > 0) {
+            // Replace the delete button with save functionality
+            deleteBtn.style.background = '#4caf50';
+            deleteBtn.innerHTML = `💾 Save Cleaned Database`;
+            deleteBtn.disabled = false;
+            
+            // Store database for saving
+            const data = AppState.database.export();
+            const buffer = new ArrayBuffer(data.length);
+            const view = new Uint8Array(buffer);
+            view.set(data);
+            const blob = new Blob([buffer], { type: 'application/x-sqlite3' });
+            
+            // Generate filename with _dupes_removed suffix  
+            let filename = 'database_dupes_removed.db';
+            
+            if (AppState.dbFileName) {
+              const originalName = AppState.dbFileName;
+              const nameWithoutExt = originalName.replace(/\.db$/i, '');
+              filename = `${nameWithoutExt}_dupes_removed.db`;
+            }
+            
+            // Remove old event listeners and replace with save functionality
+            deleteBtn.replaceWith(deleteBtn.cloneNode(true));
+            const newDeleteBtn = document.getElementById("deleteDuplicatesBtn");
+            newDeleteBtn.onclick = async () => {
+              try {
+                // Try modern File System Access API first (Chrome/Edge)
+                if ('showSaveFilePicker' in window) {
+                  const fileHandle = await window.showSaveFilePicker({
+                    suggestedName: filename,
+                    types: [{
+                      description: 'Database files',
+                      accept: { 'application/x-sqlite3': ['.db'] }
+                    }]
+                  });
+                  
+                  const writable = await fileHandle.createWritable();
+                  await writable.write(blob);
+                  await writable.close();
+                  
+                  showFloatingMessage(`✅ Database saved to selected location`, 'success');
+                } else {
+                  // Fallback to automatic download
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = filename;
+                  a.style.display = 'none';
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+                  URL.revokeObjectURL(url);
+                  
+                  showFloatingMessage(`✅ Database downloaded as ${filename}`, 'success');
+                }
+                
+                // Update button to show saved
+                newDeleteBtn.style.background = '#2196f3';
+                newDeleteBtn.innerHTML = `✅ Database Saved`;
+                newDeleteBtn.disabled = true;
+                
+              } catch (error) {
+                if (error.name === 'AbortError') {
+                  showFloatingMessage('Save cancelled by user', 'info');
+                } else {
+                  console.error('Save error:', error);
+                  showFloatingMessage('Error saving file - check console', 'error');
+                }
+              }
+            };
+            
+            // Show success message with download info
+            showFloatingMessage(`✅ Successfully deleted ${totalDeleted} duplicate entries! Click "Save" to download cleaned database.`, 'success');
+            
+          } else {
+            deleteBtn.style.background = '#2196f3';
+            deleteBtn.innerHTML = '✅ Already Clean';
+            deleteBtn.disabled = true;
+            showFloatingMessage('✅ No duplicates found - database is already clean!', 'success');
+          }
+        }
+        
+      } catch (error) {
+        console.error('Error during bulk delete:', error);
+        
+        // Error state
         if (deleteBtn) {
           deleteBtn.disabled = false;
           deleteBtn.style.background = '#f44336';
-          deleteBtn.innerHTML = '❌ Not Implemented';
+          deleteBtn.innerHTML = '❌ Error';
         }
-        showFloatingMessage(`❌ Bulk delete function not yet implemented`, 'error');
+        showFloatingMessage(`❌ Bulk delete error: ${error.message}`, 'error');
         
         setTimeout(() => {
           if (deleteBtn) {
@@ -784,7 +1058,69 @@ function clearDatabaseDuplicates(overlayToClose) {
             deleteBtn.innerHTML = '🧹 Delete All Dupes';
           }
         }, 3000);
-      }, 2000);
+      }
     }
   );
+}
+
+// Function to update the duplicates section after successful deletion
+function updateDuplicatesSectionAfterDeletion(deletedCount) {
+  try {
+    // Find the duplicates section header
+    const duplicatesSection = document.querySelector('div[style*="background: #f44336"]');
+    if (duplicatesSection) {
+      // Update header to show completion
+      duplicatesSection.style.background = '#4caf50';
+      duplicatesSection.innerHTML = `
+        <div>
+          <h3 style="margin: 0; font-size: 1.2em;">✅ Duplicates Cleaned</h3>
+          <p style="margin: 5px 0 0 0; font-size: 0.9em; opacity: 0.9;">
+            Successfully resolved ${deletedCount} duplicate issues. Database is now clean!
+          </p>
+        </div>
+        <div style="color: #e8f5e8; font-size: 1.4em;">✓</div>
+      `;
+    }
+    
+    // Clear the table content and show "no duplicates" message
+    const dupTableSection = document.getElementById('duplicates-section');
+    if (dupTableSection) {
+      const tableBody = dupTableSection.querySelector('tbody');
+      if (tableBody) {
+        tableBody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 40px; color: #4caf50; font-size: 1.1em;">
+              🎉 All duplicates have been successfully removed!<br>
+              <span style="font-size: 0.9em; color: #666; margin-top: 10px; display: block;">
+                No duplicate records remain in the database.
+              </span>
+            </td>
+          </tr>
+        `;
+      }
+    }
+    
+    // Update the summary counts in the header
+    const summaryElements = document.querySelectorAll('div[style*="text-align: center"]');
+    summaryElements.forEach(element => {
+      if (element.textContent.includes('Dupes → Safe to Delete')) {
+        const countElement = element.querySelector('div[style*="font-size: 1.4em"]');
+        if (countElement) {
+          countElement.textContent = '0';
+          countElement.style.color = '#4caf50';
+        }
+        const labelElement = element.querySelector('div[style*="color: #c62828"]');
+        if (labelElement) {
+          labelElement.innerHTML = '✅ All Clean';
+          labelElement.style.color = '#4caf50';
+        }
+        element.style.background = '#e8f5e8';
+        element.style.borderLeftColor = '#4caf50';
+      }
+    });
+    
+    console.log(`Updated UI to reflect ${deletedCount} deletions completed`);
+  } catch (error) {
+    console.error('Error updating duplicates section:', error);
+  }
 }

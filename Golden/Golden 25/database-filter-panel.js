@@ -542,6 +542,33 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
 
   wrapper.appendChild(expDiv);
 
+  // Study Mode Toggle - Between Learning and Exam Practice modes
+  const modeToggleDiv = document.createElement("div");
+  modeToggleDiv.className = "filter-section";
+  modeToggleDiv.innerHTML = `
+    <h3>Study Mode Selection</h3>
+    <div style="display: flex; gap: 20px; align-items: center; margin-bottom: 15px;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <input type="radio" id="learning-mode" name="studyMode" value="learning" checked>
+        <label for="learning-mode" style="margin: 0;">📚 Learning Mode</label>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <input type="radio" id="exam-mode" name="studyMode" value="exam">
+        <label for="exam-mode" style="margin: 0;">🎯 Exam Practice Mode</label>
+      </div>
+    </div>
+    <div style="font-size: 0.9em; color: #666; background: #f9f9f9; padding: 10px; border-radius: 4px;">
+      <div id="learning-mode-desc">
+        <strong>Learning Mode:</strong> Practice with immediate feedback and explanations. Unlimited questions.
+      </div>
+      <div id="exam-mode-desc" style="display: none;">
+        <strong>Exam Practice Mode:</strong> Timed exam simulation with final scoring. Maximum 50 questions. No immediate feedback during the exam.
+      </div>
+    </div>
+  `;
+  
+  wrapper.appendChild(modeToggleDiv);
+
   // Test Behavior Options (EXACT GOLDEN 22) - respect saved state
   const behaviorDiv = document.createElement("div");
   behaviorDiv.className = "filter-section";
@@ -599,6 +626,103 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
           }
         }
       });
+    }
+  }, 0);
+
+  // Add mode toggle event listeners
+  setTimeout(() => {
+    const learningModeRadio = document.getElementById("learning-mode");
+    const examModeRadio = document.getElementById("exam-mode");
+    const learningModeDesc = document.getElementById("learning-mode-desc");
+    const examModeDesc = document.getElementById("exam-mode-desc");
+    const numInput = document.getElementById("numQuestions");
+    
+    function updateModeDisplay() {
+      // Find sections by class since we don't have direct references
+      const expSection = Array.from(wrapper.querySelectorAll('.filter-section')).find(div => 
+        div.querySelector('h3')?.textContent.includes('Explanation'));
+      const behaviorSection = Array.from(wrapper.querySelectorAll('.filter-section')).find(div => 
+        div.querySelector('h3')?.textContent.includes('Behavior'));
+    
+      if (examModeRadio && examModeRadio.checked) {
+        // Exam mode: hide explanations, show exam-specific behavior options
+        if (learningModeDesc) learningModeDesc.style.display = "none";
+        if (examModeDesc) examModeDesc.style.display = "block";
+        if (expSection) expSection.style.display = "none";
+        
+        // Update behavior section for exam mode
+        if (behaviorSection) {
+          behaviorSection.innerHTML = `
+            <h3>Exam Behavior Options</h3>
+            <div style="margin-bottom: 15px;">
+              <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
+                ⏱️ Exam Duration: 
+                <input type="number" id="exam-duration-behavior" min="15" max="300" value="90" style="width: 60px; margin: 0 5px;">
+                minutes
+              </label>
+              <div style="font-size: 0.9em; color: #666; background: #fff3cd; padding: 8px; border-radius: 4px; border-left: 4px solid #ffc107;">
+                <strong>⚠️ Exam Mode Behavior:</strong><br>
+                • No immediate feedback during the exam<br>
+                • No explanations shown during questions<br>
+                • No "Try Again" option available<br>
+                • Results shown only after completion or time expiry<br>
+                • Questions can be bookmarked for review
+              </div>
+            </div>
+          `;
+        }
+        
+        // Limit questions to 50 for exam mode
+        if (numInput) {
+          const currentValue = parseInt(numInput.value) || 10;
+          if (currentValue > 50) {
+            numInput.value = 50;
+          }
+          numInput.max = 50;
+        }
+      } else {
+        // Learning mode: show all options
+        if (learningModeDesc) learningModeDesc.style.display = "block";
+        if (examModeDesc) examModeDesc.style.display = "none";
+        if (expSection) expSection.style.display = "block";
+        
+        // Restore original behavior section for learning mode
+        if (behaviorSection) {
+          const savedBehavior = {
+            allowTryAgain: true,
+            showTopicSubtopic: true,
+            showImmediateResult: true,
+            showCorrectAnswer: true
+          };
+          
+          const tryAgainDisabled = !savedBehavior.showImmediateResult;
+          const tryAgainChecked = savedBehavior.allowTryAgain && !tryAgainDisabled;
+          
+          behaviorSection.innerHTML = `
+            <h3>Test Behavior Options</h3>
+            <label><input type="checkbox" id="tryAgainOptionDb" ${tryAgainChecked ? 'checked' : ''} ${tryAgainDisabled ? 'disabled' : ''}> Allow "Try Again" for incorrect answers</label><br>
+            <label><input type="checkbox" id="topicRevealOptionDb" ${savedBehavior.showTopicSubtopic ? 'checked' : ''}> Show Topic/Subtopic when answering</label><br>
+            <label><input type="checkbox" id="immediateResultOptionDb" ${savedBehavior.showImmediateResult ? 'checked' : ''}> Show result immediately after each answer</label><br>
+            <label><input type="checkbox" id="correctAnswerOptionDb" ${savedBehavior.showCorrectAnswer ? 'checked' : ''}> Show correct answer when wrong</label>
+            <div style="margin-top: 8px; padding: 8px; background: #f0f8ff; border-radius: 4px; font-size: 0.9em; color: #666;">
+              <em>Note: If "immediate result" is OFF, results and selected options will be revealed after the final score</em>
+            </div>
+          `;
+        }
+        
+        // Restore normal max questions
+        if (numInput) {
+          numInput.max = 1000;
+        }
+      }
+    }
+    
+    if (learningModeRadio && examModeRadio) {
+      learningModeRadio.addEventListener("change", updateModeDisplay);
+      examModeRadio.addEventListener("change", updateModeDisplay);
+      
+      // Initialize display
+      updateModeDisplay();
     }
   }, 0);
 
@@ -703,6 +827,27 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
       saveOptionsState();
     } else {
       console.warn('saveOptionsState function not found - state persistence may not work properly');
+    }
+    
+    // Check if exam mode is selected
+    const examModeRadio = document.getElementById('exam-mode');
+    if (examModeRadio && examModeRadio.checked) {
+      // Exam mode: override behavior options
+      AppState.allowTryAgain = false;
+      AppState.showTopicSubtopic = false;
+      AppState.showImmediateResult = false;
+      AppState.showCorrectAnswer = false;
+      AppState.explanationMode = 3; // No explanations during exam
+      AppState.isExamMode = true;
+      
+      // Get exam duration from behavior section
+      const examDurationInput = document.getElementById('exam-duration-behavior');
+      AppState.examDuration = examDurationInput ? parseInt(examDurationInput.value) : 90;
+      
+      console.log(`Starting in Exam Mode - ${AppState.examDuration} minutes, feedback disabled`);
+    } else {
+      AppState.isExamMode = false;
+      console.log("Starting in Learning Mode - normal feedback enabled");
     }
     
     // Get selected types
@@ -1495,8 +1640,257 @@ function updateMaxQuestions() {
       return obj;
     }) || [];
     
-    // No validation - count all questions
-    const totalValidQuestions = allQuestions.length;
+    // Perform comprehensive validation like Golden 22
+    let validQuestions = [];
+    let invalidQuestions = [];
+    
+    console.log(`=== VALIDATION DEBUG ===`);
+    console.log(`SQL query returned ${allQuestions.length} questions`);
+    
+    // === DUPLICATES → Safe to Delete ===
+    
+    // 1.1 Duplicate options (exact same text + correctness)
+    try {
+      const duplicateOptionsSQL = `
+        SELECT q.id, q.question_text, q.question_type, q.topic, q.subtopic, o.option_text, o.is_correct,
+               COUNT(*) as dup_count, 'Duplicate option (exact)' as reason
+        FROM questions q
+        JOIN options o ON q.id = o.question_id
+        GROUP BY q.id, o.option_text, o.is_correct
+        HAVING COUNT(*) > 1
+      `;
+      const dupOptionsResult = AppState.database.exec(duplicateOptionsSQL);
+      if (dupOptionsResult[0]?.values) {
+        dupOptionsResult[0].values.forEach(row => {
+          const [id, question_text, question_type, topic, subtopic, option_text, is_correct, dup_count, reason] = row;
+          invalidQuestions.push({
+            id, question_text, question_type, topic, subtopic, reason: `${reason} - "${option_text}" (${dup_count} times)`
+          });
+        });
+      }
+    } catch (e) { console.log("Error checking duplicate options:", e); }
+    
+    // 1.2 Conflicting options (same text, different correctness)
+    try {
+      const conflictingOptionsSQL = `
+        SELECT q.id, q.question_text, q.question_type, q.topic, q.subtopic, o.option_text,
+               GROUP_CONCAT(o.is_correct) as correctness, 'Conflicting option correctness' as reason
+        FROM questions q
+        JOIN options o ON q.id = o.question_id
+        GROUP BY q.id, o.option_text
+        HAVING COUNT(DISTINCT o.is_correct) > 1
+      `;
+      const conflictOptionsResult = AppState.database.exec(conflictingOptionsSQL);
+      if (conflictOptionsResult[0]?.values) {
+        conflictOptionsResult[0].values.forEach(row => {
+          const [id, question_text, question_type, topic, subtopic, option_text, correctness, reason] = row;
+          invalidQuestions.push({
+            id, question_text, question_type, topic, subtopic, 
+            reason: `${reason} - "${option_text}" has correctness values: ${correctness}`
+          });
+        });
+      }
+    } catch (e) { console.log("Error checking conflicting options:", e); }
+    
+    // 1.3 Duplicate match_pairs (exact same left_text and right_text)
+    try {
+      const duplicateMatchPairsSQL = `
+        SELECT q.id, q.question_text, q.question_type, q.topic, q.subtopic, m.left_text, m.right_text,
+               COUNT(*) as dup_count, 'Duplicate match pair' as reason
+        FROM questions q
+        JOIN match_pairs m ON q.id = m.question_id
+        GROUP BY q.id, m.left_text, m.right_text
+        HAVING COUNT(*) > 1
+      `;
+      const dupMatchPairsResult = AppState.database.exec(duplicateMatchPairsSQL);
+      if (dupMatchPairsResult[0]?.values) {
+        dupMatchPairsResult[0].values.forEach(row => {
+          const [id, question_text, question_type, topic, subtopic, left_text, right_text, dup_count, reason] = row;
+          invalidQuestions.push({
+            id, question_text, question_type, topic, subtopic, 
+            reason: `${reason} - "${left_text}" → "${right_text}" (${dup_count} times)`
+          });
+        });
+      }
+    } catch (e) { console.log("Error checking duplicate match_pairs:", e); }
+    
+    // 1.4 Duplicate left_text in match_pairs
+    try {
+      const duplicateLeftSQL = `
+        SELECT q.id, q.question_text, q.question_type, q.topic, q.subtopic, m.left_text,
+               COUNT(*) as dup_count, 'Duplicate left text in match_pairs' as reason
+        FROM questions q
+        JOIN match_pairs m ON q.id = m.question_id
+        GROUP BY q.id, m.left_text
+        HAVING COUNT(*) > 1
+      `;
+      const dupLeftResult = AppState.database.exec(duplicateLeftSQL);
+      if (dupLeftResult[0]?.values) {
+        dupLeftResult[0].values.forEach(row => {
+          const [id, question_text, question_type, topic, subtopic, left_text, dup_count, reason] = row;
+          invalidQuestions.push({
+            id, question_text, question_type, topic, subtopic, 
+            reason: `${reason} - "${left_text}" appears ${dup_count} times`
+          });
+        });
+      }
+    } catch (e) { console.log("Error checking duplicate left text:", e); }
+    
+    // 1.5 Duplicate right_text in match_pairs
+    try {
+      const duplicateRightSQL = `
+        SELECT q.id, q.question_text, q.question_type, q.topic, q.subtopic, m.right_text,
+               COUNT(*) as dup_count, 'Duplicate right text in match_pairs' as reason
+        FROM questions q
+        JOIN match_pairs m ON q.id = m.question_id
+        GROUP BY q.id, m.right_text
+        HAVING COUNT(*) > 1
+      `;
+      const dupRightResult = AppState.database.exec(duplicateRightSQL);
+      if (dupRightResult[0]?.values) {
+        dupRightResult[0].values.forEach(row => {
+          const [id, question_text, question_type, topic, subtopic, right_text, dup_count, reason] = row;
+          invalidQuestions.push({
+            id, question_text, question_type, topic, subtopic, 
+            reason: `${reason} - "${right_text}" appears ${dup_count} times`
+          });
+        });
+      }
+    } catch (e) { console.log("Error checking duplicate right text:", e); }
+    
+    // === ANOMALIES → Need Review ===
+    
+    // 2.1 MCQ questions with no correct answers
+    try {
+      const noCorrectAnswersSQL = `
+        SELECT q.id, q.question_text, q.question_type, q.topic, q.subtopic, 'MCQ with no correct answers' as reason
+        FROM questions q
+        WHERE q.question_type IN ('MCQ','MCQ-Multiple','MCQ-Scenario','Cohort-05-MCQ')
+        AND NOT EXISTS (SELECT 1 FROM options o WHERE o.question_id = q.id AND (o.is_correct = 1 OR o.is_correct = '1'))
+      `;
+      const noCorrectResult = AppState.database.exec(noCorrectAnswersSQL);
+      if (noCorrectResult[0]?.values) {
+        noCorrectResult[0].values.forEach(row => {
+          const [id, question_text, question_type, topic, subtopic, reason] = row;
+          invalidQuestions.push({ id, question_text, question_type, topic, subtopic, reason });
+        });
+      }
+    } catch (e) { console.log("Error checking no correct answers:", e); }
+    
+    // 2.2 MCQ questions with all correct answers
+    try {
+      const allCorrectAnswersSQL = `
+        SELECT q.id, q.question_text, q.question_type, q.topic, q.subtopic, 'MCQ with all answers marked correct' as reason
+        FROM questions q
+        WHERE q.question_type IN ('MCQ','MCQ-Multiple','MCQ-Scenario','Cohort-05-MCQ')
+        AND EXISTS (SELECT 1 FROM options o WHERE o.question_id = q.id)
+        AND NOT EXISTS (SELECT 1 FROM options o WHERE o.question_id = q.id AND (o.is_correct = 0 OR o.is_correct = '0'))
+      `;
+      const allCorrectResult = AppState.database.exec(allCorrectAnswersSQL);
+      if (allCorrectResult[0]?.values) {
+        allCorrectResult[0].values.forEach(row => {
+          const [id, question_text, question_type, topic, subtopic, reason] = row;
+          invalidQuestions.push({ id, question_text, question_type, topic, subtopic, reason });
+        });
+      }
+    } catch (e) { console.log("Error checking all correct answers:", e); }
+    
+    // 2.3 TrueFalse questions with multiple correct answers
+    try {
+      const multipleCorrectTFSQL = `
+        SELECT q.id, q.question_text, q.question_type, q.topic, q.subtopic, 'TrueFalse with multiple correct answers' as reason
+        FROM questions q
+        WHERE q.question_type = 'TrueFalse'
+        AND (SELECT COUNT(*) FROM options o WHERE o.question_id = q.id AND (o.is_correct = 1 OR o.is_correct = '1')) > 1
+      `;
+      const multipleTFResult = AppState.database.exec(multipleCorrectTFSQL);
+      if (multipleTFResult[0]?.values) {
+        multipleTFResult[0].values.forEach(row => {
+          const [id, question_text, question_type, topic, subtopic, reason] = row;
+          invalidQuestions.push({ id, question_text, question_type, topic, subtopic, reason });
+        });
+      }
+    } catch (e) { console.log("Error checking multiple correct TF:", e); }
+    
+    // 2.4 Questions with insufficient options
+    try {
+      const insufficientOptionsSQL = `
+        SELECT q.id, q.question_text, q.question_type, q.topic, q.subtopic, 
+               COUNT(o.id) as option_count, 'Insufficient options' as reason
+        FROM questions q
+        LEFT JOIN options o ON q.id = o.question_id
+        WHERE q.question_type IN ('MCQ','MCQ-Multiple','MCQ-Scenario','Cohort-05-MCQ','TrueFalse','AssertionReason')
+        GROUP BY q.id, q.question_text, q.question_type, q.topic, q.subtopic
+        HAVING COUNT(o.id) < 2
+      `;
+      const insufficientResult = AppState.database.exec(insufficientOptionsSQL);
+      if (insufficientResult[0]?.values) {
+        insufficientResult[0].values.forEach(row => {
+          const [id, question_text, question_type, topic, subtopic, option_count, reason] = row;
+          invalidQuestions.push({ 
+            id, question_text, question_type, topic, subtopic, 
+            reason: `${reason} (only ${option_count} option${option_count === 1 ? '' : 's'})` 
+          });
+        });
+      }
+    } catch (e) { console.log("Error checking insufficient options:", e); }
+    
+    // 2.5 Orphan questions with no associated records
+    try {
+      const orphanQuestionsSQL = `
+        SELECT q.id, q.question_text, q.question_type, q.topic, q.subtopic, 'Orphan question with no options/match_pairs' as reason
+        FROM questions q
+        WHERE (q.question_type IN ('MCQ','MCQ-Multiple','MCQ-Scenario','Cohort-05-MCQ','TrueFalse','AssertionReason')
+               AND NOT EXISTS (SELECT 1 FROM options o WHERE o.question_id = q.id))
+           OR (q.question_type = 'Match'
+               AND NOT EXISTS (SELECT 1 FROM match_pairs m WHERE m.question_id = q.id))
+      `;
+      const orphanResult = AppState.database.exec(orphanQuestionsSQL);
+      if (orphanResult[0]?.values) {
+        orphanResult[0].values.forEach(row => {
+          const [id, question_text, question_type, topic, subtopic, reason] = row;
+          invalidQuestions.push({ id, question_text, question_type, topic, subtopic, reason });
+        });
+      }
+    } catch (e) { console.log("Error checking orphan questions:", e); }
+    
+    // 2.6 Match questions with insufficient match_pairs
+    try {
+      const insufficientMatchPairsSQL = `
+        SELECT q.id, q.question_text, q.question_type, q.topic, q.subtopic, 
+               COUNT(m.id) as pair_count, 'Insufficient match_pairs' as reason
+        FROM questions q
+        LEFT JOIN match_pairs m ON q.id = m.question_id
+        WHERE q.question_type = 'Match'
+        GROUP BY q.id, q.question_text, q.question_type, q.topic, q.subtopic
+        HAVING COUNT(m.id) < 2
+      `;
+      const insufficientMatchResult = AppState.database.exec(insufficientMatchPairsSQL);
+      if (insufficientMatchResult[0]?.values) {
+        insufficientMatchResult[0].values.forEach(row => {
+          const [id, question_text, question_type, topic, subtopic, pair_count, reason] = row;
+          invalidQuestions.push({ 
+            id, question_text, question_type, topic, subtopic, 
+            reason: `${reason} (only ${pair_count} pair${pair_count === 1 ? '' : 's'})` 
+          });
+        });
+      }
+    } catch (e) { console.log("Error checking insufficient match_pairs:", e); }
+    
+    // Collect all valid questions (those not flagged as invalid)
+    const invalidQuestionIds = new Set(invalidQuestions.map(q => q.id));
+    allQuestions.forEach(q => {
+      if (!invalidQuestionIds.has(q.id)) {
+        validQuestions.push(q);
+      }
+    });
+    
+    console.log(`Valid questions: ${validQuestions.length}, Invalid: ${invalidQuestions.length}`);
+    
+    const totalValidQuestions = validQuestions.length;
+    
+    // Store invalid questions for the button
+    AppState.currentInvalidQuestions = invalidQuestions;
     
     // Update the max questions info
     document.getElementById("maxQuestionsInfo").textContent = `Max: ${totalValidQuestions} question${totalValidQuestions === 1 ? '' : 's'} available for selection`;
@@ -1577,21 +1971,25 @@ function updateMaxQuestions() {
       }
     }
     
-    // Create/update the orange "View Invalid Questions" button (simplified for now)
+    // Create/update the "View Invalid Questions" button
     const viewInvalidBtnContainer = document.getElementById("viewInvalidBtnContainer");
     if (viewInvalidBtnContainer) {
+      // Clear any existing button
       viewInvalidBtnContainer.innerHTML = "";
       
-      // For demo purposes, show some invalid questions
-      const invalidCount = Math.max(0, Math.floor(allQuestions.length * 0.1)); // Assume 10% invalid
-      if (invalidCount > 0) {
+      // Only create button if there are invalid questions
+      if (invalidQuestions && invalidQuestions.length > 0) {
         const viewInvalidBtn = document.createElement("button");
-        viewInvalidBtn.textContent = `View ${invalidCount} Invalid Questions`;
-        viewInvalidBtn.style.cssText = "margin-right: 10px; background-color: #ff9800; color: white; border: 1px solid #f57c00; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold;";
+        viewInvalidBtn.textContent = `View ${invalidQuestions.length} Invalid Questions`;
+        viewInvalidBtn.className = "custom-btn";
+        viewInvalidBtn.style.marginRight = "10px";
+        viewInvalidBtn.style.backgroundColor = "#ff9800";
+        viewInvalidBtn.style.color = "white";
+        viewInvalidBtn.style.border = "1px solid #f57c00";
         viewInvalidBtn.title = "Show questions that failed validation and were excluded from the test";
         
         viewInvalidBtn.addEventListener("click", () => {
-          alert(`This would show ${invalidCount} invalid questions popup`);
+          showInvalidQuestionsPopup(AppState.currentInvalidQuestions, validQuestions.length + invalidQuestions.length);
         });
         
         viewInvalidBtnContainer.appendChild(viewInvalidBtn);
