@@ -181,7 +181,7 @@ header {
 }
 
 .back-btn {
-    background: #6c757d;
+    background: #dc3545 !important; /* red color */
     color: white;
     border: none;
     padding: 6px 12px;
@@ -194,7 +194,7 @@ header {
 }
 
 .back-btn:hover {
-    background: #5a6268;
+    background: #c82333 !important;
 }
 
 #exam-title {
@@ -296,20 +296,27 @@ header {
 }
 
 .bookmark-btn {
-    background: transparent;
-    border: 2px solid #fd7e14;
-    color: #fd7e14;
-    padding: 8px 16px;
-    border-radius: 6px;
+    background: transparent !important;
+    border: 2px solid black !important;
+    color: black !important;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    border-radius: 8px;
     cursor: pointer;
-    font-weight: 500;
-    transition: all 0.2s;
+    transition: background 0.2s ease-in-out;
 }
 
 .bookmark-btn:hover,
 .bookmark-btn.active {
     background: #fd7e14;
-    color: white;
+    color: black;
+}
+
+.bookmark-btn.bookmarked {
+    background: #fd7e14 !important;
+    color: black !important;
+    border: 2px solid #fd7e14 !important;
+    box-shadow: 0 2px 8px rgba(253,126,20,0.15);
 }
 
 #question-content {
@@ -357,17 +364,61 @@ header {
 }
 
 .clear-btn {
-    background: #dc3545;
-    color: white;
+    background: #0078d7 !important; /* same as Previous/Next */
+    color: #fff !important;
     border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9em;
 }
 
 .clear-btn:hover {
-    background: #c82333;
+    background: #005ea6 !important;
+}
+
+/* FINAL: Only .bookmark-btn.bookmarked gets orange background, all other .bookmark-btn states are transparent with black border/text */
+.clear-btn, .back-btn {
+    background: #0078d7;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+.bookmark-btn {
+    background: transparent !important;
+    border: 2px solid black !important;
+    color: black !important;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+.bookmark-btn.bookmarked {
+    background: #fd7e14 !important;
+    color: black !important;
+    border: 2px solid #fd7e14 !important;
+    box-shadow: 0 2px 8px rgba(253,126,20,0.15);
+}
+
+/* Lighten orange color for bookmarked elements */
+:root {
+    --bookmark-orange: #ffb35c; /* lighter variant of #fd7e14 */
+}
+
+/* Replace direct #fd7e14 usages for bookmark button (ON state) */
+.bookmark-btn.bookmarked,
+button.bookmark-btn.bookmarked {
+    background: var(--bookmark-orange) !important;
+    border: 2px solid var(--bookmark-orange) !important;
+}
+
+/* Update hover/active states using variable if desired */
+.bookmark-btn:hover,
+.bookmark-btn.active {
+    background: var(--bookmark-orange);
 }
 
 /* Answer Options */
@@ -519,23 +570,18 @@ input[type="checkbox"] {
 }
 
 .nav-btn {
-    background: #0d6efd;
+    background: #0078d7;
     color: white;
     border: none;
     padding: 10px 20px;
-    border-radius: 6px;
+    font-size: 1.2em;
+    border-radius: 8px;
     cursor: pointer;
-    font-weight: 500;
-    min-width: 120px;
+    transition: background 0.2s ease-in-out;
 }
 
-.nav-btn:hover:not(:disabled) {
-    background: #0b5ed7;
-}
-
-.nav-btn:disabled {
-    background: #6c757d;
-    cursor: not-allowed;
+.nav-btn:hover {
+    background: #005ea6;
 }
 
 .finish-btn {
@@ -744,6 +790,29 @@ input[type="checkbox"] {
     50% { opacity: 1; }
 }
 
+/* Toast Notification */
+#exam-toast {
+  position: fixed;
+  top: auto !important;
+  bottom: 24px;
+  left: 20px;
+  right: auto;
+  background: #1e293b;
+  color: #fff;
+  padding: 14px 18px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  box-shadow: 0 6px 18px -4px rgba(0,0,0,0.25);
+  display: none;
+  z-index: 2000;
+  animation: fadeSlideInUp .35s ease;
+}
+#exam-toast.hide { animation: fadeOut .4s ease forwards; }
+@keyframes fadeSlideIn { from { opacity:0; transform: translateY(-6px); } to { opacity:1; transform: translateY(0);} }
+@keyframes fadeSlideInUp { from { opacity:0; transform: translateY(6px); } to { opacity:1; transform: translateY(0);} }
+@keyframes fadeOut { to { opacity:0; transform: translateY(-6px);} }
+
 /* Responsive Design */
 
 /* For shorter screens */
@@ -793,3 +862,25 @@ input[type="checkbox"] {
         padding: 20px;
     }
 }
+
+/* !IMPORTANT: Fix for Bookmark button ON state not showing orange background due to CSS specificity issues */
+button.bookmark-btn.bookmarked, .bookmark-btn.bookmarked {
+    background: #fd7e14 !important;
+    color: black !important;
+    border: 2px solid #fd7e14 !important;
+    box-shadow: 0 2px 8px rgba(253,126,20,0.15);
+}
+
+/* Bookmark color refinement: lighter on-state + subtle off-state hover */
+:root { --bookmark-orange: #ffb35c; }
+/* Remove broad hover fill; provide separate off/on hovers */
+.bookmark-btn:not(.bookmarked):hover { background: rgba(255,179,92,0.15) !important; }
+.bookmark-btn.bookmarked { background: var(--bookmark-orange) !important; border: 2px solid var(--bookmark-orange) !important; }
+.bookmark-btn.bookmarked:hover { background: var(--bookmark-orange) !important; }
+
+/* Consolidate bookmark hover so ON state never changes */
+.bookmark-btn.bookmarked:hover { background: var(--bookmark-orange) !important; border-color: var(--bookmark-orange) !important; }
+/* Prevent generic hover rule from overriding ON state */
+.bookmark-btn.bookmarked.active { background: var(--bookmark-orange) !important; }
+/* Narrow generic hover to only non-bookmarked */
+.bookmark-btn:not(.bookmarked):hover { background: rgba(255,213,153,0.25) !important; }

@@ -22,7 +22,8 @@
         <!-- Question Number Navigation -->
         <div id="question-nav-container">
             <div id="question-numbers"></div>
-            <button id="back-to-options" class="back-btn">← Exit Exam</button>
+            <!-- Updated Exit Exam button with tooltip -->
+            <button id="back-to-options" class="back-btn" title="Click to exit the exam and return to the main menu.">← Exit Exam</button>
         </div>
 
         <!-- Main Exam Content -->
@@ -31,7 +32,8 @@
         <div id="question-panel">
             <div id="question-header">
                 <div id="question-counter">Question <span id="current-question-num">1</span> of <span id="total-questions">10</span></div>
-                <button id="bookmark-btn" class="bookmark-btn" title="Bookmark this question">
+                <!-- Updated Bookmark button tooltip -->
+                <button id="bookmark-btn" class="bookmark-btn" title="Click to toggle bookmark for this question.">
                     <span id="bookmark-icon">☐</span> Bookmark
                 </button>
             </div>
@@ -51,7 +53,8 @@
         <div id="answer-panel">
             <div id="answer-header">
                 <h3>Choose your answer:</h3>
-                <button id="clear-answer" class="clear-btn">Clear Answer</button>
+                <!-- Updated Clear Answer button tooltip -->
+                <button id="clear-answer" class="clear-btn" title="Click to clear your current answer selection.">Clear Answer</button>
             </div>
             <div id="answer-options">
                 <!-- Options will be populated dynamically -->
@@ -61,13 +64,16 @@
 
     <!-- Bottom Navigation -->
     <div id="bottom-navigation">
-        <button id="prev-btn" class="nav-btn">← Previous</button>
+        <!-- Updated Previous button tooltip -->
+        <button id="prev-btn" class="nav-btn" title="Go to the previous question.">← Previous</button>
         <div id="nav-info">
             <span id="answered-count">0</span> answered | 
             <span id="bookmarked-count">0</span> bookmarked
         </div>
-        <button id="next-btn" class="nav-btn">Next →</button>
-        <button id="finish-btn" class="finish-btn" style="display: none;">Finish Exam</button>
+        <!-- Updated Next button tooltip -->
+        <button id="next-btn" class="nav-btn" title="Go to the next question.">Next →</button>
+        <!-- Updated Finish Exam button tooltip -->
+        <button id="finish-btn" class="finish-btn" style="display: none;" title="Click to finish and submit your exam.">Finish Exam</button>
     </div>
 
     <!-- Finish Exam Modal -->
@@ -101,8 +107,10 @@
                 </div>
             </div>
             <div class="modal-actions">
-                <button id="download-report" class="download-btn">📄 Download PDF Report</button>
-                <button id="return-options" class="return-btn">Exit Exam</button>
+                <!-- Updated Download Report button tooltip -->
+                <button id="download-report" class="download-btn" title="Download your exam report as a PDF.">📄 Download PDF Report</button>
+                <!-- Updated Return Options button tooltip -->
+                <button id="return-options" class="return-btn" title="Exit the exam and return to the main menu.">Exit Exam</button>
             </div>
         </div>
     </div>
@@ -118,11 +126,22 @@
     </div>
     </main>
 
+    <div id="exam-toast">⚠️ Please avoid refreshing the page. Refreshing will terminate the exam and redirect you to the start page.</div>
+
     <!-- Scripts -->
     <script src="app-state.js"></script>
     <script src="database-manager.js"></script>
     <script src="exam-engine.js"></script>
     <script>
+        // Toast logic after page load
+        window.addEventListener('load', () => {
+            const toast = document.getElementById('exam-toast');
+            if (toast) {
+                toast.style.display = 'block';
+                setTimeout(() => toast.classList.add('hide'), 10000);
+                setTimeout(() => { if (toast && toast.parentNode) toast.parentNode.removeChild(toast); }, 10400);
+            }
+        });
         // Initialize exam engine after DOM and scripts are loaded
         let examEngine;
         

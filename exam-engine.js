@@ -272,20 +272,11 @@ class ExamEngine {
                 if (this.beforeUnloadHandlerAttached) return;
                 this.beforeUnloadHandler = (e) => {
                     const exitInProgress = !!window.__examExitInProgress;
-                    // Instrumentation to diagnose lingering prompts
-                    console.debug('[Exam] beforeunload fired', {
-                        allowNavigation: this.allowNavigation,
-                        examCompleted: this.examCompleted,
-                        exitInProgress
-                    });
                     if (!this.allowNavigation && !this.examCompleted && !exitInProgress) {
-                        e.preventDefault();
-                        // Assigning a value triggers prompt intentionally while exam active
-                        e.returnValue = '';
-                        return '';
-                    } else {
-                        // Explicitly ensure no prompt
-                        try { delete e.returnValue; } catch(_) {}
+                        // Mark that a mid-exam refresh/navigation occurred; no confirmation prompt shown.
+                        try { sessionStorage.setItem('examExitByRefresh','1'); } catch(_) {}
+                        // No e.returnValue assignment => silent exit allowed; exam cannot restart because of early redirect above.
+                        return;
                     }
                 };
                 window.addEventListener('beforeunload', this.beforeUnloadHandler);
@@ -821,8 +812,10 @@ class ExamEngine {
         const btn = document.getElementById('bookmark-btn');
         const icon = document.getElementById('bookmark-icon');
         const isBookmarked = this.bookmarkedQuestions.has(this.currentQuestionIndex);
-        
+        if (!btn || !icon) return;
         btn.classList.toggle('active', isBookmarked);
+        // Added explicit bookmarked class to match CSS requirement
+        btn.classList.toggle('bookmarked', isBookmarked);
         icon.textContent = isBookmarked ? '📌' : '☐';
     }
 
@@ -1591,6 +1584,18 @@ class ExamEngine {
         }
     }
 }
+
+// Early refresh-exit detection: if previous load set the refresh exit flag, redirect before engine instantiation
+(function(){
+  try {
+    if (sessionStorage.getItem('examExitByRefresh') === '1') {
+      sessionStorage.removeItem('examExitByRefresh');
+      // Optional message storage (can be read on mocktest.html to show notice)
+      sessionStorage.setItem('examExitMessage','Exam ended due to page refresh.');
+      window.location.replace('mocktest.html');
+    }
+  } catch(_) {}
+})();
 
 // Duplicate DOMContentLoaded initialization removed; exam.html handles instantiation.
 // Global one-time alert suppression for legacy "Popup blocked" message
