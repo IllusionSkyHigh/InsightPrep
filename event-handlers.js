@@ -96,7 +96,102 @@ function removeAllEventListeners() {
 // ============================================================================
 
 /**
- * Handle JSON file input events
+ * Check if returning from exam mode and restore database session
+ */
+async function checkAndRestoreDatabaseSession() {
+  const returnToOptions = sessionStorage.getItem('returnToOptions');
+  
+  if (returnToOptions === 'true') {
+    
+    // Clear the flag
+    sessionStorage.removeItem('returnToOptions');
+    
+    try {
+      // First, check for database state in sessionStorage
+      const dbStateStr = sessionStorage.getItem('dbState');
+      if (dbStateStr) {
+        const dbState = JSON.parse(dbStateStr);
+        
+        
+        // Restore AppState
+        AppState.dbFileName = dbState.dbFileName;
+        AppState.dbTopics = dbState.dbTopics;
+        AppState.dbTypes = dbState.dbTypes;
+        AppState.isDbMode = dbState.isDbMode;
+        
+        // Clear the session storage state
+        sessionStorage.removeItem('dbState');
+      }
+      
+      // Check if we have database state preserved in AppState or restored from session
+      if (AppState.dbFileName && AppState.dbTopics && AppState.dbTypes) {
+        
+        
+        // Hide the database selection guide
+        const guide = document.getElementById("guide");
+        if (guide) {
+          guide.style.display = "none";
+        }
+        
+        // Need to reload the database file since connection might be lost
+        if (!AppState.database) {
+          console.log('Database connection lost, need to reload database file');
+          document.getElementById("file-chosen").innerHTML = 
+            `Restoring database session for <strong>${AppState.dbFileName}</strong>...`;
+          
+          // Show a message that we need to reload the database
+          document.getElementById("file-chosen").innerHTML = 
+            `Please select the database file again to continue: <strong>${AppState.dbFileName}</strong>`;
+          
+          // Show the guide so user can select database again
+          if (guide) {
+            guide.style.display = "block";
+          }
+          return;
+        }
+        
+        // Restore file chosen message
+        const totalQuestions = AppState.database ? 
+          AppState.database.exec("SELECT COUNT(*) FROM questions")[0]?.values[0][0] || 0 : 'Unknown';
+        
+        document.getElementById("file-chosen").innerHTML = 
+          `Database ready. Total questions: <strong>${totalQuestions}</strong>. Please select filters and number of questions.`;
+        
+        // Rebuild the database filter panel with existing topics and types
+        console.log('Rebuilding database filter panel with existing data');
+        if (typeof buildDbFilterPanel === 'function') {
+          buildDbFilterPanel(AppState.dbTopics, AppState.dbTypes, false); // Don't skip restore
+        } else {
+          console.error('buildDbFilterPanel function not found');
+        }
+        
+        console.log('Database session restored successfully');
+        
+      } else {
+        console.warn('Database state not found, showing database selection');
+        // Show database selection if state is missing
+        const guide = document.getElementById("guide");
+        if (guide) {
+          guide.style.display = "block";
+        }
+        document.getElementById("file-chosen").innerHTML = "";
+      }
+      
+    } catch (error) {
+      console.error('Error restoring database session:', error);
+      // If restoration fails, show the guide again
+      const guide = document.getElementById("guide");
+      if (guide) {
+        guide.style.display = "block";
+      }
+      document.getElementById("file-chosen").innerHTML = 
+        "Error restoring session. Please select database file again.";
+    }
+  }
+}
+
+/**
+ * Handle JSON file input and loading
  * @param {Event} e - File input change event
  */
 function handleFileInput(e) {
@@ -220,11 +315,23 @@ async function handleDatabaseSelection() {
       }
       document.getElementById("file-chosen").innerHTML = `Database ready. Total questions: <strong>${totalQuestions}</strong>. Please select filters and number of questions.`;
       
-      // Reset options to defaults after successful database loading
-      resetOptionsToDefaults();
+      // Check if this is a restoration scenario (user returning from exam mode)
+      const isRestoringFromExam = AppState.dbFileName === file.name && 
+                                  AppState.dbTopics && 
+                                  AppState.dbTopics.length > 0;
       
-      // Build database filter panel, skip restore to ensure all types are checked by default
-      buildDbFilterPanel(topics, types, true);
+      if (isRestoringFromExam) {
+        console.log('🔄 Detected database restoration scenario - preserving previous settings');
+        // Don't reset options to defaults - keep existing settings
+        // Build database filter panel and allow restoration of previous settings
+        buildDbFilterPanel(topics, types, false); // false = allow restoration
+      } else {
+        console.log('🆕 New database selection - resetting to defaults');
+        // Reset options to defaults after successful database loading
+        resetOptionsToDefaults();
+        // Build database filter panel, skip restore to ensure all types are checked by default
+        buildDbFilterPanel(topics, types, true); // true = skip restoration
+      }
     } catch (err) {
       document.getElementById("file-chosen").innerHTML = "Error loading database: " + err.message;
     }
@@ -388,11 +495,27 @@ function handleNewTest() {
 // MAIN EVENT INITIALIZATION
 // ============================================================================
 
+// ============================================================================
+// INITIALIZATION EVENT HANDLERS
+// ============================================================================
+
+/**
+ * Check if returning from exam mode and restore database session
+ */
+async function checkAndRestoreDatabaseSession() {
+  // Simplified - just clear any flags without complex restoration
+  sessionStorage.removeItem('returnToOptions');
+  sessionStorage.removeItem('dbState');
+}
+
 /**
  * Initialize all application event listeners
  * This is the main entry point for event coordination
  */
 function initializeEventListeners() {
+  // Check if returning from exam mode and restore database session
+  checkAndRestoreDatabaseSession();
+  
   // File input event listener for JSON files
   document.getElementById("fileInput").addEventListener("change", handleFileInput);
   
@@ -418,7 +541,11 @@ function initializeEventListeners() {
   document.getElementById("newtest").addEventListener("click", handleNewTest);
   
   // Page unload cleanup - ensure database connections are closed
-  window.addEventListener("beforeunload", function() {
+  window.addEventListener("beforeunload", function(e) {
+    // If an intentional exam exit/navigation is in progress, skip any extra work
+    if (window.__examExitInProgress) {
+      return; // Do not interfere
+    }
     if (AppState.database) {
       try {
         AppState.database.close();

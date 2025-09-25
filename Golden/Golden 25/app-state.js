@@ -158,7 +158,8 @@ function saveOptionsState() {
       showCorrectAnswer: true
     },
     numQuestions: 10,
-    selectionMode: 'random' // Only for DB mode
+    selectionMode: 'random', // Only for DB mode
+    testMode: 'learning' // Default to learning mode
   };
   
   // Get current form values
@@ -248,6 +249,12 @@ function saveOptionsState() {
     if (selectionModeRadio) {
       state.selectionMode = selectionModeRadio.value;
     }
+  }
+  
+  // Save test mode
+  const testModeRadio = panel.querySelector('input[name="testMode"]:checked');
+  if (testModeRadio) {
+    state.testMode = testModeRadio.value;
   }
   
   // Store the state

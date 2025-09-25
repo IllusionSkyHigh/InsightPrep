@@ -109,23 +109,24 @@ function validateQuestion(question) {
     }
     
     // Check for valid answer depending on question type
-    if (questionType === "single" || questionType === "multiple" || questionType === "assertion") {
+    const isMCQType = (questionType === "MCQ" || questionType === "MCQ-Scenario" || questionType === "Cohort-05-MCQ" || questionType === "MCQ-Multiple" || questionType === "single" || questionType === "multiple" || questionType === "assertion");
+    
+    if (isMCQType) {
       if (question.answer === undefined || question.answer === null) {
         return { isValid: false, reason: "Missing answer field" };
       }
       
-      // For single choice and assertion, answer should be one of the option texts
-      if (questionType === "single" || questionType === "assertion") {
-        if (!question.options.includes(question.answer)) {
-          return { isValid: false, reason: `Answer "${question.answer}" not found in options: [${question.options.join(', ')}]` };
+      // For single choice MCQs and assertion, answer should be one of the option texts
+      const isSingleAnswer = !Array.isArray(question.answer);
+      if (isSingleAnswer || questionType === "assertion") {
+        const answerToCheck = isSingleAnswer ? question.answer : question.answer[0];
+        if (!question.options.includes(answerToCheck)) {
+          return { isValid: false, reason: `Answer "${answerToCheck}" not found in options: [${question.options.join(', ')}]` };
         }
       }
       
       // For multiple choice, answer should be an array of option texts
-      if (questionType === "multiple") {
-        if (!Array.isArray(question.answer)) {
-          return { isValid: false, reason: "Multiple choice answer must be an array" };
-        }
+      if (Array.isArray(question.answer)) {
         for (const ans of question.answer) {
           if (!question.options.includes(ans)) {
             return { isValid: false, reason: `Answer "${ans}" not found in options` };
@@ -383,8 +384,38 @@ function renderTest(questions) {
       
       // Get question text using flexible field names (support both database and JSON formats)
       const questionText = q.question_text || q.question;
-      // Prioritize the processed 'type' field over the raw 'question_type' field
-      const questionType = q.type || q.question_type;
+      // Get the original question type from database
+      const questionType = q.question_type || q.type;
+      
+      // For MCQ-type questions, determine if single or multiple choice based on correct answer count
+      let isSingleChoice = true;
+      let isMultipleChoice = false;
+      
+      if (AppState.isDbMode && (questionType === 'MCQ' || questionType === 'MCQ-Scenario' || questionType === 'Cohort-05-MCQ' || questionType === 'MCQ-Multiple')) {
+        // Count correct answers in the options table
+        try {
+          const correctCountRes = AppState.database.exec(`SELECT COUNT(*) FROM options WHERE question_id = ${q.id} AND is_correct = 1`);
+          const correctCount = correctCountRes[0]?.values[0][0] || 1;
+          
+          isSingleChoice = (correctCount === 1);
+          isMultipleChoice = (correctCount > 1);
+          
+          console.log(`Question ${q.id}: ${correctCount} correct answers → ${isMultipleChoice ? 'multiple choice (checkboxes)' : 'single choice (radio buttons)'}`);
+        } catch (error) {
+          console.warn(`Error checking correct answers for question ${q.id}:`, error);
+          // Default to single choice if error
+          isSingleChoice = true;
+          isMultipleChoice = false;
+        }
+      } else if (q.type === 'single' || questionType === 'single') {
+        // JSON mode or explicitly marked as single
+        isSingleChoice = true;
+        isMultipleChoice = false;
+      } else if (q.type === 'multiple' || questionType === 'multiple') {
+        // JSON mode or explicitly marked as multiple  
+        isSingleChoice = false;
+        isMultipleChoice = true;
+      }
       
       // Debug logging
       console.log(`Question ${qIndex + 1}:`, {
@@ -393,26 +424,12 @@ function renderTest(questions) {
         question_type: q.question_type,
         type: q.type,
         questionType: questionType,
+        isSingleChoice: isSingleChoice,
+        isMultipleChoice: isMultipleChoice,
         hasOptions: Array.isArray(q.options),
         optionsCount: q.options?.length || 0,
         firstOption: q.options?.[0],
         answer: q.answer
-      });
-      
-      // Check which condition fails
-      console.log(`Question ${qIndex + 1} validation:`, {
-        questionType: questionType,
-        isSingleOrAssertion: (questionType === "single" || questionType === "assertion"),
-        hasOptionsArray: Array.isArray(q.options),
-        isMultiple: (questionType === "multiple"),
-        isMatch: (questionType === "match"),
-        hasMatchPairs: (q.matchPairs && typeof q.matchPairs === 'object' && Object.keys(q.matchPairs).length > 0),
-        willRenderSingle: ((questionType === "single" || questionType === "assertion") && Array.isArray(q.options)),
-        willRenderMultiple: (questionType === "multiple" && Array.isArray(q.options)),
-        willRenderMatch: (questionType === "match" && q.matchPairs && typeof q.matchPairs === 'object' && Object.keys(q.matchPairs).length > 0),
-        willShowError: !((questionType === "single" || questionType === "assertion") && Array.isArray(q.options)) && 
-                       !(questionType === "multiple" && Array.isArray(q.options)) && 
-                       !(questionType === "match" && q.matchPairs && typeof q.matchPairs === 'object' && Object.keys(q.matchPairs).length > 0)
       });
       
       // Format question text with advanced formatting
@@ -427,11 +444,26 @@ function renderTest(questions) {
       qDiv.appendChild(qTitle);
 
       // Render question type-specific content
-      if ((questionType === "single" || questionType === "assertion") && Array.isArray(q.options)) {
-        // Single choice questions (radio buttons)
+      if ((questionType === "match" || questionType === "Match") && q.matchPairs && typeof q.matchPairs === 'object' && Object.keys(q.matchPairs).length > 0) {
+        // Matching questions (requires createMatchQuestion from core-utils.js)
+        console.log(`Rendering match question ${q.id}:`, {
+          questionType: questionType,
+          hasMatchPairs: !!q.matchPairs,
+          matchPairCount: Object.keys(q.matchPairs || {}).length,
+          matchPairs: q.matchPairs,
+          createMatchQuestionAvailable: typeof createMatchQuestion === 'function'
+        });
+        
+        if (typeof createMatchQuestion === 'function') {
+          createMatchQuestion(q, qDiv, qIndex);
+        } else {
+          qDiv.innerHTML += `<div style='color:red;'>Error: Match question renderer not available.</div>`;
+        }
+      } else if ((isSingleChoice || questionType === "assertion") && Array.isArray(q.options)) {
+        // Single choice questions (radio buttons) - using answer-option structure for consistency
         q.options.forEach(opt => {
           const label = document.createElement("label");
-          label.style.display = "block";
+          label.className = "answer-option";
           const input = document.createElement("input");
           input.type = "radio";
           input.name = `q${q.id}`;
@@ -439,21 +471,27 @@ function renderTest(questions) {
           input.addEventListener("change", () => {
             handleAnswer(q, [opt], qDiv, qIndex);
           });
+          const optionText = document.createElement("span");
+          optionText.className = "option-text";
+          optionText.textContent = opt;
           label.appendChild(input);
-          label.append(" " + opt);
+          label.appendChild(optionText);
           qDiv.appendChild(label);
         });
-      } else if (questionType === "multiple" && Array.isArray(q.options)) {
-        // Multiple choice questions (checkboxes)
+      } else if (isMultipleChoice && Array.isArray(q.options)) {
+        // Multiple choice questions (checkboxes) - using answer-option structure for consistency
         q.options.forEach(opt => {
           const label = document.createElement("label");
-          label.style.display = "block";
+          label.className = "answer-option";
           const input = document.createElement("input");
           input.type = "checkbox";
           input.name = `q${q.id}`;
           input.value = opt;
+          const optionText = document.createElement("span");
+          optionText.className = "option-text";
+          optionText.textContent = opt;
           label.appendChild(input);
-          label.append(" " + opt);
+          label.appendChild(optionText);
           qDiv.appendChild(label);
         });
 
@@ -465,15 +503,19 @@ function renderTest(questions) {
           handleAnswer(q, selected, qDiv, qIndex);
         });
         qDiv.appendChild(submitBtn);
-      } else if (questionType === "match" && q.matchPairs && typeof q.matchPairs === 'object' && Object.keys(q.matchPairs).length > 0) {
-        // Matching questions (requires createMatchQuestion from core-utils.js)
-        if (typeof createMatchQuestion === 'function') {
-          createMatchQuestion(q, qDiv, qIndex);
-        } else {
-          qDiv.innerHTML += `<div style='color:red;'>Error: Match question renderer not available.</div>`;
-        }
       } else {
-        qDiv.innerHTML += `<div style='color:red;'>Error: Question data is incomplete or malformed.</div>`;
+        // Debug why question failed to match any type
+        console.error(`Question ${q.id} failed to match any rendering type:`, {
+          questionType: questionType,
+          isSingleChoice: isSingleChoice,
+          isMultipleChoice: isMultipleChoice,
+          hasOptions: Array.isArray(q.options),
+          optionsLength: q.options?.length || 0,
+          hasMatchPairs: !!q.matchPairs,
+          matchPairCount: Object.keys(q.matchPairs || {}).length,
+          question: q
+        });
+        qDiv.innerHTML += `<div style='color:red;'>Error: Question data is incomplete or malformed. Type: ${questionType}</div>`;
       }
 
       container.appendChild(qDiv);
@@ -515,19 +557,35 @@ function handleAnswer(question, chosen, qDiv, qIndex) {
   let isCorrect = false;
   
   // Get question type using flexible field names
-  // Prioritize standardized 'type' field over raw 'question_type' field
-  const questionType = question.type || question.question_type;
-
-  // Validate answer based on question type
-  if (questionType === "single" || questionType === "assertion") {
-    isCorrect = (chosen[0] === question.answer);
+  const questionType = question.question_type || question.type;
+  
+  // Determine if this is single or multiple choice based on the answer format and database check
+  let isSingleChoice = true;
+  let isMultipleChoice = false;
+  
+  if (AppState.isDbMode && (questionType === 'MCQ' || questionType === 'MCQ-Scenario' || questionType === 'Cohort-05-MCQ' || questionType === 'MCQ-Multiple')) {
+    // For database mode, check if answer is array with multiple values or single value
+    isMultipleChoice = Array.isArray(question.answer) && question.answer.length > 1;
+    isSingleChoice = !isMultipleChoice;
+  } else {
+    // For JSON mode, use the type field or answer format
+    isSingleChoice = (question.type === "single" || questionType === "single" || questionType === "assertion") || 
+                     (!Array.isArray(question.answer) || question.answer.length === 1);
+    isMultipleChoice = (question.type === "multiple" || questionType === "multiple") || 
+                       (Array.isArray(question.answer) && question.answer.length > 1);
   }
-  else if (questionType === "multiple") {
-    const correct = new Set(question.answer);
+
+  // Validate answer based on determined choice type
+  if (isSingleChoice || questionType === "assertion") {
+    const correctAnswer = Array.isArray(question.answer) ? question.answer[0] : question.answer;
+    isCorrect = (chosen[0] === correctAnswer);
+  }
+  else if (isMultipleChoice) {
+    const correct = new Set(Array.isArray(question.answer) ? question.answer : [question.answer]);
     const selected = new Set(chosen);
     isCorrect = (correct.size === selected.size && [...correct].every(x => selected.has(x)));
   }
-  else if (questionType === "match") {
+  else if (questionType === "match" || questionType === "Match") {
     isCorrect = JSON.stringify(chosen) === JSON.stringify(question.matchPairs);
   }
 
@@ -551,13 +609,13 @@ function handleAnswer(question, chosen, qDiv, qIndex) {
       if (AppState.explanationMode === 2) {
         // Display the correct answer if enabled
         if (AppState.showCorrectAnswer) {
-          if (questionType === "single" || questionType === "assertion") {
+          if (isSingleChoice || questionType === "assertion") {
             const displayAnswer = Array.isArray(question.answer) ? question.answer.join(', ') : question.answer;
             qDiv.insertAdjacentHTML("beforeend", `<p class="correct-answer">✓ Correct answer: ${displayAnswer}</p>`);
-          } else if (questionType === "multiple") {
+          } else if (isMultipleChoice) {
             const correctAnswers = Array.isArray(question.answer) ? question.answer : [question.answer];
             qDiv.insertAdjacentHTML("beforeend", `<p class="correct-answer">✓ Correct answers: ${correctAnswers.join(', ')}</p>`);
-          } else if (questionType === "match") {
+          } else if (questionType === "match" || questionType === "Match") {
             const matchDisplay = Object.entries(question.matchPairs).map(([left, right]) => `${left} → ${right}`).join(', ');
             qDiv.insertAdjacentHTML("beforeend", `<p class="correct-answer">✓ Correct matches: ${matchDisplay}</p>`);
           }
@@ -731,28 +789,29 @@ function showAnswerFeedback(question, qDiv) {
   // Get question type using flexible field names
   const questionType = question.question_type || question.type;
   
-  console.log("=== showAnswerFeedback called ===");
-  console.log("Full question object:", question);
-  console.log("question.question_type:", question.question_type);
-  console.log("question.type:", question.type);
-  console.log("Resolved questionType:", questionType);
-  console.log("AppState.showCorrectAnswer:", AppState.showCorrectAnswer);
-  console.log("question.answer:", question.answer);
-  
   // Display the correct answer if enabled
   if (AppState.showCorrectAnswer) {
-    // Handle various question type formats more flexibly
-    if (questionType === "single" || questionType === "assertion" || questionType === "MCQ" || questionType === "TrueFalse" || questionType === "AssertionReason") {
-      const displayAnswer = Array.isArray(question.answer) ? question.answer.join(', ') : question.answer;
-      qDiv.insertAdjacentHTML("beforeend", `<p class="correct-answer">✓ Correct answer: ${displayAnswer}</p>`);
-    } else if (questionType === "multiple" || questionType === "MCQ-Multiple") {
-      const correctAnswers = Array.isArray(question.answer) ? question.answer : [question.answer];
-      qDiv.insertAdjacentHTML("beforeend", `<p class="correct-answer">✓ Correct answers: ${correctAnswers.join(', ')}</p>`);
-    } else if (questionType === "match" || questionType === "Match") {
+    // Determine if single or multiple choice based on answer format and database mode
+    let isMultipleChoice = false;
+    
+    if (AppState.isDbMode && (questionType === 'MCQ' || questionType === 'MCQ-Scenario' || questionType === 'Cohort-05-MCQ' || questionType === 'MCQ-Multiple')) {
+      // For database mode, check if answer is array with multiple values
+      isMultipleChoice = Array.isArray(question.answer) && question.answer.length > 1;
+    } else {
+      // For JSON mode, use type field or answer format
+      isMultipleChoice = (questionType === "multiple" || questionType === "MCQ-Multiple") || 
+                         (Array.isArray(question.answer) && question.answer.length > 1);
+    }
+    
+    // Display answer based on determined type
+    if (questionType === "match" || questionType === "Match") {
       const matchDisplay = Object.entries(question.matchPairs).map(([left, right]) => `${left} → ${right}`).join(', ');
       qDiv.insertAdjacentHTML("beforeend", `<p class="correct-answer">✓ Correct matches: ${matchDisplay}</p>`);
+    } else if (isMultipleChoice) {
+      const correctAnswers = Array.isArray(question.answer) ? question.answer : [question.answer];
+      qDiv.insertAdjacentHTML("beforeend", `<p class="correct-answer">✓ Correct answers: ${correctAnswers.join(', ')}</p>`);
     } else {
-      // Fallback: just display the answer regardless of type
+      // Single choice (including MCQ, TrueFalse, AssertionReason, assertion, etc.)
       const displayAnswer = Array.isArray(question.answer) ? question.answer.join(', ') : question.answer;
       if (displayAnswer) {
         qDiv.insertAdjacentHTML("beforeend", `<p class="correct-answer">✓ Correct answer: ${displayAnswer}</p>`);
@@ -837,10 +896,15 @@ function renderSingleQuestion(q, qDiv, qIndex) {
   qDiv.style.position = 'relative';
   
   // Re-render question content based on type
-  if ((q.type === "single" || q.type === "assertion") && Array.isArray(q.options)) {
+  if ((q.type === "match" || q.type === "Match") && q.matchPairs && typeof q.matchPairs === 'object' && Object.keys(q.matchPairs).length > 0) {
+    if (typeof createMatchQuestion === 'function') {
+      createMatchQuestion(q, qDiv, qIndex);
+    }
+  }
+  else if ((q.type === "single" || q.type === "assertion") && Array.isArray(q.options)) {
     q.options.forEach(opt => {
       const label = document.createElement("label");
-      label.style.display = "block";
+      label.className = "answer-option";
       const input = document.createElement("input");
       input.type = "radio";
       input.name = `q${q.id}_retry`;
@@ -848,21 +912,27 @@ function renderSingleQuestion(q, qDiv, qIndex) {
       input.addEventListener("change", () => {
         handleAnswer(q, [opt], qDiv, qIndex);
       });
+      const optionText = document.createElement("span");
+      optionText.className = "option-text";
+      optionText.textContent = opt;
       label.appendChild(input);
-      label.append(" " + opt);
+      label.appendChild(optionText);
       qDiv.appendChild(label);
     });
   }
   else if (q.type === "multiple" && Array.isArray(q.options)) {
     q.options.forEach(opt => {
       const label = document.createElement("label");
-      label.style.display = "block";
+      label.className = "answer-option";
       const input = document.createElement("input");
       input.type = "checkbox";
       input.name = `q${q.id}_retry`;
       input.value = opt;
+      const optionText = document.createElement("span");
+      optionText.className = "option-text";
+      optionText.textContent = opt;
       label.appendChild(input);
-      label.append(" " + opt);
+      label.appendChild(optionText);
       qDiv.appendChild(label);
     });
     
@@ -875,11 +945,6 @@ function renderSingleQuestion(q, qDiv, qIndex) {
       handleAnswer(q, selected, qDiv, qIndex);
     });
     qDiv.appendChild(submitBtn);
-  }
-  else if (q.type === "match" && q.matchPairs && typeof q.matchPairs === 'object' && Object.keys(q.matchPairs).length > 0) {
-    if (typeof createMatchQuestion === 'function') {
-      createMatchQuestion(q, qDiv, qIndex);
-    }
   }
 
   // Highlight this card for retry

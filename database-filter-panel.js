@@ -1,5 +1,195 @@
-// Database Filter Panel Module - Exact copy from Golden 22
-// This preserves all the exact Golden 22 functionality and UI
+// Database Filter Panel Module - Enhanced with MCQ categorization
+// This preserves all the exact Golden 22 functionality and UI plus enhanced question type filtering
+
+/**
+ * Analyze all questions and categorize them into enhanced question types
+ * @returns {Array} Array of type objects with {name, originalTypes, count, description}
+ */
+function analyzeAndCategorizeQuestionTypes() {
+  try {
+    console.log('🔍 Starting enhanced question type analysis...');
+    
+    // Check if database is available
+    if (!AppState.database) {
+      console.warn('❌ AppState.database is not available');
+      return [];
+    }
+    
+    // Get all questions with their types
+    const questionsRes = AppState.database.exec("SELECT id, question_type FROM questions");
+    
+    console.log('📊 Query result:', questionsRes);
+    
+    if (!questionsRes[0]?.values) {
+      console.warn('❌ No question data found in database');
+      return [];
+    }
+    
+    const questions = questionsRes[0].values;
+    console.log(`📝 Found ${questions.length} questions to analyze`);
+    
+    // Dynamic type counting - preserve all original types and add enhanced subcategories
+    const typeCounts = {};
+    const typeMapping = {};
+    
+    questions.forEach((row, index) => {
+      const [questionId, questionType] = row;
+      
+      if (index < 5) {
+        console.log(`🔍 Question ${index + 1}:`, { questionId, questionType });
+      }
+      
+      // Helper function to add type to mapping
+      const addToMapping = (enhancedType, originalType) => {
+        if (!typeMapping[enhancedType]) {
+          typeMapping[enhancedType] = new Set();
+        }
+        typeMapping[enhancedType].add(originalType);
+      };
+      
+      // Determine if this is an MCQ-type question that needs subcategorization
+      const isMCQType = questionType === 'MCQ' || questionType === 'MCQ-Scenario' || 
+                        questionType === 'Cohort-05-MCQ' || questionType === 'MCQ-Multiple';
+      
+      if (isMCQType) {
+        // For MCQ types, check how many correct answers exist to create subcategories
+        // This matches the exact logic used by test-engine.js and database-filter-panel.js
+        try {
+          const correctCountRes = AppState.database.exec(`SELECT COUNT(*) FROM options WHERE question_id = ${questionId} AND is_correct = 1`);
+          const correctCount = correctCountRes[0]?.values[0][0] || 0;
+          
+          // Also get all options for debugging
+          const allOptionsRes = AppState.database.exec(`SELECT option_text, is_correct FROM options WHERE question_id = ${questionId}`);
+          const allOptions = allOptionsRes[0]?.values || [];
+          
+          if (index < 10) {
+            console.log(`🔢 Question ${questionId} (${questionType}):`);
+            console.log(`   Correct count: ${correctCount}`);
+            console.log(`   All options:`, allOptions.map(([text, correct]) => `${correct ? '✓' : ' '} ${text.substring(0, 30)}`));
+          }
+          
+          // Check if it's True/False by examining options
+          const optionsRes = AppState.database.exec(`SELECT option_text FROM options WHERE question_id = ${questionId}`);
+          const options = optionsRes[0]?.values.map(v => v[0]) || [];
+          
+          if (isTrueFalseQuestionByOptions(options)) {
+            const enhancedType = `${questionType} - True or False`;
+            typeCounts[enhancedType] = (typeCounts[enhancedType] || 0) + 1;
+            addToMapping(enhancedType, questionType);
+            if (index < 5) console.log(`✅ Categorized as ${enhancedType}`);
+          } else if (correctCount > 1) {
+            const enhancedType = `${questionType} - Multiple Correct`;
+            typeCounts[enhancedType] = (typeCounts[enhancedType] || 0) + 1;
+            addToMapping(enhancedType, questionType);
+            if (index < 10) console.log(`✅ Categorized as ${enhancedType} (${correctCount} correct answers)`);
+          } else {
+            const enhancedType = `${questionType} - Single Correct`;
+            typeCounts[enhancedType] = (typeCounts[enhancedType] || 0) + 1;
+            addToMapping(enhancedType, questionType);
+            if (index < 10) console.log(`✅ Categorized as ${enhancedType} (${correctCount} correct answers)`);
+          }
+        } catch (e) {
+          console.error(`Error analyzing question ${questionId}:`, e);
+          // Fallback to basic type
+          typeCounts[questionType] = (typeCounts[questionType] || 0) + 1;
+          addToMapping(questionType, questionType);
+        }
+      } else {
+        // Non-MCQ types - preserve as-is
+        typeCounts[questionType] = (typeCounts[questionType] || 0) + 1;
+        addToMapping(questionType, questionType);
+        if (index < 5) console.log(`✅ Preserved original type: ${questionType}`);
+      }
+    });
+    
+    // Convert to array format with only non-zero counts
+    const result = [];
+    console.log('📊 Final type counts:', typeCounts);
+    console.log('🗂️ Type mappings:', Object.fromEntries(
+      Object.entries(typeMapping).map(([k, v]) => [k, Array.from(v)])
+    ));
+    
+    Object.entries(typeCounts).forEach(([typeName, count]) => {
+      if (count > 0) {
+        result.push({
+          name: typeName,
+          originalTypes: Array.from(typeMapping[typeName]),
+          count: count,
+          description: getTypeDescription(typeName)
+        });
+      }
+    });
+    
+    console.log('✅ Enhanced types result:', result);
+    return result;
+    
+  } catch (error) {
+    console.error('Error analyzing question types:', error);
+    // Fallback - return empty array if analysis fails
+    return [];
+  }
+}
+
+/**
+ * Check if a question appears to be True/False based on array of options
+ */
+function isTrueFalseQuestionByOptions(options) {
+  if (!options || options.length !== 2) return false;
+  
+  const option1 = options[0].toLowerCase().trim();
+  const option2 = options[1].toLowerCase().trim();
+  
+  return (
+    (option1 === 'true' && option2 === 'false') ||
+    (option1 === 'false' && option2 === 'true') ||
+    (option1 === 't' && option2 === 'f') ||
+    (option1 === 'f' && option2 === 't')
+  );
+}
+
+/**
+ * Check if a question appears to be True/False based on options (legacy)
+ */
+function isTrueFalseQuestion(optionA, optionB, optionC, optionD) {
+  const options = [optionA, optionB, optionC, optionD].filter(opt => opt && opt.trim());
+  
+  if (options.length !== 2) return false;
+  
+  const option1 = options[0].toLowerCase().trim();
+  const option2 = options[1].toLowerCase().trim();
+  
+  return (
+    (option1 === 'true' && option2 === 'false') ||
+    (option1 === 'false' && option2 === 'true') ||
+    (option1 === 'yes' && option2 === 'no') ||
+    (option1 === 'no' && option2 === 'yes') ||
+    (option1 === 't' && option2 === 'f') ||
+    (option1 === 'f' && option2 === 't')
+  );
+}
+
+/**
+ * Check if question has multiple choice options (more than 2 meaningful options)
+ */
+function hasMultipleChoiceOptions(optionA, optionB, optionC, optionD) {
+  const options = [optionA, optionB, optionC, optionD].filter(opt => opt && opt.trim().length > 1);
+  return options.length >= 3;
+}
+
+/**
+ * Get description for each question type
+ */
+function getTypeDescription(typeName) {
+  const descriptions = {
+    'MCQ - Single Correct': 'Multiple choice with one correct answer',
+    'MCQ - Multiple Correct': 'Multiple choice with multiple correct answers',
+    'True or False': 'Binary choice questions',
+    'Assertion-Reason': 'Statement and reason evaluation',
+    'Match the Following': 'Pairing exercises',
+    'Other': 'Other question formats'
+  };
+  return descriptions[typeName] || '';
+}
 
 function buildDbFilterPanel(topics, types, skipRestore = false) {
   const panel = document.getElementById("filter-panel");
@@ -292,21 +482,65 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
   
   wrapper.appendChild(topicDiv);
 
-  // Types section (EXACT GOLDEN 22)
+  // Types section with enhanced MCQ categorization
   const typeDiv = document.createElement("div");
   typeDiv.className = "filter-section";
   typeDiv.innerHTML = "<h3>Select Question Types</h3>";
+  
+  // Analyze questions and create enhanced type categories with fallback
+  let enhancedTypes = analyzeAndCategorizeQuestionTypes();
+  
+  // Store globally for access by update functions
+  window.currentEnhancedTypes = enhancedTypes;
+  
+  // Fallback to original types if enhanced analysis failed or returned empty
+  if (!enhancedTypes || enhancedTypes.length === 0) {
+    console.warn('⚠️ Enhanced type analysis failed, using original types as fallback');
+    console.log('📋 Original types from parameter:', types);
+    
+    // Get actual counts for each original type
+    enhancedTypes = types.map(t => {
+      let count = 0;
+      try {
+        const countRes = AppState.database.exec(`SELECT COUNT(*) FROM questions WHERE question_type = '${t}'`);
+        count = countRes[0]?.values[0][0] || 0;
+      } catch (e) {
+        console.error(`Error counting questions for type ${t}:`, e);
+      }
+      
+      return {
+        name: t,
+        originalTypes: [t],
+        count: count,
+        description: ''
+      };
+    });
+    
+    console.log('✅ Fallback types with counts:', enhancedTypes);
+  }
   
   // Calculate total questions for filtered types only
   let totalFilteredQuestions = 0;
   const typeCountsArray = []; // Make this accessible to updateQuestionTypeCounts
   
-  types.forEach(t => {
-    // Get count for each question type from database
-    const typeCountRes = AppState.database.exec(`SELECT COUNT(*) FROM questions WHERE question_type = '${escapeSQL(t)}'`);
-    const typeQuestionCount = typeCountRes[0]?.values[0][0] || 0;
-    typeCountsArray.push(typeQuestionCount);
-    totalFilteredQuestions += typeQuestionCount;
+  console.log('🔢 Calculating total filtered questions from enhanced types:', enhancedTypes);
+  enhancedTypes.forEach(typeInfo => {
+    console.log(`➕ Adding ${typeInfo.count} from ${typeInfo.name}`);
+    totalFilteredQuestions += typeInfo.count;
+    typeCountsArray.push(typeInfo.count);
+  });
+  
+  console.log('📊 Total filtered questions:', totalFilteredQuestions);
+  
+  // Create enhanced type mapping for search functions
+  window.enhancedTypeMapping = {};
+  enhancedTypes.forEach(typeInfo => {
+    typeInfo.originalTypes.forEach(originalType => {
+      if (!window.enhancedTypeMapping[originalType]) {
+        window.enhancedTypeMapping[originalType] = [];
+      }
+      window.enhancedTypeMapping[originalType].push(typeInfo.name);
+    });
   });
   
   // Determine initial state for "All Types" checkbox based on saved state
@@ -317,8 +551,8 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
   allTypes.innerHTML = `<input type=\"checkbox\" value=\"ALL\" ${allTypesChecked ? 'checked' : ''}> Selected Types <span style="color: #666; font-weight: normal;">(${totalFilteredQuestions} question${totalFilteredQuestions === 1 ? '' : 's'})</span>`;
   typeDiv.appendChild(allTypes);
   
-  types.forEach((t, index) => {
-    const typeQuestionCount = typeCountsArray[index];
+  enhancedTypes.forEach((typeInfo, index) => {
+    const typeQuestionCount = typeInfo.count;
     const l = document.createElement("label");
     l.style.display = "block";
     l.style.marginLeft = "20px"; // Indent the individual type checkboxes
@@ -326,15 +560,29 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
     // Determine if this individual type should be checked based on saved state
     let typeChecked = true; // default
     if (shouldRestore && !savedState.allTypesSelected) {
-      typeChecked = savedState.selectedTypes && savedState.selectedTypes.includes(t);
+      // Check if this enhanced type was selected OR if any of the original types were selected
+      typeChecked = savedState.selectedTypes && (
+        savedState.selectedTypes.includes(typeInfo.name) || 
+        typeInfo.originalTypes.some(origType => savedState.selectedTypes.includes(origType))
+      );
     }
     
-    l.innerHTML = `<input type=\"checkbox\" value=\"${t}\" ${typeChecked ? 'checked' : ''}> ${t} <span style="color: #666; font-weight: normal;">(${typeQuestionCount} question${typeQuestionCount === 1 ? '' : 's'})</span>`;
+    // Store original types as data attribute for filtering
+    const originalTypesStr = typeInfo.originalTypes.join(',');
+    
+    l.innerHTML = `<input type=\"checkbox\" value=\"${typeInfo.name}\" data-original-types=\"${originalTypesStr}\" ${typeChecked ? 'checked' : ''}> ${typeInfo.name} <span style="color: #666; font-weight: normal;">(${typeQuestionCount} question${typeQuestionCount === 1 ? '' : 's'})</span>`;
     typeDiv.appendChild(l);
   });
   
   // Setup all checkbox functionality
   setupAllCheckbox(typeDiv);
+  
+  // Update the Selected Types count after initial setup
+  setTimeout(() => {
+    if (typeof updateSelectedTypesCountDB === 'function') {
+      updateSelectedTypesCountDB();
+    }
+  }, 100);
   
   // After restoration, update "Selected Types" checkbox visual state to reflect individual selections
   if (shouldRestore && !savedState.allTypesSelected) {
@@ -391,12 +639,14 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
         const label = cb.parentElement;
         const span = label.querySelector('span');
         if (span) {
-          // Extract count from text like "(40 questions)"
+          // Extract count from text like "(40 questions)" or "(1 question)"
           const match = span.textContent.match(/\((\d+)\s+question/);
           if (match) {
             const count = parseInt(match[1]);
             totalSelectedCount += count;
             console.log("Adding", count, "from", cb.value); // Debug log
+          } else {
+            console.log("No match found for span text:", span.textContent); // Debug log
           }
         }
       }
@@ -416,21 +666,20 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
   // Store the function globally so other event handlers can access it
   window.currentUpdateFunction = updateSelectedTypesCountDB;
   
-  // Function to update question type counts based on selected topics/subtopics (EXACT GOLDEN 22)
+  // Function to update question type counts based on selected topics/subtopics (Enhanced for new types)
   function updateQuestionTypeCounts() {
     // Get selected topic/subtopic combinations
     const selectAllTopics = document.getElementById("select-all-topics-db");
-    let sql;
     
     if (selectAllTopics && selectAllTopics.checked) {
-      // All topics and subtopics selected - use original total counts
-      types.forEach((t, index) => {
-        const typeLabel = typeDiv.querySelector(`input[value="${t}"]`);
+      // All topics and subtopics selected - restore original enhanced counts
+      const enhancedTypes = window.currentEnhancedTypes || [];
+      enhancedTypes.forEach((typeInfo) => {
+        const typeLabel = typeDiv.querySelector(`input[value="${typeInfo.name}"]`);
         if (typeLabel && typeLabel.parentElement) {
           const span = typeLabel.parentElement.querySelector('span');
           if (span) {
-            const originalCount = typeCountsArray[index];
-            span.textContent = `(${originalCount} question${originalCount === 1 ? '' : 's'})`;
+            span.textContent = `(${typeInfo.count} question${typeInfo.count === 1 ? '' : 's'})`;
           }
         }
       });
@@ -439,9 +688,10 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
       const selectedSubtopics = topicDiv.querySelectorAll(".subtopic-checkbox:checked");
       
       if (selectedSubtopics.length === 0) {
-        // No subtopics selected - show 0 for all types
-        types.forEach((t) => {
-          const typeLabel = typeDiv.querySelector(`input[value="${t}"]`);
+        // No subtopics selected - show 0 for all enhanced types
+        const enhancedTypes = window.currentEnhancedTypes || [];
+        enhancedTypes.forEach((typeInfo) => {
+          const typeLabel = typeDiv.querySelector(`input[value="${typeInfo.name}"]`);
           if (typeLabel && typeLabel.parentElement) {
             const span = typeLabel.parentElement.querySelector('span');
             if (span) {
@@ -460,26 +710,73 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
         conditions.push(`(topic = '${escapeSQL(topic)}' AND subtopic = '${escapeSQL(subtopic)}')`);
       });
       
-      // Update counts for each question type
-      let totalFilteredForSelection = 0;
-      const updatedCounts = [];
+      // Re-analyze questions with topic/subtopic filtering to get correct enhanced type counts
+      const filteredQuestionsRes = AppState.database.exec(`SELECT id, question_type FROM questions WHERE ${conditions.join(' OR ')}`);
       
-      types.forEach((t) => {
-        const countSql = `SELECT COUNT(*) FROM questions WHERE (${conditions.join(' OR ')}) AND question_type = '${escapeSQL(t)}'`;
-        const countRes = AppState.database.exec(countSql);
-        const count = countRes[0]?.values[0][0] || 0;
-        updatedCounts.push(count);
-        totalFilteredForSelection += count;
+      if (filteredQuestionsRes[0]?.values) {
+        const filteredQuestions = filteredQuestionsRes[0].values;
+        console.log(`🔍 Re-analyzing ${filteredQuestions.length} filtered questions for enhanced types`);
         
-        // Update the display
-        const typeLabel = typeDiv.querySelector(`input[value="${t}"]`);
-        if (typeLabel && typeLabel.parentElement) {
-          const span = typeLabel.parentElement.querySelector('span');
-          if (span) {
-            span.textContent = `(${count} question${count === 1 ? '' : 's'})`;
+        // Reset all enhanced type counts to 0
+        const enhancedTypes = window.currentEnhancedTypes || [];
+        const newTypeCounts = {};
+        
+        // Re-analyze each filtered question using the same logic as initial analysis
+        filteredQuestions.forEach((row) => {
+          const [questionId, questionType] = row;
+          
+          // Helper function to add type to new counts
+          const addToNewCounts = (enhancedType) => {
+            newTypeCounts[enhancedType] = (newTypeCounts[enhancedType] || 0) + 1;
+          };
+          
+          // Determine if this is an MCQ-type question that needs subcategorization
+          const isMCQType = questionType === 'MCQ' || questionType === 'MCQ-Scenario' || 
+                            questionType === 'Cohort-05-MCQ' || questionType === 'MCQ-Multiple';
+          
+          if (isMCQType) {
+            // For MCQ types, check how many correct answers exist to create subcategories
+            try {
+              const correctCountRes = AppState.database.exec(`SELECT COUNT(*) FROM options WHERE question_id = ${questionId} AND is_correct = 1`);
+              const correctCount = correctCountRes[0]?.values[0][0] || 0;
+              
+              // Check if it's True/False by examining options
+              const optionsRes = AppState.database.exec(`SELECT option_text FROM options WHERE question_id = ${questionId}`);
+              const options = optionsRes[0]?.values.map(v => v[0]) || [];
+              
+              if (isTrueFalseQuestionByOptions(options)) {
+                addToNewCounts(`${questionType} - True or False`);
+              } else if (correctCount > 1) {
+                addToNewCounts(`${questionType} - Multiple Correct`);
+                console.log(`🔄 Update: Question ${questionId} (${questionType}) → Multiple Correct (${correctCount} correct)`);
+              } else {
+                addToNewCounts(`${questionType} - Single Correct`);
+              }
+            } catch (e) {
+              console.error(`Error analyzing question ${questionId}:`, e);
+              // Fallback to basic type
+              addToNewCounts(questionType);
+            }
+          } else {
+            // Non-MCQ types - preserve as-is
+            addToNewCounts(questionType);
           }
-        }
-      });
+        });
+        
+        // Update the display for each enhanced type
+        enhancedTypes.forEach((typeInfo) => {
+          const count = newTypeCounts[typeInfo.name] || 0;
+          const typeLabel = typeDiv.querySelector(`input[value="${typeInfo.name}"]`);
+          if (typeLabel && typeLabel.parentElement) {
+            const span = typeLabel.parentElement.querySelector('span');
+            if (span) {
+              span.textContent = `(${count} question${count === 1 ? '' : 's'})`;
+            }
+          }
+        });
+        
+        
+      }
     }
     
     // Update the "Selected Types" count to reflect only checked types
@@ -503,14 +800,14 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
   
   // Add event listeners to individual type checkboxes to update "Selected Types" count (EXACT GOLDEN 22)
   setTimeout(() => {
-    console.log("Setting up DB mode event listeners"); // Debug log
+    
     const typeChecks = typeDiv.querySelectorAll("input[type=checkbox]");
-    console.log("Found", typeChecks.length, "DB checkboxes to set up"); // Debug log
+    
     typeChecks.forEach((cb, i) => {
       if (i > 0) { // Skip the first "Selected Types" checkbox
-        console.log("Adding DB listener to", cb.value); // Debug log
+        
         cb.addEventListener('change', () => {
-          console.log("DB type checkbox changed:", cb.value, cb.checked); // Debug log
+          
           updateSelectedTypesCountDB();
         });
       }
@@ -542,33 +839,6 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
 
   wrapper.appendChild(expDiv);
 
-  // Study Mode Toggle - Between Learning and Exam Practice modes
-  const modeToggleDiv = document.createElement("div");
-  modeToggleDiv.className = "filter-section";
-  modeToggleDiv.innerHTML = `
-    <h3>Study Mode Selection</h3>
-    <div style="display: flex; gap: 20px; align-items: center; margin-bottom: 15px;">
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <input type="radio" id="learning-mode" name="studyMode" value="learning" checked>
-        <label for="learning-mode" style="margin: 0;">📚 Learning Mode</label>
-      </div>
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <input type="radio" id="exam-mode" name="studyMode" value="exam">
-        <label for="exam-mode" style="margin: 0;">🎯 Exam Practice Mode</label>
-      </div>
-    </div>
-    <div style="font-size: 0.9em; color: #666; background: #f9f9f9; padding: 10px; border-radius: 4px;">
-      <div id="learning-mode-desc">
-        <strong>Learning Mode:</strong> Practice with immediate feedback and explanations. Unlimited questions.
-      </div>
-      <div id="exam-mode-desc" style="display: none;">
-        <strong>Exam Practice Mode:</strong> Timed exam simulation with final scoring. Maximum 100 questions. No immediate feedback during the exam.
-      </div>
-    </div>
-  `;
-  
-  wrapper.appendChild(modeToggleDiv);
-
   // Test Behavior Options (EXACT GOLDEN 22) - respect saved state
   const behaviorDiv = document.createElement("div");
   behaviorDiv.className = "filter-section";
@@ -598,14 +868,101 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
 
   wrapper.appendChild(behaviorDiv);
 
+  // Test Mode Selection section
+  const testModeDiv = document.createElement("div");
+  testModeDiv.className = "filter-section";
+  testModeDiv.style.marginTop = "10px";
+  
+  // Determine saved test mode
+  const savedTestMode = shouldRestore && savedState.testMode ? savedState.testMode : 'learning';
+  
+  testModeDiv.innerHTML = `
+    <h3>Test Mode</h3>
+    <label><input type="radio" name="testMode" value="learning" ${savedTestMode === 'learning' ? 'checked' : ''}> Learning Mode (Interactive practice with full feedback)</label><br>
+    <label><input type="radio" name="testMode" value="exam" ${savedTestMode === 'exam' ? 'checked' : ''}> Exam Practice Mode (Timed simulation with minimal feedback)</label>
+    
+    <div style="margin-top: 10px; padding: 12px; background: #fff3cd; border-radius: 6px; font-size: 0.9em; color: #856404; line-height: 1.4; display: flex; gap: 20px;">
+      <div style="flex: 1;">
+        <strong>🎓 Learning Mode:</strong><br>
+        • Interactive study session with full feedback<br>
+        • Try again options and immediate explanations<br>
+        • Uses Test Behavior Options settings above<br>
+        • Unlimited questions allowed
+      </div>
+      
+      <div style="flex: 1;">
+        <strong>⏱️ Exam Practice:</strong><br>
+        • Realistic timed exam simulation<br>
+        • <u>Ignores Test Behavior Options</u> (no try again, delayed feedback)<br>
+        • Limited to maximum 100 questions<br>
+        • Designed for focused exam preparation
+      </div>
+    </div>
+  `;
+
+  wrapper.appendChild(testModeDiv);
+
+  // Add test mode change handlers to update number of questions limit and show/hide exam duration
+  setTimeout(() => {
+    const testModeRadios = document.querySelectorAll('input[name="testMode"]');
+    const examDurationSection = document.getElementById('exam-duration-section');
+    const numInput = document.getElementById('numQuestions');
+    
+    // Function to update calculated exam duration
+    function updateCalculatedDuration() {
+      const durationValueSpan = document.getElementById('duration-value');
+      if (durationValueSpan && numInput) {
+        const numQuestions = parseInt(numInput.value) || 10;
+        const calculatedDuration = Math.round(numQuestions * 1.5);
+        durationValueSpan.textContent = calculatedDuration;
+      }
+    }
+    
+    // Function to update exam duration visibility
+    function updateExamDurationVisibility() {
+      const examModeRadio = document.querySelector('input[name="testMode"][value="exam"]');
+      if (examDurationSection) {
+        const isExamMode = examModeRadio && examModeRadio.checked;
+        examDurationSection.style.display = isExamMode ? 'block' : 'none';
+        if (isExamMode) {
+          updateCalculatedDuration();
+        }
+      }
+    }
+    
+    // Set initial state
+    updateExamDurationVisibility();
+    
+    // Add listeners to test mode radios
+    testModeRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        console.log('Test mode changed to:', radio.value);
+        // Update exam duration visibility and calculation
+        updateExamDurationVisibility();
+        // Update max questions when test mode changes
+        if (typeof updateMaxQuestions === 'function') {
+          updateMaxQuestions();
+        }
+      });
+    });
+    
+    // Add listener to number of questions input to update duration
+    if (numInput) {
+      numInput.addEventListener('input', () => {
+        const examModeRadio = document.querySelector('input[name="testMode"][value="exam"]');
+        if (examModeRadio && examModeRadio.checked) {
+          updateCalculatedDuration();
+        }
+      });
+    }
+  }, 0);
+
   // Add immediate result option change handler (DB mode) - EXACT GOLDEN 22
   setTimeout(() => {
     const immediateResultCheckbox = document.getElementById("immediateResultOptionDb");
     const correctAnswerCheckbox = document.getElementById("correctAnswerOptionDb");
     const tryAgainCheckbox = document.getElementById("tryAgainOptionDb");
-    const expSection = Array.from(wrapper.querySelectorAll('.filter-section')).find(div => 
-      div.querySelector('h3')?.textContent.includes('Explanation'));
-    const explanationRadios = expSection ? expSection.querySelectorAll('input[name="expMode"]') : [];
+    const explanationRadios = expDiv.querySelectorAll('input[name="expMode"]');
     
     if (immediateResultCheckbox && tryAgainCheckbox && correctAnswerCheckbox) {
       immediateResultCheckbox.addEventListener("change", () => {
@@ -631,188 +988,6 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
     }
   }, 0);
 
-  // Function to update exam duration display based on question count
-  function updateExamDurationDisplay() {
-    const examModeRadio = document.getElementById("exam-mode");
-    if (examModeRadio && examModeRadio.checked) {
-      const numInput = document.getElementById("numQuestions");
-      
-      if (numInput) {
-        const questionCount = parseInt(numInput.value) || 1;
-        const durationMinutes = Math.round(questionCount * 1.5);
-        
-        // Find or create the duration display field
-        let durationDisplay = document.getElementById("exam-duration-display");
-        if (!durationDisplay) {
-          // Create the duration display field in bottom right of wrapper
-          durationDisplay = document.createElement("div");
-          durationDisplay.id = "exam-duration-display";
-          durationDisplay.style.cssText = `
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background: #e3f2fd;
-            border: 1px solid #2196f3;
-            border-radius: 6px;
-            padding: 8px 12px;
-            font-size: 0.9em;
-            color: #1976d2;
-            font-weight: bold;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            z-index: 10;
-          `;
-          
-          // Make sure wrapper has relative positioning for absolute positioning to work
-          wrapper.style.position = "relative";
-          wrapper.appendChild(durationDisplay);
-        }
-        
-        durationDisplay.innerHTML = `⏱️ Exam Duration: ${durationMinutes} minutes`;
-        durationDisplay.style.display = "block";
-        
-        console.log(`Updated exam duration display to ${durationMinutes} minutes for ${questionCount} questions`);
-      }
-    } else {
-      // Hide duration display in learning mode
-      const durationDisplay = document.getElementById("exam-duration-display");
-      if (durationDisplay) {
-        durationDisplay.style.display = "none";
-      }
-    }
-  }
-
-  // Add mode toggle event listeners
-  setTimeout(() => {
-    const learningModeRadio = document.getElementById("learning-mode");
-    const examModeRadio = document.getElementById("exam-mode");
-    const learningModeDesc = document.getElementById("learning-mode-desc");
-    const examModeDesc = document.getElementById("exam-mode-desc");
-    const numInput = document.getElementById("numQuestions");
-    
-    function updateModeDisplay() {
-      // Find sections by class since we don't have direct references
-      const expSection = Array.from(wrapper.querySelectorAll('.filter-section')).find(div => 
-        div.querySelector('h3')?.textContent.includes('Explanation'));
-      const behaviorSection = Array.from(wrapper.querySelectorAll('.filter-section')).find(div => 
-        div.querySelector('h3')?.textContent.includes('Behavior'));
-    
-      if (examModeRadio && examModeRadio.checked) {
-        // Exam mode: hide explanations, hide behavior section completely
-        if (learningModeDesc) learningModeDesc.style.display = "none";
-        if (examModeDesc) examModeDesc.style.display = "block";
-        if (expSection) expSection.style.display = "none";
-        if (behaviorSection) behaviorSection.style.display = "none"; // Hide behavior section completely
-        
-        // Limit questions to 100 for exam mode
-        if (numInput) {
-          const currentValue = parseInt(numInput.value) || 10;
-          if (currentValue > 100) {
-            numInput.value = 100;
-            // Trigger input event to update duration display
-            numInput.dispatchEvent(new Event('input', { bubbles: true }));
-          }
-          numInput.max = 100;
-          // Force update the max attribute in the DOM
-          numInput.setAttribute('max', '100');
-          console.log(`Set exam mode max limit to 100, current max attribute: ${numInput.getAttribute('max')}`);
-        }
-        
-        // Update quick answer buttons for exam mode
-        if (typeof updateMaxQuestions === 'function') {
-          updateMaxQuestions();
-        }
-      } else {
-        // Learning mode: show all options
-        if (learningModeDesc) learningModeDesc.style.display = "block";
-        if (examModeDesc) examModeDesc.style.display = "none";
-        if (expSection) expSection.style.display = "block";
-        if (behaviorSection) behaviorSection.style.display = "block"; // Show behavior section again
-        
-        // Restore original behavior section for learning mode
-        if (behaviorSection) {
-          const savedBehavior = {
-            allowTryAgain: true,
-            showTopicSubtopic: true,
-            showImmediateResult: true,
-            showCorrectAnswer: true
-          };
-          
-          const tryAgainDisabled = !savedBehavior.showImmediateResult;
-          const tryAgainChecked = savedBehavior.allowTryAgain && !tryAgainDisabled;
-          
-          behaviorSection.innerHTML = `
-            <h3>Test Behavior Options</h3>
-            <label><input type="checkbox" id="tryAgainOptionDb" ${tryAgainChecked ? 'checked' : ''} ${tryAgainDisabled ? 'disabled' : ''}> Allow "Try Again" for incorrect answers</label><br>
-            <label><input type="checkbox" id="topicRevealOptionDb" ${savedBehavior.showTopicSubtopic ? 'checked' : ''}> Show Topic/Subtopic when answering</label><br>
-            <label><input type="checkbox" id="immediateResultOptionDb" ${savedBehavior.showImmediateResult ? 'checked' : ''}> Show result immediately after each answer</label><br>
-            <label><input type="checkbox" id="correctAnswerOptionDb" ${savedBehavior.showCorrectAnswer ? 'checked' : ''}> Show correct answer when wrong</label>
-            <div style="margin-top: 8px; padding: 8px; background: #f0f8ff; border-radius: 4px; font-size: 0.9em; color: #666;">
-              <em>Note: If "immediate result" is OFF, results and selected options will be revealed after the final score</em>
-            </div>
-          `;
-          
-          // Re-setup immediate result change handler after restoring learning mode
-          setTimeout(() => {
-            const immediateResultCheckbox = document.getElementById("immediateResultOptionDb");
-            const correctAnswerCheckbox = document.getElementById("correctAnswerOptionDb");
-            const tryAgainCheckbox = document.getElementById("tryAgainOptionDb");
-            const expSection = Array.from(wrapper.querySelectorAll('.filter-section')).find(div => 
-              div.querySelector('h3')?.textContent.includes('Explanation'));
-            const explanationRadios = expSection ? expSection.querySelectorAll('input[name="expMode"]') : [];
-            
-            if (immediateResultCheckbox && tryAgainCheckbox && correctAnswerCheckbox) {
-              immediateResultCheckbox.addEventListener("change", () => {
-                if (!immediateResultCheckbox.checked) {
-                  tryAgainCheckbox.checked = false;
-                  tryAgainCheckbox.disabled = true;
-                } else {
-                  tryAgainCheckbox.disabled = false;
-                  if (!correctAnswerCheckbox.checked && !tryAgainCheckbox.checked) {
-                    correctAnswerCheckbox.checked = true;
-                    tryAgainCheckbox.checked = true;
-                  }
-                  if (explanationRadios[2] && explanationRadios[2].checked) {
-                    explanationRadios[1].checked = true;
-                  }
-                }
-              });
-            }
-          }, 0);
-        }
-        
-        // Restore normal max questions
-        if (numInput) {
-          numInput.max = 1000;
-          // Force update the max attribute in the DOM
-          numInput.setAttribute('max', '1000');
-          console.log(`Restored learning mode max limit to 1000, current max attribute: ${numInput.getAttribute('max')}`);
-        }
-        
-        // Update quick answer buttons for learning mode
-        if (typeof updateMaxQuestions === 'function') {
-          updateMaxQuestions();
-        }
-      }
-      
-      // Update start button text based on current mode
-      updateStartButtonText();
-      
-      // Update exam duration display based on current mode
-      updateExamDurationDisplay();
-    }
-    
-    if (learningModeRadio && examModeRadio) {
-      learningModeRadio.addEventListener("change", updateModeDisplay);
-      examModeRadio.addEventListener("change", updateModeDisplay);
-      
-      // Initialize display
-      updateModeDisplay();
-      
-      // Initialize exam duration display
-      updateExamDurationDisplay();
-    }
-  }, 0);
-
   // Number of Questions section (EXACT GOLDEN 22) - respect saved state
   const numDiv = document.createElement("div");
   numDiv.className = "filter-section";
@@ -829,15 +1004,10 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
     const numInput = document.getElementById("numQuestions");
     if (numInput) {
       numInput.addEventListener("input", function() {
-        // Check if we're in exam mode to enforce 100 limit
-        const examModeRadio = document.getElementById("exam-mode");
-        const isExamMode = examModeRadio && examModeRadio.checked;
-        const examModeLimit = isExamMode ? 100 : 1000;
-        
-        const maxQuestions = Math.min(parseInt(this.max) || 1000, examModeLimit);
+        const maxQuestions = parseInt(this.max) || 1000;
         const currentValue = parseInt(this.value) || 0;
         
-        console.log(`Input validation: current=${currentValue}, max=${maxQuestions}, examMode=${isExamMode}`);
+        console.log(`Input validation: current=${currentValue}, max=${maxQuestions}`);
         
         // Enforce minimum value (must be at least 1)
         if (currentValue < 1) {
@@ -845,7 +1015,7 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
           this.value = 1;
         }
         
-        // Enforce maximum value (cannot exceed available questions or exam limit)
+        // Enforce maximum value (cannot exceed available questions)
         if (currentValue > maxQuestions) {
           console.log(`Value too large (${currentValue} > ${maxQuestions}), setting to ${maxQuestions}`);
           this.value = maxQuestions;
@@ -853,22 +1023,14 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
         
         // Update tooltip after validation
         updateBalancedTooltip();
-        
-        // Update exam duration display if in exam mode
-        updateExamDurationDisplay();
       });
       
       // Also add blur event for additional validation
       numInput.addEventListener("blur", function() {
-        // Check if we're in exam mode to enforce 100 limit
-        const examModeRadio = document.getElementById("exam-mode");
-        const isExamMode = examModeRadio && examModeRadio.checked;
-        const examModeLimit = isExamMode ? 100 : 1000;
-        
-        const maxQuestions = Math.min(parseInt(this.max) || 1000, examModeLimit);
+        const maxQuestions = parseInt(this.max) || 1000;
         const currentValue = parseInt(this.value) || 0;
         
-        console.log(`Blur validation: current=${currentValue}, max=${maxQuestions}, examMode=${isExamMode}`);
+        console.log(`Blur validation: current=${currentValue}, max=${maxQuestions}`);
         
         if (currentValue < 1) {
           console.log("Blur: Value too small, setting to 1");
@@ -877,17 +1039,21 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
           console.log(`Blur: Value too large (${currentValue} > ${maxQuestions}), setting to ${maxQuestions}`);
           this.value = maxQuestions;
         }
-        
-        // Update exam duration display after blur validation too
-        updateExamDurationDisplay();
       });
     }
   }, 0);
 
-  // Selection Mode section (EXACT GOLDEN 22) - respect saved state
+  // Selection Mode and Exam Duration section - create flex container
+  const modeAndDurationContainer = document.createElement("div");
+  modeAndDurationContainer.className = "filter-section";
+  modeAndDurationContainer.style.marginTop = "10px";
+  modeAndDurationContainer.style.display = "flex";
+  modeAndDurationContainer.style.gap = "20px";
+  modeAndDurationContainer.style.alignItems = "flex-start";
+  
+  // Selection Mode section (left side)
   const modeDiv = document.createElement("div");
-  modeDiv.className = "filter-section";
-  modeDiv.style.marginTop = "10px";
+  modeDiv.style.flex = "1";
   
   // Determine saved selection mode
   const savedSelectionMode = shouldRestore && savedState.selectionMode ? savedState.selectionMode : 'random';
@@ -897,13 +1063,30 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
     <label><input type="radio" name="selectionMode" value="random" ${savedSelectionMode === 'random' ? 'checked' : ''}> Random (default)</label><br>
     <label><input type="radio" name="selectionMode" value="balanced" ${savedSelectionMode === 'balanced' ? 'checked' : ''}> Balanced (1 per subtopic, then random)</label>
   `;
-
-  wrapper.appendChild(modeDiv);
+  
+  // Exam Duration section (right side) - initially hidden
+  const examDurationDiv = document.createElement("div");
+  examDurationDiv.id = "exam-duration-section";
+  examDurationDiv.style.flex = "1";
+  examDurationDiv.style.display = "none"; // Initially hidden
+  
+  examDurationDiv.innerHTML = `
+    <h3>Exam Duration</h3>
+    <div id="calculated-duration" style="font-size: 1.1em; font-weight: bold; color: #0078d7;">
+      <span id="duration-value">15</span> minutes
+    </div>
+    <div style="margin-top: 5px; font-size: 0.9em; color: #666;">
+      (Number of questions × 1.5 minutes)
+    </div>
+  `;
+  
+  modeAndDurationContainer.appendChild(modeDiv);
+  modeAndDurationContainer.appendChild(examDurationDiv);
+  wrapper.appendChild(modeAndDurationContainer);
 
   // Start button and button container (EXACT GOLDEN 22)
   const startBtn = document.createElement("button");
-  startBtn.textContent = window.startButtonText || "Start Test";
-  startBtn.id = "mainStartTestBtn";
+  startBtn.textContent = "Start Test";
   
   // Add the main Start Test button click handler
   startBtn.addEventListener("click", () => {
@@ -933,50 +1116,48 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
       console.warn('saveOptionsState function not found - state persistence may not work properly');
     }
     
-    // Check if exam mode is selected
-    const examModeRadio = document.getElementById('exam-mode');
-    if (examModeRadio && examModeRadio.checked) {
-      // Exam mode: override behavior options
-      AppState.allowTryAgain = false;
-      AppState.showTopicSubtopic = false;
-      AppState.showImmediateResult = false;
-      AppState.showCorrectAnswer = false;
-      AppState.explanationMode = 3; // No explanations during exam
-      AppState.isExamMode = true;
-      
-      // Get exam duration from behavior section
-      const examDurationInput = document.getElementById('exam-duration-behavior');
-      AppState.examDuration = examDurationInput ? parseInt(examDurationInput.value) : 90;
-      
-      console.log(`Starting in Exam Mode - ${AppState.examDuration} minutes, feedback disabled`);
-    } else {
-      AppState.isExamMode = false;
-      console.log("Starting in Learning Mode - normal feedback enabled");
-    }
-    
     // Get selected types
     let selectedTypes = [];
     const typeChecks = typeDiv.querySelectorAll("input[type=checkbox]");
+    
+    // Helper function to map enhanced type back to database type
+    const mapEnhancedToDbType = (enhancedType) => {
+      if (window.enhancedTypeMapping) {
+        for (const [dbType, enhanced] of Object.entries(window.enhancedTypeMapping)) {
+          if (enhanced.includes(enhancedType)) {
+            return dbType;
+          }
+        }
+      }
+      // If no mapping found, return as-is (for non-enhanced types)
+      return enhancedType;
+    };
     
     if (typeChecks[0].checked) {
       // "All Types" is checked - get all available types
       if (window.currentDatabaseTypes && window.currentDatabaseTypes.length > 0) {
         selectedTypes = [...window.currentDatabaseTypes];
       } else {
-        // Fallback: extract from individual checkboxes
+        // Fallback: extract from individual checkboxes and map to DB types
+        const dbTypes = new Set();
         for (let i = 1; i < typeChecks.length; i++) {
           if (typeChecks[i].value && typeChecks[i].value !== 'ALL') {
-            selectedTypes.push(typeChecks[i].value);
+            const dbType = mapEnhancedToDbType(typeChecks[i].value);
+            dbTypes.add(dbType);
           }
         }
+        selectedTypes = [...dbTypes];
       }
     } else {
-      // Individual types selected
+      // Individual types selected - map enhanced types back to database types
+      const dbTypes = new Set();
       typeChecks.forEach((cb, i) => {
         if (i > 0 && cb.checked && cb.value !== 'ALL') {
-          selectedTypes.push(cb.value);
+          const dbType = mapEnhancedToDbType(cb.value);
+          dbTypes.add(dbType);
         }
       });
+      selectedTypes = [...dbTypes];
     }
     
     if (selectedTypes.length === 0) {
@@ -1047,16 +1228,26 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
         // Get correct answers (handle both string and integer values for is_correct)
         q.answer = optRes[0]?.values?.filter(v => v[1] === 1 || v[1] === "1")?.map(v => v[0]) || [];
         
-        // For single choice, convert array to single value
-        if (q.answer.length === 1) {
-          q.answer = q.answer[0];
-        }
-        
-        // Set type based on number of correct answers
+        // Set type based on number of correct answers BEFORE converting single answers
         if (q.question_type === 'MCQ-Multiple') {
           q.type = 'multiple';
         } else {
           q.type = (Array.isArray(q.answer) && q.answer.length > 1) ? 'multiple' : 'single';
+        }
+        
+        // Debug logging for type determination
+        if (q.id <= 10 || (Array.isArray(q.answer) && q.answer.length > 1)) {
+          console.log(`Question ${q.id} type determination:`, {
+            question_type: q.question_type,
+            answer_array: q.answer,
+            answer_count: Array.isArray(q.answer) ? q.answer.length : 'not array',
+            determined_type: q.type
+          });
+        }
+        
+        // For single choice, convert array to single value AFTER type determination
+        if (q.type === 'single' && q.answer.length === 1) {
+          q.answer = q.answer[0];
         }
         
       } else if (q.question_type === 'TrueFalse') {
@@ -1073,6 +1264,12 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
         
         // Fetch match pairs from match_pairs table
         const matchRes = AppState.database.exec(`SELECT left_text, right_text FROM match_pairs WHERE question_id = ${q.id} ORDER BY id`);
+        console.log(`Match question ${q.id} processing:`, {
+          queryResult: matchRes,
+          hasValues: matchRes[0]?.values ? true : false,
+          valueCount: matchRes[0]?.values?.length || 0
+        });
+        
         if (matchRes[0]?.values) {
           q.matchPairs = {};
           matchRes[0].values.forEach(([left, right]) => {
@@ -1080,6 +1277,14 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
           });
           q.options = ["Refer to match pairs"]; // Placeholder for compatibility
           q.answer = q.matchPairs;
+          
+          console.log(`Match question ${q.id} final setup:`, {
+            type: q.type,
+            matchPairs: q.matchPairs,
+            pairCount: Object.keys(q.matchPairs).length
+          });
+        } else {
+          console.warn(`No match pairs found for question ${q.id}`);
         }
         
       } else if (q.question_type === 'AssertionReason') {
@@ -1097,10 +1302,57 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
     
     console.log(`Question processing complete: ${questions.length} questions loaded`);
     
+    // Apply enhanced type filtering if individual enhanced types were selected
+    if (!typeChecks[0].checked) {
+      // Individual enhanced types were selected - filter the processed questions
+      const selectedEnhancedTypes = [];
+      typeChecks.forEach((cb, i) => {
+        if (i > 0 && cb.checked && cb.value !== 'ALL') {
+          selectedEnhancedTypes.push(cb.value);
+        }
+      });
+      
+      console.log('Filtering by enhanced types:', selectedEnhancedTypes);
+      
+      if (selectedEnhancedTypes.length > 0) {
+        const originalCount = questions.length;
+        questions = questions.filter(q => {
+          // Check if this question matches any of the selected enhanced types
+          for (const enhancedType of selectedEnhancedTypes) {
+            if (enhancedType.includes(' - ')) {
+              const baseType = enhancedType.split(' - ')[0];
+              if (q.question_type === baseType) {
+                if (enhancedType.includes('Multiple Correct')) {
+                  // Should have multiple correct answers (array with length > 1)
+                  if (Array.isArray(q.answer) && q.answer.length > 1) return true;
+                } else if (enhancedType.includes('Single Correct')) {
+                  // Should have single correct answer and not be True/False
+                  if (q.type === 'single' && q.options && q.options.length > 2) return true;
+                } else if (enhancedType.includes('True or False')) {
+                  // Should be True/False type
+                  if (q.options && q.options.length === 2 && 
+                      ((q.options[0].toLowerCase() === 'true' && q.options[1].toLowerCase() === 'false') ||
+                       (q.options[0].toLowerCase() === 'false' && q.options[1].toLowerCase() === 'true'))) {
+                    return true;
+                  }
+                }
+              }
+            } else {
+              // Direct type match (non-enhanced)
+              if (q.question_type === enhancedType) return true;
+            }
+          }
+          return false;
+        });
+        
+        console.log(`Enhanced type filtering: ${originalCount} → ${questions.length} questions`);
+      }
+    }
+    
     // Store all questions (no filtering)
     AppState.currentInvalidQuestions = [];
     
-    console.log(`Found ${questions.length} questions matching criteria`);
+    console.log(`Found ${questions.length} questions matching criteria after enhanced filtering`);
     
     // Get number of questions and selection mode
     const numInput = document.getElementById("numQuestions");
@@ -1149,13 +1401,43 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
     }
     
     setTimeout(() => {
-      console.log("=== ABOUT TO CALL startTest() ===");
+      console.log("=== ABOUT TO START TEST ===");
       console.log("Final chosen questions count:", chosenQuestions.length);
       
-      panel.innerHTML = ""; // Clear filter panel before starting test
-      document.getElementById("restart").style.display = "none"; // Hide restart until questions are shown
-      document.getElementById("restart-bottom").style.display = "none";
-      startTest(chosenQuestions);
+      // Check test mode selection
+      const testModeRadio = document.querySelector('input[name="testMode"]:checked');
+      const testMode = testModeRadio ? testModeRadio.value : 'learning';
+      
+      if (testMode === 'exam') {
+        // Exam Practice Mode - navigate to exam.html
+        console.log("Starting Exam Practice Mode");
+        
+        // Calculate exam duration based on number of questions (1.5 minutes per question)
+        const examDuration = Math.round(chosenQuestions.length * 1.5);
+        
+        // Store exam data in sessionStorage for exam-engine.js
+        const examData = {
+          questions: chosenQuestions,
+          startTime: new Date().toISOString(),
+          mode: 'exam',
+          duration: examDuration,
+          // Store database state for proper restoration
+          dbFileName: AppState.dbFileName,
+          dbTopics: AppState.dbTopics,
+          dbTypes: AppState.dbTypes
+        };
+        sessionStorage.setItem('examData', JSON.stringify(examData));
+        
+        // Navigate to exam page
+        window.location.href = 'exam.html';
+      } else {
+        // Learning Mode - use existing test-engine.js flow
+        console.log("Starting Learning Mode");
+        panel.innerHTML = ""; // Clear filter panel before starting test
+        document.getElementById("restart").style.display = "none"; // Hide restart until questions are shown
+        document.getElementById("restart-bottom").style.display = "none";
+        startTest(chosenQuestions);
+      }
     }, 500);
   });
   
@@ -1179,14 +1461,32 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
       // Get current filter selections for DATABASE MODE (hierarchical structure)
       let selectedTypes = [];
       
-      // Get selected question types (this part is the same)
+      // Get selected question types (with enhanced type mapping)
       const typeChecks = typeDiv.querySelectorAll("input[type=checkbox]");
+      
+      // Helper function to map enhanced type back to database type
+      const mapEnhancedToDbType = (enhancedType) => {
+        if (window.enhancedTypeMapping) {
+          for (const [dbType, enhanced] of Object.entries(window.enhancedTypeMapping)) {
+            if (enhanced.includes(enhancedType)) {
+              return dbType;
+            }
+          }
+        }
+        return enhancedType;
+      };
+      
       if (typeChecks[0].checked) {
         selectedTypes = window.currentDatabaseTypes || types;
       } else {
+        const dbTypes = new Set();
         typeChecks.forEach((cb, i) => {
-          if (i > 0 && cb.checked) selectedTypes.push(cb.value);
+          if (i > 0 && cb.checked && cb.value !== 'ALL') {
+            const dbType = mapEnhancedToDbType(cb.value);
+            dbTypes.add(dbType);
+          }
         });
+        selectedTypes = [...dbTypes];
       }
       
       const numInput = document.getElementById("numQuestions");
@@ -1341,29 +1641,6 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
     }
   }
   
-  // Function to update start button text based on mode
-  function updateStartButtonText() {
-    const examModeRadio = document.getElementById("exam-mode");
-    const isExamMode = examModeRadio && examModeRadio.checked;
-    const buttonText = isExamMode ? "Start Exam" : "Start Test";
-    
-    // Update both start buttons
-    const topStartBtn = document.getElementById("topStartTestBtn");
-    if (topStartBtn) {
-      topStartBtn.textContent = buttonText;
-    }
-    
-    const mainStartBtn = document.getElementById("mainStartTestBtn");
-    if (mainStartBtn) {
-      mainStartBtn.textContent = buttonText;
-    }
-    
-    // Store the text for when buttons are created
-    window.startButtonText = buttonText;
-    
-    console.log(`Updated start button text to: ${buttonText}`);
-  }
-  
   // Update tooltip when selection mode changes
   modeDiv.addEventListener("change", updateBalancedTooltip);
   
@@ -1494,6 +1771,14 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
       updateSelectedTypesCountDB();
     }
   }, 100);
+  
+  // Restore options state if coming back from learning mode
+  if (shouldRestore && typeof restoreOptionsState === 'function') {
+    setTimeout(() => {
+      console.log('Database filter panel calling restoreOptionsState...');
+      restoreOptionsState();
+    }, 200); // Delay to ensure DOM is fully built
+  }
   
   panel.appendChild(wrapper);
 }
@@ -1654,33 +1939,64 @@ function updateMaxQuestions() {
     const typeChecks = typeDiv.querySelectorAll("input[type=checkbox]");
     console.log("Found type checkboxes:", typeChecks.length);
     
+    // Helper function to map enhanced type back to database type
+    const mapEnhancedToDbType = (enhancedType) => {
+      if (window.enhancedTypeMapping) {
+        for (const [dbType, enhanced] of Object.entries(window.enhancedTypeMapping)) {
+          if (enhanced.includes(enhancedType)) {
+            return dbType;
+          }
+        }
+      }
+      return enhancedType;
+    };
+    
     if (typeChecks.length > 0 && typeChecks[0].checked) {
       // "All Types" is checked - get all available types from the global types array
       if (window.currentDatabaseTypes && window.currentDatabaseTypes.length > 0) {
         selectedTypes = [...window.currentDatabaseTypes]; // Use the stored types array
         console.log("All types selected:", selectedTypes);
       } else {
-        // Fallback: extract from individual checkboxes
+        // Fallback: extract from individual checkboxes and map to DB types
+        const dbTypes = new Set();
         for (let i = 1; i < typeChecks.length; i++) {
           if (typeChecks[i].value && typeChecks[i].value !== 'ALL') {
-            selectedTypes.push(typeChecks[i].value);
+            const dbType = mapEnhancedToDbType(typeChecks[i].value);
+            dbTypes.add(dbType);
           }
         }
+        selectedTypes = [...dbTypes];
       }
     } else {
-      // Individual types selected
+      // Individual enhanced types selected - need to filter based on the enhanced type logic
+      // Instead of using the database types, we need to calculate the questions that match the enhanced criteria
+      const selectedEnhancedTypes = [];
       typeChecks.forEach((cb, i) => {
         if (i > 0 && cb.checked && cb.value !== 'ALL') {
-          selectedTypes.push(cb.value);
-          console.log("Individual type selected:", cb.value);
+          selectedEnhancedTypes.push(cb.value);
+          console.log("Individual enhanced type selected:", cb.value);
         }
       });
+      
+      // For enhanced types, we need to use a different approach - calculate on the fly
+      if (selectedEnhancedTypes.length > 0) {
+        // Mark that we're using enhanced type filtering
+        selectedTypes = null; // Special marker to indicate enhanced filtering
+        window.selectedEnhancedTypes = selectedEnhancedTypes;
+      } else {
+        selectedTypes = []; // No types selected
+      }
     }
   }
   
   console.log("Selected types:", selectedTypes);
+  console.log("Selected enhanced types:", window.selectedEnhancedTypes);
   
-  if (selectedTypes.length === 0) {
+  // Check if we have either traditional types or enhanced types selected
+  const hasSelectedTypes = (selectedTypes && selectedTypes.length > 0) || 
+                          (window.selectedEnhancedTypes && window.selectedEnhancedTypes.length > 0);
+  
+  if (!hasSelectedTypes) {
     document.getElementById("maxQuestionsInfo").textContent = "Max: 0 questions available (no question types selected)";
     const answerAllBtnDb = document.getElementById("answerAllBtnDb");
     if (answerAllBtnDb) answerAllBtnDb.style.display = "none";
@@ -1700,45 +2016,136 @@ function updateMaxQuestions() {
   
   // Get selected topic/subtopic combinations
   const selectAllTopics = document.getElementById("select-all-topics-db");
-  let sql;
+  let matchingQuestions = [];
   
-  if (selectAllTopics && selectAllTopics.checked) {
-    // All topics and subtopics selected
-    sql = `SELECT * FROM questions WHERE question_type IN (${selectedTypes.map(t => `'${escapeSQL(t)}'`).join(',')})`;
-  } else {
-    // Build query based on individual subtopic selections
-    const selectedSubtopics = document.querySelectorAll(".subtopic-checkbox:checked");
+  // For enhanced type filtering, we need to analyze questions individually
+  if (selectedTypes === null && window.selectedEnhancedTypes) {
+    console.log("Using enhanced type filtering");
     
-    if (selectedSubtopics.length === 0) {
-      document.getElementById("maxQuestionsInfo").textContent = "Max: 0 questions available (no subtopics selected)";
-      const answerAllBtnDb = document.getElementById("answerAllBtnDb");
-      if (answerAllBtnDb) answerAllBtnDb.style.display = "none";
+    // First get all questions that match topic/subtopic criteria
+    let sql;
+    if (selectAllTopics && selectAllTopics.checked) {
+      // All topics selected - get all questions
+      sql = `SELECT id, question_type FROM questions`;
+    } else {
+      // Build query based on individual subtopic selections
+      const selectedSubtopics = document.querySelectorAll(".subtopic-checkbox:checked");
       
-      // Remove quick selection buttons when no subtopics selected
-      const existingQuickButtons = document.querySelectorAll(".quick-select-btn");
-      existingQuickButtons.forEach(btn => btn.remove());
-      
-      const numInput = document.getElementById("numQuestions");
-      if (numInput) {
-        numInput.max = 0;
-        if (parseInt(numInput.value) > 0) numInput.value = 0;
+      if (selectedSubtopics.length === 0) {
+        document.getElementById("maxQuestionsInfo").textContent = "Max: 0 questions available (no subtopics selected)";
+        const answerAllBtnDb = document.getElementById("answerAllBtnDb");
+        if (answerAllBtnDb) answerAllBtnDb.style.display = "none";
+        
+        const numInput = document.getElementById("numQuestions");
+        if (numInput) {
+          numInput.max = 0;
+          if (parseInt(numInput.value) > 0) numInput.value = 0;
+        }
+        updateMaxQuestions.isUpdating = false;
+        return;
       }
-      updateMaxQuestions.isUpdating = false;
-      return;
+      
+      // Build conditions for selected topics/subtopics
+      const conditions = [];
+      selectedSubtopics.forEach(subtopicCb => {
+        const topic = subtopicCb.dataset.topic;
+        const subtopic = subtopicCb.value;
+        conditions.push(`(topic = '${escapeSQL(topic)}' AND subtopic = '${escapeSQL(subtopic)}')`);
+      });
+      
+      sql = `SELECT id, question_type FROM questions WHERE ${conditions.join(' OR ')}`;
     }
     
-    // Build a query for each selected topic/subtopic combination
-    const conditions = [];
-    selectedSubtopics.forEach(subtopicCb => {
-      const topic = subtopicCb.dataset.topic;
-      const subtopic = subtopicCb.value;
-      conditions.push(`(topic = '${escapeSQL(topic)}' AND subtopic = '${escapeSQL(subtopic)}')`);
+    console.log("Getting questions for enhanced filtering:", sql);
+    const questionsRes = AppState.database.exec(sql);
+    const allQuestions = questionsRes[0]?.values || [];
+    
+    // Now filter by enhanced types
+    allQuestions.forEach(([questionId, questionType]) => {
+      const isMCQType = questionType === 'MCQ' || questionType === 'MCQ-Scenario' || 
+                        questionType === 'Cohort-05-MCQ' || questionType === 'MCQ-Multiple';
+      
+      window.selectedEnhancedTypes.forEach(enhancedType => {
+        let matches = false;
+        
+        if (enhancedType.includes(' - ')) {
+          // Enhanced MCQ type
+          const baseType = enhancedType.split(' - ')[0];
+          if (questionType === baseType) {
+            if (enhancedType.includes('True or False')) {
+              // Check if it's True/False
+              const optionsRes = AppState.database.exec(`SELECT option_text FROM options WHERE question_id = ${questionId}`);
+              const options = optionsRes[0]?.values.map(v => v[0]) || [];
+              matches = isTrueFalseQuestionByOptions(options);
+            } else if (enhancedType.includes('Multiple Correct')) {
+              // Check if it has multiple correct answers
+              const correctCountRes = AppState.database.exec(`SELECT COUNT(*) FROM options WHERE question_id = ${questionId} AND is_correct = 1`);
+              const correctCount = correctCountRes[0]?.values[0][0] || 0;
+              matches = (correctCount > 1);
+            } else if (enhancedType.includes('Single Correct')) {
+              // Check if it has single correct answer
+              const correctCountRes = AppState.database.exec(`SELECT COUNT(*) FROM options WHERE question_id = ${questionId} AND is_correct = 1`);
+              const correctCount = correctCountRes[0]?.values[0][0] || 0;
+              
+              // Also check it's not True/False
+              const optionsRes = AppState.database.exec(`SELECT option_text FROM options WHERE question_id = ${questionId}`);
+              const options = optionsRes[0]?.values.map(v => v[0]) || [];
+              const isTrueFalse = isTrueFalseQuestionByOptions(options);
+              
+              matches = (correctCount === 1 && !isTrueFalse);
+            }
+          }
+        } else {
+          // Non-enhanced type (direct match)
+          matches = (questionType === enhancedType);
+        }
+        
+        if (matches) {
+          matchingQuestions.push(questionId);
+        }
+      });
     });
     
-    sql = `SELECT * FROM questions WHERE (${conditions.join(' OR ')}) AND question_type IN (${selectedTypes.map(t => `'${escapeSQL(t)}'`).join(',')})`;
+    // Remove duplicates
+    matchingQuestions = [...new Set(matchingQuestions)];
+    
+  } else {
+    // Traditional type filtering
+    let sql;
+    if (selectAllTopics && selectAllTopics.checked) {
+      sql = `SELECT id FROM questions WHERE question_type IN (${selectedTypes.map(t => `'${escapeSQL(t)}'`).join(',')})`;
+    } else {
+      const selectedSubtopics = document.querySelectorAll(".subtopic-checkbox:checked");
+      
+      if (selectedSubtopics.length === 0) {
+        document.getElementById("maxQuestionsInfo").textContent = "Max: 0 questions available (no subtopics selected)";
+        const answerAllBtnDb = document.getElementById("answerAllBtnDb");
+        if (answerAllBtnDb) answerAllBtnDb.style.display = "none";
+        
+        const numInput = document.getElementById("numQuestions");
+        if (numInput) {
+          numInput.max = 0;
+          if (parseInt(numInput.value) > 0) numInput.value = 0;
+        }
+        updateMaxQuestions.isUpdating = false;
+        return;
+      }
+      
+      const conditions = [];
+      selectedSubtopics.forEach(subtopicCb => {
+        const topic = subtopicCb.dataset.topic;
+        const subtopic = subtopicCb.value;
+        conditions.push(`(topic = '${escapeSQL(topic)}' AND subtopic = '${escapeSQL(subtopic)}')`);
+      });
+      
+      sql = `SELECT id FROM questions WHERE (${conditions.join(' OR ')}) AND question_type IN (${selectedTypes.map(t => `'${escapeSQL(t)}'`).join(',')})`;
+    }
+    
+    const questionsRes = AppState.database.exec(sql);
+    matchingQuestions = questionsRes[0]?.values.map(v => v[0]) || [];
   }
   
-  console.log("Executing SQL for max questions:", sql);
+  console.log("Matching questions found:", matchingQuestions.length);
   
   if (!AppState.database) {
     console.error("No database available");
@@ -1747,8 +2154,7 @@ function updateMaxQuestions() {
   }
   
   try {
-    const res = AppState.database.exec(sql);
-    if (!res.length) {
+    if (matchingQuestions.length === 0) {
       document.getElementById("maxQuestionsInfo").textContent = "Max: 0 questions available for selection";
       const answerAllBtnDb = document.getElementById("answerAllBtnDb");
       if (answerAllBtnDb) answerAllBtnDb.style.display = "none";
@@ -1761,6 +2167,9 @@ function updateMaxQuestions() {
       return;
     }
     
+    // Get full question details for validation
+    const questionIds = matchingQuestions.join(',');
+    const res = AppState.database.exec(`SELECT * FROM questions WHERE id IN (${questionIds})`);
     let allQuestions = res[0]?.values.map(row => {
       const obj = {};
       res[0].columns.forEach((col, i) => obj[col] = row[i]);
@@ -2022,52 +2431,59 @@ function updateMaxQuestions() {
     // Update the max questions info
     document.getElementById("maxQuestionsInfo").textContent = `Max: ${totalValidQuestions} question${totalValidQuestions === 1 ? '' : 's'} available for selection`;
     
+    // Check if we're in exam practice mode
+    const examModeRadio = document.querySelector('input[name="testMode"][value="exam"]');
+    const isExamMode = examModeRadio && examModeRadio.checked;
+    
+    // Calculate effective maximum for the current mode
+    const effectiveMax = isExamMode ? Math.min(100, totalValidQuestions) : totalValidQuestions;
+    
     // Update the "Answer all" button and create quick selection buttons
     const answerAllBtnDb = document.getElementById("answerAllBtnDb");
     if (answerAllBtnDb && totalValidQuestions > 0) {
-      // Check if exam mode is active
-      const examModeRadio = document.getElementById("exam-mode");
-      const isExamMode = examModeRadio && examModeRadio.checked;
-      
-      // In exam mode, limit to 50 questions max
-      const effectiveMaxQuestions = isExamMode ? Math.min(50, totalValidQuestions) : totalValidQuestions;
-      
       if (isExamMode) {
-        answerAllBtnDb.textContent = `Answer ${effectiveMaxQuestions}`;
-        answerAllBtnDb.title = `Set question count to maximum for exam mode (${effectiveMaxQuestions})`;
+        answerAllBtnDb.textContent = `Answer ${effectiveMax}`;
+        answerAllBtnDb.title = `Set question count to maximum for exam mode (${effectiveMax})`;
       } else {
         answerAllBtnDb.textContent = `Answer all ${totalValidQuestions}`;
         answerAllBtnDb.title = `Set question count to maximum available (${totalValidQuestions})`;
       }
-      
       answerAllBtnDb.style.display = "inline-block";
       answerAllBtnDb.onclick = () => {
         const numInput = document.getElementById("numQuestions");
         if (numInput) {
-          numInput.value = effectiveMaxQuestions;
-          // Trigger input event to update duration display
-          numInput.dispatchEvent(new Event('input', { bubbles: true }));
+          numInput.value = effectiveMax;
+          // Update exam duration if in exam mode
+          if (isExamMode) {
+            const durationValueSpan = document.getElementById('duration-value');
+            if (durationValueSpan) {
+              const calculatedDuration = Math.round(effectiveMax * 1.5);
+              durationValueSpan.textContent = calculatedDuration;
+            }
+          }
         }
       };
       
-      // Create quick selection buttons (10, 20, 30, 40, 50) next to "Answer all" button
+      // Create quick selection buttons next to "Answer all" button
       // Remove any existing quick selection buttons first
       const existingQuickButtons = document.querySelectorAll(".quick-select-btn");
       existingQuickButtons.forEach(btn => btn.remove());
       
       // Only create quick selection buttons if there are questions available
-      if (effectiveMaxQuestions > 0) {
-        // Generate quick selection values in descending order
+      if (totalValidQuestions > 0) {
+        // Generate quick selection values based on mode
         const quickSelectionValues = [];
+        
         if (isExamMode) {
-          // For exam mode: show 50, 40, 30, 20, 10 (limited to actual available)
-          for (let i = 50; i >= 10; i -= 10) {
-            if (i <= effectiveMaxQuestions) {
-              quickSelectionValues.push(i);
+          // For exam mode: descending from available max down to 10 (50, 40, 30, 20, 10)
+          const examQuickValues = [50, 40, 30, 20, 10];
+          examQuickValues.forEach(value => {
+            if (value <= effectiveMax) {
+              quickSelectionValues.push(value);
             }
-          }
+          });
         } else {
-          // For learning mode: use original logic
+          // For learning mode: original logic
           if (totalValidQuestions > 50) {
             // If maxcount > 50, start from 50 and go down to 10 (already descending)
             for (let i = 50; i >= 10; i -= 10) {
@@ -2094,8 +2510,15 @@ function updateMaxQuestions() {
             const numInput = document.getElementById("numQuestions");
             if (numInput) {
               numInput.value = value;
-              // Trigger input event to update duration display
-              numInput.dispatchEvent(new Event('input', { bubbles: true }));
+              // Update exam duration if in exam mode
+              const examModeCheck = document.querySelector('input[name="testMode"][value="exam"]');
+              if (examModeCheck && examModeCheck.checked) {
+                const durationValueSpan = document.getElementById('duration-value');
+                if (durationValueSpan) {
+                  const calculatedDuration = Math.round(value * 1.5);
+                  durationValueSpan.textContent = calculatedDuration;
+                }
+              }
             }
           };
           
@@ -2114,18 +2537,30 @@ function updateMaxQuestions() {
     // Update the number input max value
     const numInput = document.getElementById("numQuestions");
     if (numInput) {
-      numInput.max = totalValidQuestions;
+      // Check if exam practice mode is selected to limit to max 100
+      const examModeRadio = document.querySelector('input[name="testMode"][value="exam"]');
+      const isExamMode = examModeRadio && examModeRadio.checked;
+      
+      // Set max based on mode: exam mode max 100, learning mode unlimited
+      const effectiveMax = isExamMode ? Math.min(100, totalValidQuestions) : totalValidQuestions;
+      numInput.max = effectiveMax;
       
       // Auto-adjust the value if it exceeds the new maximum
       const currentValue = parseInt(numInput.value) || 0;
       if (currentValue < 1) {
-        numInput.value = Math.min(10, totalValidQuestions);
-        // Trigger input event to update duration display
-        numInput.dispatchEvent(new Event('input', { bubbles: true }));
-      } else if (currentValue > totalValidQuestions) {
-        numInput.value = totalValidQuestions;
-        // Trigger input event to update duration display
-        numInput.dispatchEvent(new Event('input', { bubbles: true }));
+        numInput.value = Math.min(10, effectiveMax);
+      } else if (currentValue > effectiveMax) {
+        numInput.value = effectiveMax;
+      }
+      
+      // Update exam duration if in exam mode and value was changed
+      if (isExamMode) {
+        const durationValueSpan = document.getElementById('duration-value');
+        if (durationValueSpan) {
+          const numQuestions = parseInt(numInput.value) || 10;
+          const calculatedDuration = Math.round(numQuestions * 1.5);
+          durationValueSpan.textContent = calculatedDuration;
+        }
       }
     }
     
@@ -2157,6 +2592,11 @@ function updateMaxQuestions() {
   } catch (error) {
     console.error("Error calculating max questions:", error);
     document.getElementById("maxQuestionsInfo").textContent = "Max: Error calculating available questions";
+  }
+  
+  // Update balanced tooltip if in balanced mode
+  if (typeof updateBalancedTooltip === 'function') {
+    updateBalancedTooltip();
   }
   
   // Reset the flag

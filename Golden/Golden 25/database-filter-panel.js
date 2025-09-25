@@ -542,33 +542,6 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
 
   wrapper.appendChild(expDiv);
 
-  // Study Mode Toggle - Between Learning and Exam Practice modes
-  const modeToggleDiv = document.createElement("div");
-  modeToggleDiv.className = "filter-section";
-  modeToggleDiv.innerHTML = `
-    <h3>Study Mode Selection</h3>
-    <div style="display: flex; gap: 20px; align-items: center; margin-bottom: 15px;">
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <input type="radio" id="learning-mode" name="studyMode" value="learning" checked>
-        <label for="learning-mode" style="margin: 0;">📚 Learning Mode</label>
-      </div>
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <input type="radio" id="exam-mode" name="studyMode" value="exam">
-        <label for="exam-mode" style="margin: 0;">🎯 Exam Practice Mode</label>
-      </div>
-    </div>
-    <div style="font-size: 0.9em; color: #666; background: #f9f9f9; padding: 10px; border-radius: 4px;">
-      <div id="learning-mode-desc">
-        <strong>Learning Mode:</strong> Practice with immediate feedback and explanations. Unlimited questions.
-      </div>
-      <div id="exam-mode-desc" style="display: none;">
-        <strong>Exam Practice Mode:</strong> Timed exam simulation with final scoring. Maximum 50 questions. No immediate feedback during the exam.
-      </div>
-    </div>
-  `;
-  
-  wrapper.appendChild(modeToggleDiv);
-
   // Test Behavior Options (EXACT GOLDEN 22) - respect saved state
   const behaviorDiv = document.createElement("div");
   behaviorDiv.className = "filter-section";
@@ -598,6 +571,26 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
 
   wrapper.appendChild(behaviorDiv);
 
+  // Test Mode Selection section
+  const testModeDiv = document.createElement("div");
+  testModeDiv.className = "filter-section";
+  testModeDiv.style.marginTop = "10px";
+  
+  // Determine saved test mode
+  const savedTestMode = shouldRestore && savedState.testMode ? savedState.testMode : 'learning';
+  
+  testModeDiv.innerHTML = `
+    <h3>Test Mode</h3>
+    <label><input type="radio" name="testMode" value="learning" ${savedTestMode === 'learning' ? 'checked' : ''}> Learning Mode (Interactive practice with full feedback)</label><br>
+    <label><input type="radio" name="testMode" value="exam" ${savedTestMode === 'exam' ? 'checked' : ''}> Exam Practice Mode (Timed simulation with minimal feedback)</label>
+    <div style="margin-top: 8px; padding: 8px; background: #fff3cd; border-radius: 4px; font-size: 0.9em; color: #856404;">
+      <strong>Learning Mode:</strong> Uses behavior options above for interactive learning<br>
+      <strong>Exam Practice:</strong> Overrides behavior options for realistic exam simulation
+    </div>
+  `;
+
+  wrapper.appendChild(testModeDiv);
+
   // Add immediate result option change handler (DB mode) - EXACT GOLDEN 22
   setTimeout(() => {
     const immediateResultCheckbox = document.getElementById("immediateResultOptionDb");
@@ -626,103 +619,6 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
           }
         }
       });
-    }
-  }, 0);
-
-  // Add mode toggle event listeners
-  setTimeout(() => {
-    const learningModeRadio = document.getElementById("learning-mode");
-    const examModeRadio = document.getElementById("exam-mode");
-    const learningModeDesc = document.getElementById("learning-mode-desc");
-    const examModeDesc = document.getElementById("exam-mode-desc");
-    const numInput = document.getElementById("numQuestions");
-    
-    function updateModeDisplay() {
-      // Find sections by class since we don't have direct references
-      const expSection = Array.from(wrapper.querySelectorAll('.filter-section')).find(div => 
-        div.querySelector('h3')?.textContent.includes('Explanation'));
-      const behaviorSection = Array.from(wrapper.querySelectorAll('.filter-section')).find(div => 
-        div.querySelector('h3')?.textContent.includes('Behavior'));
-    
-      if (examModeRadio && examModeRadio.checked) {
-        // Exam mode: hide explanations, show exam-specific behavior options
-        if (learningModeDesc) learningModeDesc.style.display = "none";
-        if (examModeDesc) examModeDesc.style.display = "block";
-        if (expSection) expSection.style.display = "none";
-        
-        // Update behavior section for exam mode
-        if (behaviorSection) {
-          behaviorSection.innerHTML = `
-            <h3>Exam Behavior Options</h3>
-            <div style="margin-bottom: 15px;">
-              <label style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-                ⏱️ Exam Duration: 
-                <input type="number" id="exam-duration-behavior" min="15" max="300" value="90" style="width: 60px; margin: 0 5px;">
-                minutes
-              </label>
-              <div style="font-size: 0.9em; color: #666; background: #fff3cd; padding: 8px; border-radius: 4px; border-left: 4px solid #ffc107;">
-                <strong>⚠️ Exam Mode Behavior:</strong><br>
-                • No immediate feedback during the exam<br>
-                • No explanations shown during questions<br>
-                • No "Try Again" option available<br>
-                • Results shown only after completion or time expiry<br>
-                • Questions can be bookmarked for review
-              </div>
-            </div>
-          `;
-        }
-        
-        // Limit questions to 50 for exam mode
-        if (numInput) {
-          const currentValue = parseInt(numInput.value) || 10;
-          if (currentValue > 50) {
-            numInput.value = 50;
-          }
-          numInput.max = 50;
-        }
-      } else {
-        // Learning mode: show all options
-        if (learningModeDesc) learningModeDesc.style.display = "block";
-        if (examModeDesc) examModeDesc.style.display = "none";
-        if (expSection) expSection.style.display = "block";
-        
-        // Restore original behavior section for learning mode
-        if (behaviorSection) {
-          const savedBehavior = {
-            allowTryAgain: true,
-            showTopicSubtopic: true,
-            showImmediateResult: true,
-            showCorrectAnswer: true
-          };
-          
-          const tryAgainDisabled = !savedBehavior.showImmediateResult;
-          const tryAgainChecked = savedBehavior.allowTryAgain && !tryAgainDisabled;
-          
-          behaviorSection.innerHTML = `
-            <h3>Test Behavior Options</h3>
-            <label><input type="checkbox" id="tryAgainOptionDb" ${tryAgainChecked ? 'checked' : ''} ${tryAgainDisabled ? 'disabled' : ''}> Allow "Try Again" for incorrect answers</label><br>
-            <label><input type="checkbox" id="topicRevealOptionDb" ${savedBehavior.showTopicSubtopic ? 'checked' : ''}> Show Topic/Subtopic when answering</label><br>
-            <label><input type="checkbox" id="immediateResultOptionDb" ${savedBehavior.showImmediateResult ? 'checked' : ''}> Show result immediately after each answer</label><br>
-            <label><input type="checkbox" id="correctAnswerOptionDb" ${savedBehavior.showCorrectAnswer ? 'checked' : ''}> Show correct answer when wrong</label>
-            <div style="margin-top: 8px; padding: 8px; background: #f0f8ff; border-radius: 4px; font-size: 0.9em; color: #666;">
-              <em>Note: If "immediate result" is OFF, results and selected options will be revealed after the final score</em>
-            </div>
-          `;
-        }
-        
-        // Restore normal max questions
-        if (numInput) {
-          numInput.max = 1000;
-        }
-      }
-    }
-    
-    if (learningModeRadio && examModeRadio) {
-      learningModeRadio.addEventListener("change", updateModeDisplay);
-      examModeRadio.addEventListener("change", updateModeDisplay);
-      
-      // Initialize display
-      updateModeDisplay();
     }
   }, 0);
 
@@ -827,27 +723,6 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
       saveOptionsState();
     } else {
       console.warn('saveOptionsState function not found - state persistence may not work properly');
-    }
-    
-    // Check if exam mode is selected
-    const examModeRadio = document.getElementById('exam-mode');
-    if (examModeRadio && examModeRadio.checked) {
-      // Exam mode: override behavior options
-      AppState.allowTryAgain = false;
-      AppState.showTopicSubtopic = false;
-      AppState.showImmediateResult = false;
-      AppState.showCorrectAnswer = false;
-      AppState.explanationMode = 3; // No explanations during exam
-      AppState.isExamMode = true;
-      
-      // Get exam duration from behavior section
-      const examDurationInput = document.getElementById('exam-duration-behavior');
-      AppState.examDuration = examDurationInput ? parseInt(examDurationInput.value) : 90;
-      
-      console.log(`Starting in Exam Mode - ${AppState.examDuration} minutes, feedback disabled`);
-    } else {
-      AppState.isExamMode = false;
-      console.log("Starting in Learning Mode - normal feedback enabled");
     }
     
     // Get selected types
@@ -1045,13 +920,35 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
     }
     
     setTimeout(() => {
-      console.log("=== ABOUT TO CALL startTest() ===");
+      console.log("=== ABOUT TO START TEST ===");
       console.log("Final chosen questions count:", chosenQuestions.length);
       
-      panel.innerHTML = ""; // Clear filter panel before starting test
-      document.getElementById("restart").style.display = "none"; // Hide restart until questions are shown
-      document.getElementById("restart-bottom").style.display = "none";
-      startTest(chosenQuestions);
+      // Check test mode selection
+      const testModeRadio = document.querySelector('input[name="testMode"]:checked');
+      const testMode = testModeRadio ? testModeRadio.value : 'learning';
+      
+      if (testMode === 'exam') {
+        // Exam Practice Mode - navigate to exam.html
+        console.log("Starting Exam Practice Mode");
+        
+        // Store exam data in sessionStorage for exam-engine.js
+        const examData = {
+          questions: chosenQuestions,
+          startTime: new Date().toISOString(),
+          mode: 'exam'
+        };
+        sessionStorage.setItem('examData', JSON.stringify(examData));
+        
+        // Navigate to exam page
+        window.location.href = 'exam.html';
+      } else {
+        // Learning Mode - use existing test-engine.js flow
+        console.log("Starting Learning Mode");
+        panel.innerHTML = ""; // Clear filter panel before starting test
+        document.getElementById("restart").style.display = "none"; // Hide restart until questions are shown
+        document.getElementById("restart-bottom").style.display = "none";
+        startTest(chosenQuestions);
+      }
     }, 500);
   });
   

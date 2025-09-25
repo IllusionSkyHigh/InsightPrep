@@ -455,21 +455,14 @@ function buildFilterPanel(allQuestions, skipRestore = false) {
   
   // Function to update "Selected Types" count based on checked question types (JSON mode)
   function updateSelectedTypesCountJSON() {
-    console.log("updateSelectedTypesCountJSON called"); // Debug log
     const typeChecks = typeDiv.querySelectorAll("input[type=checkbox]");
     const allTypesCheckbox = typeChecks[0]; // First checkbox is "Selected Types"
     const allTypesLabel = typeDiv.querySelector('label:first-child span');
-    
-    console.log("Found", typeChecks.length, "checkboxes and label:", allTypesLabel); // Debug log
-    
     if (!allTypesLabel) {
-      console.log("Could not find label span, trying alternative selector"); // Debug log
       const allTypesLabelAlt = typeDiv.querySelector('span');
       if (!allTypesLabelAlt) {
-        console.log("Could not find any span in typeDiv"); // Debug log
         return;
       }
-      console.log("Found alternative span:", allTypesLabelAlt); // Debug log
     }
     
     const spanToUpdate = allTypesLabel || typeDiv.querySelector('span');
@@ -486,33 +479,29 @@ function buildFilterPanel(allQuestions, skipRestore = false) {
           if (match) {
             const count = parseInt(match[1]);
             totalSelectedCount += count;
-            console.log("Adding", count, "from", cb.value); // Debug log
+            
           }
         }
       }
     });
     
-    console.log("Total selected count:", totalSelectedCount); // Debug log
+    
     
     // Update the "Selected Types" count display
     if (spanToUpdate) {
       spanToUpdate.textContent = `(${totalSelectedCount} question${totalSelectedCount === 1 ? '' : 's'})`;
-      console.log("Updated span to:", spanToUpdate.textContent); // Debug log
+      
     } else {
-      console.log("Could not find span to update"); // Debug log
+      
     }
   }
   
   // Add event listeners to individual type checkboxes to update "Selected Types" count
   setTimeout(() => {
-    console.log("Setting up JSON mode event listeners"); // Debug log
     const typeChecks = typeDiv.querySelectorAll("input[type=checkbox]");
-    console.log("Found", typeChecks.length, "checkboxes to set up"); // Debug log
     typeChecks.forEach((cb, i) => {
       if (i > 0) { // Skip the first "Selected Types" checkbox
-        console.log("Adding listener to", cb.value); // Debug log
         cb.addEventListener('change', () => {
-          console.log("Individual type checkbox changed:", cb.value, cb.checked); // Debug log
           updateSelectedTypesCountJSON();
         });
       }

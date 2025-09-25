@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InsightPrep - Exam Mode</title>
+    <link rel="stylesheet" href="exam-styles.css">
+</head>
+<body>
+    <!-- Header matching main page design exactly -->
+  <header id="test-title">
+    <img src="Logos/Logo.jpg" alt="InsightPrep Logo" class="header-logo">
+    <div class="header-content">
+      InsightPrep<br><span style="font-size: 0.75em; font-weight: normal; color: #e6f3ff; margin-top: 5px; display: inline-block;">Where Preparation Meets Reflection</span>
+    </div>
+    <div id="header-right">
+      <div id="exam-status-header">Exam in Progress</div>
+      <div id="timer-display">⏱️ <span id="timer">15:00</span></div>
+    </div>
+  </header>    
+    <main>
+        <!-- Question Number Navigation -->
+        <div id="question-nav-container">
+            <div id="question-numbers"></div>
+            <button id="back-to-options" class="back-btn">← Exit Exam</button>
+        </div>
+
+        <!-- Main Exam Content -->
+    <div id="exam-content">
+        <!-- Question Panel (Left Side) -->
+        <div id="question-panel">
+            <div id="question-header">
+                <div id="question-counter">Question <span id="current-question-num">1</span> of <span id="total-questions">10</span></div>
+                <button id="bookmark-btn" class="bookmark-btn" title="Bookmark this question">
+                    <span id="bookmark-icon">☐</span> Bookmark
+                </button>
+            </div>
+            <div id="question-content">
+                <div id="question-text">Loading question...</div>
+                <!-- Topic info hidden in exam mode to prevent spoilers -->
+                <div id="question-metadata" style="display: none;">
+                    <span id="topic-info"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vertical Divider -->
+        <div id="vertical-divider"></div>
+
+        <!-- Answer Panel (Right Side) -->
+        <div id="answer-panel">
+            <div id="answer-header">
+                <h3>Choose your answer:</h3>
+                <button id="clear-answer" class="clear-btn">Clear Answer</button>
+            </div>
+            <div id="answer-options">
+                <!-- Options will be populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div id="bottom-navigation">
+        <button id="prev-btn" class="nav-btn">← Previous</button>
+        <div id="nav-info">
+            <span id="answered-count">0</span> answered | 
+            <span id="bookmarked-count">0</span> bookmarked
+        </div>
+        <button id="next-btn" class="nav-btn">Next →</button>
+        <button id="finish-btn" class="finish-btn" style="display: none;">Finish Exam</button>
+    </div>
+
+    <!-- Finish Exam Modal -->
+    <div id="finish-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Finish Exam</h2>
+            <div id="exam-summary">
+                <p><strong>Exam Summary:</strong></p>
+                <p>Answered: <span id="summary-answered">0</span> questions</p>
+                <p>Unanswered: <span id="summary-unanswered">0</span> questions</p>
+                <p>Bookmarked: <span id="summary-bookmarked">0</span> questions</p>
+            </div>
+            <div class="modal-actions">
+                <button id="review-answers" class="review-btn">Review Answers</button>
+                <button id="submit-exam" class="submit-btn">Submit Answers</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Modal -->
+    <div id="results-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Exam Complete!</h2>
+            <div id="final-results">
+                <div id="score-display">
+                    <h3>Your Score: <span id="final-score">0</span>%</h3>
+                    <p><span id="correct-answers">0</span> correct out of <span id="total-answered">0</span> answered</p>
+                </div>
+                <div id="results-breakdown">
+                    <!-- Results breakdown will be populated -->
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button id="download-report" class="download-btn">📄 Download PDF Report</button>
+                <button id="return-options" class="return-btn">Exit Exam</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading">
+        <div class="loading-content">
+            <h2>Preparing Your Exam...</h2>
+            <div class="loading-spinner"></div>
+            <p>Loading <span id="loading-question-count">0</span> questions</p>
+            <div id="loading-error" style="display: none; color: red; margin-top: 10px;"></div>
+        </div>
+    </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="app-state.js"></script>
+    <script src="database-manager.js"></script>
+    <script src="exam-engine.js"></script>
+    <script>
+        // Initialize exam engine after DOM and scripts are loaded
+        let examEngine;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🌟 DOM loaded, creating ExamEngine...');
+            
+            // Check if ExamEngine class is available
+            if (typeof ExamEngine === 'undefined') {
+                console.error('❌ ExamEngine class not found!');
+                showEmergencyFallback();
+                return;
+            }
+            
+            // Wait a bit more for all scripts to be ready
+            setTimeout(() => {
+                try {
+                    examEngine = new ExamEngine();
+                    console.log('🎯 ExamEngine created successfully');
+                } catch (error) {
+                    console.error('💥 Failed to create ExamEngine:', error);
+                    showEmergencyFallback();
+                }
+            }, 500);
+        });
+        
+        function showEmergencyFallback() {
+            const loadingError = document.getElementById('loading-error');
+            if (loadingError) {
+                loadingError.innerHTML = `
+                    <div style="color: red; text-align: center; padding: 20px;">
+                        <h3>⚠️ Exam Loading Failed</h3>
+                        <p>There was an issue initializing the exam system.</p>
+                        <button onclick="useEmergencyFix()" style="background: #dc3545; color: white; padding: 15px 25px; border: none; border-radius: 5px; cursor: pointer; margin: 10px; font-size: 16px;">
+                            🆘 Use Emergency Exam
+                        </button>
+                        <button onclick="location.reload()" style="background: #17a2b8; color: white; padding: 15px 25px; border: none; border-radius: 5px; cursor: pointer; margin: 10px; font-size: 16px;">
+                            🔄 Try Again
+                        </button>
+                        <button onclick="window.history.back()" style="background: #6c757d; color: white; padding: 15px 25px; border: none; border-radius: 5px; cursor: pointer; margin: 10px; font-size: 16px;">
+                            ← Go Back
+                        </button>
+                    </div>
+                `;
+                loadingError.style.display = 'block';
+            }
+        }
+        
+        function useEmergencyFix() {
+            window.location.href = 'simple-exam.html';
+        }
+        
+        // Global error handler
+        window.addEventListener('error', function(e) {
+            console.error('Global error:', e.error);
+        });
+    </script>
+</body>
+</html>

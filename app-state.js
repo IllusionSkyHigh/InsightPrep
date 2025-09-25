@@ -158,7 +158,8 @@ function saveOptionsState() {
       showCorrectAnswer: true
     },
     numQuestions: 10,
-    selectionMode: 'random' // Only for DB mode
+    selectionMode: 'random', // Only for DB mode
+    testMode: 'learning' // Default to learning mode
   };
   
   // Get current form values
@@ -206,9 +207,10 @@ function saveOptionsState() {
       state.allTypesSelected = allTypesCheckbox.checked;
     }
     
-    // Save individual type selections
+    // Save individual type selections - handle both simple and enhanced types
     typeCheckboxes.forEach(cb => {
       if (cb.checked && cb.value !== 'ALL') {
+        // Save the checkbox value (enhanced or simple type name)
         state.selectedTypes.push(cb.value);
       }
     });
@@ -248,6 +250,12 @@ function saveOptionsState() {
     if (selectionModeRadio) {
       state.selectionMode = selectionModeRadio.value;
     }
+  }
+  
+  // Save test mode
+  const testModeRadio = panel.querySelector('input[name="testMode"]:checked');
+  if (testModeRadio) {
+    state.testMode = testModeRadio.value;
   }
   
   // Store the state
@@ -353,13 +361,28 @@ function restoreOptionsState() {
           allTypesCheckbox.dispatchEvent(new Event('change'));
         }
       } else if (state.selectedTypes && state.selectedTypes.length > 0) {
-        // Restore individual type selections
+        // Restore individual type selections - handle both simple and enhanced types
         const typeCheckboxes = typeSectionDiv.querySelectorAll('input[type="checkbox"]');
         typeCheckboxes.forEach(cb => {
           if (cb.value === 'ALL') {
             cb.checked = false; // Uncheck "All" if individual selections exist
           } else {
-            cb.checked = state.selectedTypes.includes(cb.value);
+            // Check if this checkbox should be checked
+            let shouldCheck = false;
+            
+            // Direct match with saved type name
+            if (state.selectedTypes.includes(cb.value)) {
+              shouldCheck = true;
+            }
+            
+            // For enhanced types, check if any of the original types were saved
+            const originalTypes = cb.getAttribute('data-original-types');
+            if (originalTypes && !shouldCheck) {
+              const origTypesArray = originalTypes.split(',');
+              shouldCheck = origTypesArray.some(origType => state.selectedTypes.includes(origType));
+            }
+            
+            cb.checked = shouldCheck;
           }
         });
       }

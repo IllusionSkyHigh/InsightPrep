@@ -38,3 +38,6 @@ Thumbs.db
 *mock*.py
 DB Files/Testing*.db
 !DB Files/Testing.db
+
+# Ignore snapshot golden folders
+Golden/
