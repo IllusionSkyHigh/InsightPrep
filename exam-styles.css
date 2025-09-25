@@ -795,7 +795,8 @@ input[type="checkbox"] {
   position: fixed;
   top: auto !important;
   bottom: 24px;
-  left: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   right: auto;
   background: #1e293b;
   color: #fff;

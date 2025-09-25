@@ -1182,7 +1182,22 @@ class ExamEngine {
                     if (!userAnswerText) userAnswerText = rawUser; // fallback
                 }
 
+                // For object (Match) answers, convert to readable text
+                if (rawUser && typeof rawUser === 'object' && !Array.isArray(rawUser)) {
+                    userAnswerText = Object.entries(rawUser).map(([l,r]) => `${l} → ${r}`).join('; ');
+                }
+                // Compute correctness including match object deep compare (case-insensitive)
                 const isCorrect = (function() {
+                    // Match questions (object of pairs)
+                    if (correctAnswer && typeof correctAnswer === 'object' && !Array.isArray(correctAnswer) && rawUser && typeof rawUser === 'object' && !Array.isArray(rawUser)) {
+                        const cKeys = Object.keys(correctAnswer);
+                        // All left keys must be answered & match ignoring case/whitespace
+                        return cKeys.length > 0 && cKeys.every(k => {
+                            const exp = String(correctAnswer[k]).trim().toLowerCase();
+                            const got = rawUser[k] != null ? String(rawUser[k]).trim().toLowerCase() : null;
+                            return exp === got;
+                        });
+                    }
                     if (Array.isArray(correctAnswer) && Array.isArray(rawUser)) {
                         const norm = arr => arr.map(x=>String(x).trim().toLowerCase()).sort();
                         return JSON.stringify(norm(correctAnswer)) === JSON.stringify(norm(rawUser));
@@ -1197,19 +1212,41 @@ class ExamEngine {
                 const showCorrectLine = !isCorrect; // show correct if wrong or unanswered
                 const options = q.options || q.answers || q.choices || null;
                 let optionsMarkup = '';
-                if (Array.isArray(options)) {
+                if ((q.type === 'match' || q.question_type === 'Match') && (q.matchPairs || q.match_pairs)) {
+                    const pairs = q.matchPairs || q.match_pairs;
+                    const userObj = (rawUser && typeof rawUser === 'object' && !Array.isArray(rawUser)) ? rawUser : {};
+                    const rows = Object.keys(pairs).map(left => {
+                        const correctRight = pairs[left];
+                        const userRight = userObj[left];
+                        const rowCorrect = userRight != null && String(userRight).trim().toLowerCase() === String(correctRight).trim().toLowerCase();
+                        return `<tr class="${rowCorrect ? 'correct-row' : 'incorrect-row'}"><td>${this.escapeHtml(left)}</td><td>${this.escapeHtml(correctRight)}</td><td>${userRight ? this.escapeHtml(userRight) : '<em>-</em>'}</td></tr>`;
+                    }).join('');
+                    optionsMarkup = `<table class="match-table"><thead><tr><th>Left</th><th>Correct Match</th><th>Your Match</th></tr></thead><tbody>${rows}</tbody></table>`;
+                } else if (Array.isArray(options)) {
                     optionsMarkup = `<ol class="options">${options.map(opt => `<li>${this.escapeHtml(String(opt))}</li>`).join('')}</ol>`;
                 }
+                // Build correct answer line string for match objects
+                let correctAnswerText = '';
+                if (showCorrectLine) {
+                    if (correctAnswer && typeof correctAnswer === 'object' && !Array.isArray(correctAnswer)) {
+                        correctAnswerText = Object.entries(correctAnswer).map(([l,r]) => `${l} → ${r}`).join('; ');
+                    } else {
+                        correctAnswerText = Array.isArray(correctAnswer)? correctAnswer.join(', ') : String(correctAnswer);
+                    }
+                }
+                const isMatchQuestion = (q.type === 'match' || q.question_type === 'Match') && (q.matchPairs || q.match_pairs);
+                const answerLineMarkup = isMatchQuestion ? '' : `<div class="answer-line">Your answer: <strong>${rawUser != null ? this.escapeHtml(String(userAnswerText)) : '<em>(none)</em>'}</strong></div>`;
+                const correctLineMarkup = isMatchQuestion ? '' : (showCorrectLine ? `<div class=\"correct-line\">Correct answer: <strong>${this.escapeHtml(correctAnswerText)}</strong></div>` : '');
                 questionsHtml += `
-                <div class="question-block ${isCorrect ? 'correct' : 'incorrect'}">
-                    <div class="q-header">
-                        <span class="q-number">Q${i+1}</span>
-                        <span class="q-status ${status.toLowerCase()}">${status}${bookmarked ? ' • Bookmarked' : ''}</span>
+                <div class=\"question-block ${isCorrect ? 'correct' : 'incorrect'}\">
+                    <div class=\"q-header\">
+                        <span class=\"q-number\">Q${i+1}</span>
+                        <span class=\"q-status ${status.toLowerCase()}\">${status}${bookmarked ? ' • Bookmarked' : ''}</span>
                     </div>
-                    <div class="q-text">${this.escapeHtml(q.question_text || q.question || '')}</div>
+                    <div class=\"q-text\">${this.escapeHtml(q.question_text || q.question || '')}</div>
                     ${optionsMarkup}
-                    <div class="answer-line">Your answer: <strong>${rawUser != null ? this.escapeHtml(String(userAnswerText)) : '<em>(none)</em>'}</strong></div>
-                    ${showCorrectLine ? `<div class="correct-line">Correct answer: <strong>${this.escapeHtml(Array.isArray(correctAnswer)? correctAnswer.join(', ') : String(correctAnswer))}</strong></div>` : ''}
+                    ${answerLineMarkup}
+                    ${correctLineMarkup}
                 </div>`;
             } catch(err) {
                 console.error('[PDF] Error building question block', i, err);
@@ -1252,6 +1289,11 @@ class ExamEngine {
                 ol.options li { margin:2px 0; font-size:13px; }
                 .answer-line, .correct-line { font-size:12.5px; margin:2px 0; }
                 .correct-line { color:#1b5e20; }
+                table.match-table { width:100%; border-collapse:collapse; margin:6px 0 8px; font-size:12.5px; }
+                table.match-table th, table.match-table td { border:1px solid #bbb; padding:4px 6px; vertical-align:top; }
+                table.match-table th { background:#e0e0e0; text-align:left; }
+                table.match-table tr.correct-row td { background:#e8f5e9; }
+                table.match-table tr.incorrect-row td { background:#ffebee; }
                 @media print { .no-print { display:none !important; } }
             </style>`;
 
