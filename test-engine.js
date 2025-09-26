@@ -563,14 +563,20 @@ function handleAnswer(question, chosen, qDiv, qIndex) {
   let isSingleChoice = true;
   let isMultipleChoice = false;
   
-  if (AppState.isDbMode && (questionType === 'MCQ' || questionType === 'MCQ-Scenario' || questionType === 'Cohort-05-MCQ' || questionType === 'MCQ-Multiple')) {
+  if (questionType === 'match' || questionType === 'Match') {
+    // Matching questions are neither single nor multiple choice in this flow
+    isSingleChoice = false;
+    isMultipleChoice = false;
+  }
+  else if (AppState.isDbMode && (questionType === 'MCQ' || questionType === 'MCQ-Scenario' || questionType === 'Cohort-05-MCQ' || questionType === 'MCQ-Multiple')) {
     // For database mode, check if answer is array with multiple values or single value
     isMultipleChoice = Array.isArray(question.answer) && question.answer.length > 1;
     isSingleChoice = !isMultipleChoice;
   } else {
     // For JSON mode, use the type field or answer format
     isSingleChoice = (question.type === "single" || questionType === "single" || questionType === "assertion") || 
-                     (!Array.isArray(question.answer) || question.answer.length === 1);
+                     (!!question.answer && !Array.isArray(question.answer) && (typeof question.answer !== 'object')) ||
+                     (Array.isArray(question.answer) && question.answer.length === 1);
     isMultipleChoice = (question.type === "multiple" || questionType === "multiple") || 
                        (Array.isArray(question.answer) && question.answer.length > 1);
   }
@@ -586,7 +592,21 @@ function handleAnswer(question, chosen, qDiv, qIndex) {
     isCorrect = (correct.size === selected.size && [...correct].every(x => selected.has(x)));
   }
   else if (questionType === "match" || questionType === "Match") {
-    isCorrect = JSON.stringify(chosen) === JSON.stringify(question.matchPairs);
+    const correctPairs = question.matchPairs || question.answer || {};
+    const norm = (obj) => {
+      const out = {};
+      Object.keys(obj || {}).forEach(k => {
+        const nk = String(k).trim().toLowerCase();
+        const nv = obj[k] != null ? String(obj[k]).trim().toLowerCase() : '';
+        out[nk] = nv;
+      });
+      return out;
+    };
+    const a = norm(correctPairs);
+    const b = norm(chosen || {});
+    const aKeys = Object.keys(a);
+    const bKeys = Object.keys(b);
+    isCorrect = aKeys.length > 0 && aKeys.length === bKeys.length && aKeys.every(k => a[k] === b[k]);
   }
 
   // Remove any previous try-again container

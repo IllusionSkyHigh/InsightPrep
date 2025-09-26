@@ -1741,6 +1741,194 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
   });
   
   buttonContainer.appendChild(resetBtn);
+
+  // Conditionally add Export JSON button when URL has ?json= ...
+  const hasJsonParam = (() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      if (params.has('json')) return true;
+      // Case-insensitive check for safety
+      for (const [k] of params.entries()) {
+        if (String(k).toLowerCase() === 'json') return true;
+      }
+      return false;
+    } catch(e) { return false; }
+  })();
+  if (hasJsonParam) {
+  const exportBtn = document.createElement('button');
+  exportBtn.textContent = 'Export to JSON';
+    exportBtn.className = 'custom-btn';
+    exportBtn.style.marginRight = '10px';
+    exportBtn.style.backgroundColor = '#f5f5f5';
+    exportBtn.style.color = '#333';
+    exportBtn.style.border = '1px solid #ccc';
+
+    exportBtn.addEventListener('click', () => {
+      try {
+        // Reuse current selections to build the same question set as Start Test
+        // 1) Selected types (map enhanced back to DB types like Start Test)
+        let selectedTypes = [];
+        const typeChecks = typeDiv.querySelectorAll('input[type=checkbox]');
+        const mapEnhancedToDbType = (enhancedType) => {
+          if (window.enhancedTypeMapping) {
+            for (const [dbType, enhanced] of Object.entries(window.enhancedTypeMapping)) {
+              if (enhanced.includes(enhancedType)) return dbType;
+            }
+          }
+          return enhancedType;
+        };
+        if (typeChecks[0]?.checked) {
+          selectedTypes = window.currentDatabaseTypes && window.currentDatabaseTypes.length > 0
+            ? [...window.currentDatabaseTypes]
+            : Array.from(typeChecks).slice(1).filter(cb => cb.value && cb.value !== 'ALL').map(cb => mapEnhancedToDbType(cb.value));
+        } else {
+          const dbTypes = new Set();
+          typeChecks.forEach((cb, i) => { if (i > 0 && cb.checked && cb.value !== 'ALL') dbTypes.add(mapEnhancedToDbType(cb.value)); });
+          selectedTypes = [...dbTypes];
+        }
+        if (selectedTypes.length === 0) {
+          alert('Please select at least one question type before exporting.');
+          return;
+        }
+
+        // 2) Build SQL per topic/subtopic selection
+        const selectAllTopics = document.getElementById('select-all-topics-db');
+        let sql;
+        if (selectAllTopics && selectAllTopics.checked) {
+          sql = `SELECT * FROM questions WHERE question_type IN (${selectedTypes.map(t => `'${escapeSQL(t)}'`).join(',')})`;
+        } else {
+          const selectedSubtopics = topicDiv.querySelectorAll('.subtopic-checkbox:checked');
+          if (selectedSubtopics.length === 0) {
+            alert('Please select at least one topic/subtopic before exporting.');
+            return;
+          }
+          const conditions = [];
+          selectedSubtopics.forEach(cb => {
+            const topic = cb.dataset.topic;
+            const subtopic = cb.value;
+            conditions.push(`(topic = '${escapeSQL(topic)}' AND subtopic = '${escapeSQL(subtopic)}')`);
+          });
+          sql = `SELECT * FROM questions WHERE (${conditions.join(' OR ')}) AND question_type IN (${selectedTypes.map(t => `'${escapeSQL(t)}'`).join(',')})`;
+        }
+
+        const result = AppState.database.exec(sql);
+        const allRows = result[0] ? result[0].values : [];
+        if (allRows.length === 0) {
+          alert('No questions found for export with the current filters.');
+          return;
+        }
+
+        // 3) Transform rows to question objects and enrich (same as Start Test path)
+        const columns = result[0].columns;
+        let questions = allRows.map(row => {
+          const q = {}; columns.forEach((col, idx) => q[col] = row[idx]); return q;
+        });
+
+        questions = questions.map(q => {
+          q.question = q.question_text;
+          if (q.question_type === 'MCQ' || q.question_type === 'MCQ-Scenario' || q.question_type === 'Cohort-05-MCQ' || q.question_type === 'MCQ-Multiple') {
+            const optRes = AppState.database.exec(`SELECT option_text, is_correct FROM options WHERE question_id = ${q.id} ORDER BY id`);
+            q.options = optRes[0]?.values?.map(v => v[0]) || [];
+            q.answer = optRes[0]?.values?.filter(v => v[1] === 1 || v[1] === '1')?.map(v => v[0]) || [];
+            q.type = (q.question_type === 'MCQ-Multiple') ? 'multiple' : ((Array.isArray(q.answer) && q.answer.length > 1) ? 'multiple' : 'single');
+            if (q.type === 'single' && q.answer.length === 1) q.answer = q.answer[0];
+          } else if (q.question_type === 'TrueFalse') {
+            q.options = ['True','False'];
+            q.type = 'single';
+            const optRes = AppState.database.exec(`SELECT option_text, is_correct FROM options WHERE question_id = ${q.id}`);
+            const correctOpt = optRes[0]?.values?.find(v => v[1] === 1 || v[1] === '1');
+            q.answer = correctOpt ? correctOpt[0] : null;
+          } else if (q.question_type === 'Match') {
+            q.type = 'match';
+            const matchRes = AppState.database.exec(`SELECT left_text, right_text FROM match_pairs WHERE question_id = ${q.id} ORDER BY id`);
+            if (matchRes[0]?.values) {
+              q.matchPairs = {};
+              matchRes[0].values.forEach(([l,r]) => { q.matchPairs[l] = r; });
+              q.options = ['Refer to match pairs'];
+              q.answer = q.matchPairs;
+            }
+          } else if (q.question_type === 'AssertionReason') {
+            q.type = 'assertion';
+            const optRes = AppState.database.exec(`SELECT option_text, is_correct FROM options WHERE question_id = ${q.id} ORDER BY id`);
+            q.options = optRes[0]?.values?.map(v => v[0]) || [];
+            const correctOpt = optRes[0]?.values?.find(v => v[1] === 1 || v[1] === '1');
+            q.answer = correctOpt ? correctOpt[0] : null;
+          }
+          return q;
+        });
+
+        // Enhanced type filtering if individual enhanced types were selected
+        if (!typeChecks[0]?.checked) {
+          const selectedEnhancedTypes = [];
+          typeChecks.forEach((cb, i) => { if (i > 0 && cb.checked && cb.value !== 'ALL') selectedEnhancedTypes.push(cb.value); });
+          if (selectedEnhancedTypes.length > 0) {
+            questions = questions.filter(q => {
+              for (const enhancedType of selectedEnhancedTypes) {
+                if (enhancedType.includes(' - ')) {
+                  const baseType = enhancedType.split(' - ')[0];
+                  if (q.question_type === baseType) {
+                    if (enhancedType.includes('Multiple Correct')) {
+                      if (Array.isArray(q.answer) && q.answer.length > 1) return true;
+                    } else if (enhancedType.includes('Single Correct')) {
+                      if (q.type === 'single' && q.options && q.options.length > 2) return true;
+                    } else if (enhancedType.includes('True or False')) {
+                      if (q.options && q.options.length === 2 && ((q.options[0].toLowerCase() === 'true' && q.options[1].toLowerCase() === 'false') || (q.options[0].toLowerCase() === 'false' && q.options[1].toLowerCase() === 'true'))) return true;
+                    }
+                  }
+                } else {
+                  if (q.question_type === enhancedType) return true;
+                }
+              }
+              return false;
+            });
+          }
+        }
+
+        // 4) Apply selection mode and limit
+        const numInput = document.getElementById('numQuestions');
+        const numQuestions = Math.min(parseInt(numInput.value) || 10, questions.length);
+        const mode = modeDiv.querySelector('input[name="selectionMode"]:checked').value;
+        let chosenQuestions;
+        if (mode === 'random') {
+          chosenQuestions = shuffle(questions).slice(0, numQuestions);
+        } else if (mode === 'balanced') {
+          chosenQuestions = balancedSelection(questions, numQuestions);
+        } else {
+          chosenQuestions = questions.slice(0, numQuestions);
+        }
+
+        // 5) Build export payload and trigger download
+        const payload = {
+          meta: {
+            source: 'database',
+            dbFileName: AppState.dbFileName || 'database',
+            exportedAt: new Date().toISOString(),
+            count: chosenQuestions.length,
+            mode
+          },
+          questions: chosenQuestions
+        };
+
+        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const ts = new Date();
+        const pad = n => String(n).padStart(2,'0');
+        const stamp = `${ts.getFullYear()}${pad(ts.getMonth()+1)}${pad(ts.getDate())}_${pad(ts.getHours())}${pad(ts.getMinutes())}${pad(ts.getSeconds())}`;
+        const base = (AppState.dbFileName || 'selection').replace(/[^a-z0-9_\-]+/gi,'_');
+        a.href = url;
+        a.download = `${base}_export_${chosenQuestions.length}q_${stamp}.json`;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => { try { URL.revokeObjectURL(url); } catch(_){} document.body.removeChild(a); }, 0);
+      } catch (err) {
+        console.error('Export JSON failed:', err);
+        alert('Failed to export JSON. See console for details.');
+      }
+    });
+
+    buttonContainer.appendChild(exportBtn);
+  }
   
   // Create placeholder for "View Invalid Questions" button 
   const viewInvalidBtnPlaceholder = document.createElement("span");

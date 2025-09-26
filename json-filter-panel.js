@@ -636,33 +636,32 @@ function buildFilterPanel(allQuestions, skipRestore = false) {
   `;
 
   // Add immediate result option change handler (JSON mode)
-  setTimeout(() => {
-    const immediateResultCheckbox = document.getElementById("immediateResultOption");
-    const correctAnswerCheckbox = document.getElementById("correctAnswerOption");
-    const tryAgainCheckbox = document.getElementById("tryAgainOption");
+  // Bind to inputs within behaviorDiv/expDiv before attaching to DOM to avoid nulls
+  (() => {
+    const immediateResultCheckbox = behaviorDiv.querySelector('#immediateResultOption');
+    const correctAnswerCheckbox = behaviorDiv.querySelector('#correctAnswerOption');
+    const tryAgainCheckbox = behaviorDiv.querySelector('#tryAgainOption');
     const explanationRadios = expDiv.querySelectorAll('input[name="expMode"]');
-    
-    immediateResultCheckbox.addEventListener("change", () => {
-      if (!immediateResultCheckbox.checked) {
-        // When immediate result is turned OFF, disable "Try Again" (incompatible with delayed results)
-        tryAgainCheckbox.checked = false;
-        tryAgainCheckbox.disabled = true;
-        // Keep other options available for user choice - they'll be applied after final score
-      } else {
-        // When turned back ON, re-enable "Try Again" and set reasonable defaults
-        tryAgainCheckbox.disabled = false;
-        if (!correctAnswerCheckbox.checked && !tryAgainCheckbox.checked) {
-          // If both were unchecked, set reasonable defaults
-          correctAnswerCheckbox.checked = true;
-          tryAgainCheckbox.checked = true;
+    if (immediateResultCheckbox && correctAnswerCheckbox && tryAgainCheckbox && explanationRadios.length) {
+      immediateResultCheckbox.addEventListener('change', () => {
+        if (!immediateResultCheckbox.checked) {
+          // When immediate result is turned OFF, disable "Try Again" (incompatible with delayed results)
+          tryAgainCheckbox.checked = false;
+          tryAgainCheckbox.disabled = true;
+        } else {
+          // When turned back ON, re-enable "Try Again" and set reasonable defaults
+          tryAgainCheckbox.disabled = false;
+          if (!correctAnswerCheckbox.checked && !tryAgainCheckbox.checked) {
+            correctAnswerCheckbox.checked = true;
+            tryAgainCheckbox.checked = true;
+          }
+          if (explanationRadios[2] && explanationRadios[2].checked) {
+            explanationRadios[1].checked = true; // "Both when right and wrong"
+          }
         }
-        if (explanationRadios[2].checked) {
-          // If explanations were set to "none", change to a reasonable default
-          explanationRadios[1].checked = true; // "Both when right and wrong"
-        }
-      }
-    });
-  }, 0);
+      });
+    }
+  })();
 
   // Number of questions
   const maxQuestions = allQuestions.length;
@@ -670,10 +669,14 @@ function buildFilterPanel(allQuestions, skipRestore = false) {
   numDiv.className = "filter-section";
   numDiv.innerHTML = `<h3>Number of Questions</h3><input type=\"number\" id=\"numQuestions\" min=\"1\" value=\"${Math.min(10, maxQuestions)}\" max=\"${maxQuestions}\"> <span style=\"margin-left:10px; color:#0078d7; font-weight:bold;\">Max: ${maxQuestions} question${maxQuestions === 1 ? '' : 's'} available for selection</span><button id=\"answerAllBtn\" style=\"margin-left:10px; background:#4caf50; color:white; border:none; padding:4px 8px; border-radius:4px; font-size:0.85em; cursor:pointer; font-weight:bold;\" title=\"Set question count to maximum available (${maxQuestions})\">Answer all ${maxQuestions}</button>`;
   
-  // Add click handler for the "Answer all" button
-  document.getElementById("answerAllBtn").addEventListener("click", () => {
-    document.getElementById("numQuestions").value = maxQuestions;
-  });
+  // Add click handler for the "Answer all" button (bind within numDiv before append)
+  const answerAllBtnEl = numDiv.querySelector('#answerAllBtn');
+  if (answerAllBtnEl) {
+    answerAllBtnEl.addEventListener('click', () => {
+      const numInputEl = numDiv.querySelector('#numQuestions') || document.getElementById('numQuestions');
+      if (numInputEl) numInputEl.value = maxQuestions;
+    });
+  }
 
   // Start button
   const startBtn = document.createElement("button");

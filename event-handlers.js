@@ -207,20 +207,85 @@ function handleFileInput(e) {
   
   const reader = new FileReader();
   reader.onload = function(event) {
+    const raw = typeof event.target.result === 'string' ? event.target.result : '';
+    const tryParse = (text) => {
+      // Remove potential BOM
+      const cleaned = text.replace(/^\uFEFF/, '').trim();
+      return JSON.parse(cleaned);
+    };
+    const salvageParse = (text) => {
+      // Try to extract the first valid JSON object/array substring
+      const firstBrace = text.indexOf('{');
+      const firstBracket = text.indexOf('[');
+      let start = -1, end = -1;
+      if (firstBrace !== -1 && (firstBracket === -1 || firstBrace < firstBracket)) {
+        start = firstBrace; end = text.lastIndexOf('}');
+      } else if (firstBracket !== -1) {
+        start = firstBracket; end = text.lastIndexOf(']');
+      }
+      if (start !== -1 && end !== -1 && end > start) {
+        const slice = text.slice(start, end + 1);
+        return tryParse(slice);
+      }
+      throw new Error('Salvage parse failed');
+    };
+    const findQuestionsArray = (obj) => {
+      if (Array.isArray(obj)) return obj;
+      if (obj && typeof obj === 'object') {
+        // Direct 'questions'
+        if (Array.isArray(obj.questions)) return obj.questions;
+        // Case-insensitive key
+        const qKey = Object.keys(obj).find(k => k.toLowerCase() === 'questions');
+        if (qKey) {
+          const v = obj[qKey];
+          if (Array.isArray(v)) return v;
+          if (typeof v === 'string') {
+            try { const parsed = JSON.parse(v); if (Array.isArray(parsed)) return parsed; } catch(_) {}
+          }
+        }
+        // Nested common containers
+        for (const key of ['data', 'payload', 'result']) {
+          if (obj[key]) {
+            const nested = findQuestionsArray(obj[key]);
+            if (nested) return nested;
+          }
+        }
+      }
+      return null;
+    };
     try {
-      const data = JSON.parse(event.target.result);
+      let data;
+      try {
+        data = tryParse(raw);
+      } catch (e1) {
+        console.warn('Primary JSON.parse failed, attempting salvage parse...');
+        data = salvageParse(raw);
+      }
+      // Support array-root JSON by wrapping
+      if (Array.isArray(data)) {
+        data = { title: file.name.replace(/\.json$/i,'') || 'Imported Test', questions: data };
+      }
+      const questionsArr = findQuestionsArray(data);
+      if (!questionsArr) {
+        throw new Error('JSON must have a top-level "questions" array or be an array of questions.');
+      }
+      // Normalize to expected structure
+      data = { title: data.title || file.name.replace(/\.json$/i,'') || 'Imported Test', questions: questionsArr };
       AppState.originalData = data;
       AppState.isDbMode = false; // Set JSON mode flag
-      document.getElementById("file-chosen").innerHTML =
-        `✅ Test loaded: <strong>${data.title || file.name}</strong>`;
-      
+      const chosen = document.getElementById('file-chosen');
+      if (chosen) {
+        chosen.innerHTML = `✅ Test loaded: <strong>${data.title || file.name}</strong>`;
+      }
       // Reset options to defaults after successful JSON loading
-      resetOptionsToDefaults();
-      
+      if (typeof resetOptionsToDefaults === 'function') {
+        resetOptionsToDefaults();
+      }
+      // Go to JSON options screen
       buildFilterPanel(data.questions);
     } catch (err) {
-      alert("Invalid JSON file.");
-      // Keep guide visible if file loading failed
+      console.error('JSON import failed:', err);
+      alert('Invalid JSON. Ensure the file contains an object with a "questions" array or just an array of question objects.');
     }
   };
   reader.readAsText(file);
