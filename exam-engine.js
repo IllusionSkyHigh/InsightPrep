@@ -88,29 +88,18 @@ class ExamEngine {
             case '4':
             case '5':
             case '6':
+            case '7':
+            case '8':
+            case '9':
                 e.preventDefault();
                 this.selectOptionByNumber(parseInt(e.key));
                 break;
             
-            case 'a':
-            case 'A':
+            case 'a': case 'A': case 'b': case 'B': case 'c': case 'C': case 'd': case 'D':
+            case 'e': case 'E': case 'f': case 'F': case 'g': case 'G': case 'h': case 'H':
+            case 'i': case 'I': case 'j': case 'J': case 'k': case 'K': case 'l': case 'L':
                 e.preventDefault();
-                this.selectOptionByLetter('A');
-                break;
-            case 'b':
-            case 'B':
-                e.preventDefault();
-                this.selectOptionByLetter('B');
-                break;
-            case 'c':
-            case 'C':
-                e.preventDefault();
-                this.selectOptionByLetter('C');
-                break;
-            case 'd':
-            case 'D':
-                e.preventDefault();
-                this.selectOptionByLetter('D');
+                this.selectOptionByLetter(e.key.toUpperCase());
                 break;
             
             case 'Escape':
@@ -126,9 +115,11 @@ class ExamEngine {
     }
 
     selectOptionByNumber(num) {
-        const options = ['A', 'B', 'C', 'D', 'E', 'F'];
-        if (num >= 1 && num <= options.length) {
-            this.selectOptionByLetter(options[num - 1]);
+        // Map numeric keys to the nth rendered option (supports >6)
+        const inputs = document.querySelectorAll('#answer-options input[name="answer"]');
+        if (num >= 1 && num <= inputs.length) {
+            const letter = inputs[num - 1].value;
+            this.selectOptionByLetter(letter);
         }
     }
 
@@ -293,11 +284,31 @@ class ExamEngine {
 
             // Add keyboard navigation
             document.addEventListener('keydown', (e) => this.handleKeyboardNavigation(e));
+            // Resize listener to keep options list height safe relative to bottom navigation
+            window.addEventListener('resize', () => this.adjustOptionsListHeight());
             
 
             
         } catch (error) {
             console.error('Error initializing event listeners:', error);
+        }
+    }
+
+    // Ensure the inner options list never extends under the bottom nav so the scrollbar remains fully visible
+    adjustOptionsListHeight() {
+        try {
+            if (!this.currentOptionsListEl) return;
+            const listEl = this.currentOptionsListEl;
+            const bottomNav = document.getElementById('bottom-navigation');
+            const rect = listEl.getBoundingClientRect();
+            const viewportH = window.innerHeight || document.documentElement.clientHeight;
+            const buffer = 12; // spacing above bottom nav
+            // Use the top of bottom nav as a hard boundary, fallback to viewport bottom
+            const bottomBoundary = bottomNav ? bottomNav.getBoundingClientRect().top : viewportH;
+            const available = Math.max(140, bottomBoundary - rect.top - buffer);
+            listEl.style.maxHeight = available + 'px';
+        } catch (e) {
+            
         }
     }
 
@@ -332,6 +343,13 @@ class ExamEngine {
             
             this.examDuration = examData.duration || Math.ceil(this.questions.length * 1.5);
             this.timeRemaining = this.examDuration * 60;
+            // Capture candidate name for display & report (fallback to cookie/localStorage if missing)
+            try {
+                const fromPayload = (examData.candidateName && String(examData.candidateName).trim()) || '';
+                this.candidateName = fromPayload || this.getCandidateNameFromCookie();
+            } catch(_) {
+                this.candidateName = this.getCandidateNameFromCookie();
+            }
             
             this.initializeUI();
             this.startExamTimer();
@@ -401,7 +419,7 @@ class ExamEngine {
         const questionTextElement = document.getElementById('question-text');
         if (questionTextElement) {
             const questionText = question.question_text || question.question || 'Question text not available';
-            questionTextElement.innerHTML = questionText;
+            questionTextElement.innerHTML = this.formatQuestionText(questionText);
         }
         
         // Hide topic info in exam mode (no spoilers!)
@@ -427,11 +445,47 @@ class ExamEngine {
         this.updateNavigationButtons();
     }
 
+    // Turn inline enumerations like "I.", "1)", "A.", "a.", "ii.", etc. into separate lines
+    formatQuestionText(raw) {
+        try {
+            const str = String(raw);
+            // If content already has list/table/line breaks, leave it as-is to avoid double-formatting
+            if (/<\s*(ul|ol|table|tr|li|br)\b/i.test(str)) return str;
+            // Insert a marker before enumeration tokens to split later
+            // Match tokens preceded by whitespace or '(' and followed by space: 1. 1) I. A. a. ii. etc.
+            const enumToken = '((?:\\d+|[ivx]+|[IVX]+|[a-z]|[A-Z])[.)])';
+            const re = new RegExp('([\\s(])' + enumToken + '\\s+', 'g');
+            const withMarkers = str.replace(re, '$1|||$2 ');
+            const parts = withMarkers.split('|||');
+            if (parts.length <= 1) return str;
+            const preamble = parts.shift().trim();
+            const items = parts.map(s => s.trim()).filter(Boolean);
+            // Require at least two items to consider it a list
+            if (items.length < 2) return str;
+            const block = `<div class="enum-block" style="margin-top:6px;display:flex;flex-direction:column;gap:8px;">${items.map(it => `<div class="enum-item">${it}</div>`).join('')}</div>`;
+            return (preamble ? `<div class="q-preamble" style="margin-bottom:6px;">${preamble}</div>` : '') + block;
+        } catch (e) {
+            return raw;
+        }
+    }
+
     displayAnswerOptions(question) {
         const container = document.getElementById('answer-options');
         if (!container) return;
         
-        container.innerHTML = '';
+    container.innerHTML = '';
+        // Reset outer container overflow; specific renderers will adjust if needed
+        const examContentEl = document.getElementById('exam-content');
+    if (examContentEl) examContentEl.style.overflow = '';
+    // Re-enable page scroll by default; renderers will disable when needed
+    try { document.body.style.overflowY = ''; } catch(_) {}
+        // Ensure the right panel uses its own scroll by default (will be disabled when inner list scrolls)
+        const answerPanelEl = document.getElementById('answer-panel');
+        if (answerPanelEl) answerPanelEl.style.overflowY = 'auto';
+    // Reset any extra padding previously applied
+    if (answerPanelEl) answerPanelEl.style.paddingBottom = '';
+    // Clear current list reference
+    this.currentOptionsListEl = null;
         
         // Handle different question types
         if (question.question_type === 'Match' || question.type === 'match') {
@@ -452,234 +506,202 @@ class ExamEngine {
     }
 
     displayMCQOptions(question, container) {
-        const options = ['A', 'B', 'C', 'D', 'E', 'F'];
-        let optionTexts = {};
-        
-        if (question.options && Array.isArray(question.options)) {
-            optionTexts = {
-                'A': question.options[0] || null,
-                'B': question.options[1] || null,
-                'C': question.options[2] || null,
-                'D': question.options[3] || null,
-                'E': question.options[4] || null,
-                'F': question.options[5] || null
-            };
-        } else if (question.option_a && question.option_a.includes(',') && 
-            (!question.option_b || !question.option_c || !question.option_d)) {
-            // Options might be concatenated, try to split them
-
-            const splitOptions = question.option_a.split(',').map(opt => opt.trim());
-            
-            if (splitOptions.length >= 4) {
-                optionTexts = {
-                    'A': splitOptions[0],
-                    'B': splitOptions[1],
-                    'C': splitOptions[2],
-                    'D': splitOptions[3],
-                    'E': splitOptions[4] || null,
-                    'F': splitOptions[5] || null
-                };
-            } else {
-                // Fallback to normal field checking
-                optionTexts = {
-                    'A': question.option_a || question.optionA || question.a || question.choice_a,
-                    'B': question.option_b || question.optionB || question.b || question.choice_b,
-                    'C': question.option_c || question.optionC || question.c || question.choice_c,
-                    'D': question.option_d || question.optionD || question.d || question.choice_d,
-                    'E': question.option_e || question.optionE || question.e || question.choice_e,
-                    'F': question.option_f || question.optionF || question.f || question.choice_f
-                };
-            }
+        // Build all option texts (array form preferred, fallback to legacy fields up to 12)
+        let optTexts = [];
+        if (Array.isArray(question.options) && question.options.length > 0) {
+            optTexts = question.options.filter(v => v != null && String(v).trim().length > 0).map(v => String(v));
+        } else if (question.option_a && typeof question.option_a === 'string' && question.option_a.includes(',') && (!question.option_b || !question.option_c || !question.option_d)) {
+            optTexts = question.option_a.split(',').map(s => s.trim()).filter(Boolean);
         } else {
-            // Normal field checking
-            optionTexts = {
-                'A': question.option_a || question.optionA || question.a || question.choice_a,
-                'B': question.option_b || question.optionB || question.b || question.choice_b,
-                'C': question.option_c || question.optionC || question.c || question.choice_c,
-                'D': question.option_d || question.optionD || question.d || question.choice_d,
-                'E': question.option_e || question.optionE || question.e || question.choice_e,
-                'F': question.option_f || question.optionF || question.f || question.choice_f
-            };
+            const letters = 'abcdefghijklmnopqrstuvwxyz';
+            for (let i = 0; i < 12; i++) {
+                const l = letters[i];
+                const val = question[`option_${l}`] || question[`option${l.toUpperCase()}`] || question[l] || question[`choice_${l}`];
+                if (val != null && String(val).trim().length > 0) optTexts.push(String(val));
+            }
         }
-        
-        // Validate options
-        const validOptionEntries = Object.entries(optionTexts)
-            .filter(([key, value]) => {
-                if (!value) return false;
-                const trimmed = value.toString().trim();
-                // Accept any non-empty option that's at least 1 character
-                // Only reject empty or null values
-                return trimmed.length > 0;
-            });
 
-        if (validOptionEntries.length === 0) {
+        if (optTexts.length === 0) {
             container.innerHTML = '<p>No options available for this question.</p>';
             return;
         }
 
-        validOptionEntries.forEach(([option, text]) => {
-            if (text && text.trim()) {
-                const optionDiv = document.createElement('div');
-                optionDiv.className = 'answer-option';
-                optionDiv.innerHTML = `
-                    <input type="radio" name="answer" value="${option}" id="option-${option}">
-                    <span class="option-text">${option}. ${text}</span>
-                `;
-                
-                // Handle clicks on the entire option area
-                const handleOptionClick = (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const radio = optionDiv.querySelector('input[type="radio"]');
-                    const allRadios = container.querySelectorAll('input[type="radio"]');
-                    
-                    // Professional toggle behavior
-                    if (radio.checked) {
-                        // If already selected, deselect (toggle off)
-                        radio.checked = false;
-                        this.userAnswers.delete(this.currentQuestionIndex);
-                        optionDiv.classList.remove('selected');
-                    } else {
-                        // Deselect all other options first
-                        allRadios.forEach(r => {
-                            r.checked = false;
-                            r.closest('.answer-option').classList.remove('selected');
-                        });
-                        
-                        // Select this option
-                        radio.checked = true;
-                        this.userAnswers.set(this.currentQuestionIndex, option);
-                        optionDiv.classList.add('selected');
-                    }
-                    
-                    this.updateCounters();
-                    this.updateQuestionNumberHighlights();
-                };
-                
-                // Add event listeners to both the container and radio button
-                optionDiv.addEventListener('click', handleOptionClick);
-                
-                // Also handle radio button clicks specifically
+        // Scrollable list and hint for many options
+        const listRoot = document.createElement('div');
+        if (optTexts.length > 6) {
+            const hint = document.createElement('div');
+            hint.className = 'scroll-hint';
+            hint.style.cssText = 'margin:6px 0 8px; padding:8px 10px; background:#eaf4ff; border-left:3px solid #2196f3; color:#084298; font-size:0.9em; border-radius:4px;';
+            hint.textContent = 'Scroll down to see more options';
+            container.appendChild(hint);
+
+            // Height is computed dynamically to avoid overlapping bottom nav
+            listRoot.style.overflowY = 'auto';
+            listRoot.style.paddingRight = '6px';
+            // dynamic bottom padding so last option clears the bottom bar
+            const bottomNav1 = document.getElementById('bottom-navigation');
+            const safePad1 = (bottomNav1 ? bottomNav1.offsetHeight : 64) + 24; // nav height + buffer
+            listRoot.style.paddingBottom = safePad1 + 'px';
+            // Ensure only the options list scrolls
+            const examContent = document.getElementById('exam-content');
+            if (examContent) examContent.style.overflow = 'hidden';
+            try { document.body.style.overflowY = 'hidden'; } catch(_) {}
+            const answerPanel = document.getElementById('answer-panel');
+            if (answerPanel) answerPanel.style.overflowY = 'hidden';
+            if (answerPanel) answerPanel.style.paddingBottom = (safePad1 - 8) + 'px';
+            // Save reference and compute height now
+            this.currentOptionsListEl = listRoot;
+            this.adjustOptionsListHeight();
+            // Defer a second recalculation after layout settles
+            requestAnimationFrame(() => this.adjustOptionsListHeight());
+            setTimeout(() => this.adjustOptionsListHeight(), 60);
+        }
+
+        // Restore spacing between options
+        listRoot.style.display = 'flex';
+        listRoot.style.flexDirection = 'column';
+        listRoot.style.gap = '15px';
+
+        optTexts.forEach((text, idx) => {
+            const letter = String.fromCharCode(65 + idx);
+            const optionDiv = document.createElement('div');
+            optionDiv.className = 'answer-option';
+            optionDiv.innerHTML = `
+                <input type="radio" name="answer" value="${letter}" id="option-${letter}">
+                <span class="option-text">${letter}. ${this.escapeHtml(String(text))}</span>
+            `;
+            const handleOptionClick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 const radio = optionDiv.querySelector('input[type="radio"]');
-                radio.addEventListener('click', handleOptionClick);
-                
-                container.appendChild(optionDiv);
-            }
-        });
-        
-
-        
-        // Force show the container if options were added
-        if (container.children.length > 0) {
-            container.style.display = 'flex';
-            container.style.flexDirection = 'column';
-            container.style.gap = '15px';
-
-        } else {
-            console.error('No answer options were added to container!');
-            console.error('Question object keys:', Object.keys(question));
-            console.error('Trying to find ANY text fields...');
-            
-            // Try to find ANY option text in the question object
-            const possibleOptions = [];
-            for (let key in question) {
-                if (key.toLowerCase().includes('option') || key.toLowerCase().includes('choice')) {
-                    possibleOptions.push({ key, value: question[key] });
+                const allRadios = listRoot.querySelectorAll('input[type="radio"]');
+                if (radio.checked) {
+                    radio.checked = false;
+                    this.userAnswers.delete(this.currentQuestionIndex);
+                    optionDiv.classList.remove('selected');
+                } else {
+                    allRadios.forEach(r => { r.checked = false; const od = r.closest('.answer-option'); if (od) od.classList.remove('selected'); });
+                    radio.checked = true;
+                    this.userAnswers.set(this.currentQuestionIndex, letter);
+                    optionDiv.classList.add('selected');
                 }
-            }
-            
-            console.error('Found possible option fields:', possibleOptions);
-            
-            if (possibleOptions.length > 0) {
-                possibleOptions.forEach((opt, index) => {
-                    const letter = String.fromCharCode(65 + index); // A, B, C, D
-                    const optionDiv = document.createElement('div');
-                    optionDiv.className = 'answer-option';
-                    optionDiv.innerHTML = `
-                        <input type="radio" name="answer" value="${letter}" id="option-${letter}">
-                        <label for="option-${letter}" class="option-text">${letter}. ${opt.value}</label>
-                    `;
-                    container.appendChild(optionDiv);
-                });
-            } else {
-                container.innerHTML = '<div style="color: red; padding: 20px;">ERROR: No option fields found in question data. Check console for details.</div>';
-            }
+                this.updateCounters();
+                this.updateQuestionNumberHighlights();
+            };
+            optionDiv.addEventListener('click', handleOptionClick);
+            const radio = optionDiv.querySelector('input[type="radio"]');
+            radio.addEventListener('click', handleOptionClick);
+            listRoot.appendChild(optionDiv);
+        });
+
+        container.appendChild(listRoot);
+        container.style.display = 'flex';
+        container.style.flexDirection = 'column';
+        container.style.gap = '15px';
+        // If we didn't enable inner scrolling (<=6 options), hide right-panel scrollbar
+        if (optTexts.length <= 6) {
+            const answerPanel = document.getElementById('answer-panel');
+            if (answerPanel) answerPanel.style.overflowY = 'hidden';
         }
     }
 
     displayMultipleChoiceOptions(question, container) {
-        const options = ['A', 'B', 'C', 'D', 'E', 'F'];
-        let optionTexts = {};
-        
-        // Get options in the same way as single choice
-        if (question.options && Array.isArray(question.options)) {
-            optionTexts = {
-                'A': question.options[0] || null,
-                'B': question.options[1] || null,
-                'C': question.options[2] || null,
-                'D': question.options[3] || null,
-                'E': question.options[4] || null,
-                'F': question.options[5] || null
-            };
-        } else {
-            // Normal field checking
-            optionTexts = {
-                'A': question.option_a || question.optionA || question.a || question.choice_a,
-                'B': question.option_b || question.optionB || question.b || question.choice_b,
-                'C': question.option_c || question.optionC || question.c || question.choice_c,
-                'D': question.option_d || question.optionD || question.d || question.choice_d,
-                'E': question.option_e || question.optionE || question.e || question.choice_e,
-                'F': question.option_f || question.optionF || question.f || question.choice_f
-            };
-        }
-        
-        // Filter valid options
-        const validOptionEntries = Object.entries(optionTexts)
-            .filter(([key, value]) => value && value.toString().trim().length > 0);
-
-        if (validOptionEntries.length === 0) {
-            container.innerHTML = '<p>No options available for this question.</p>';
-            return;
-        }
-
         // Add instruction for multiple choice
         const instruction = document.createElement('div');
         instruction.className = 'multiple-choice-instruction';
         instruction.innerHTML = '<strong>📝 Select ALL correct answers:</strong>';
-        instruction.style.cssText = 'margin-bottom: 15px; padding: 10px; background: #e3f2fd; border-radius: 5px; color: #1565c0;';
+        instruction.style.cssText = 'margin-bottom: 10px; padding: 10px; background: #e3f2fd; border-radius: 5px; color: #1565c0;';
         container.appendChild(instruction);
 
-        validOptionEntries.forEach(([option, text]) => {
+        // Build all option texts
+        let optTexts = [];
+        if (Array.isArray(question.options) && question.options.length > 0) {
+            optTexts = question.options.filter(v => v != null && String(v).trim().length > 0).map(v => String(v));
+        } else {
+            const letters = 'abcdefghijklmnopqrstuvwxyz';
+            for (let i = 0; i < 12; i++) {
+                const l = letters[i];
+                const val = question[`option_${l}`] || question[`option${l.toUpperCase()}`] || question[l] || question[`choice_${l}`];
+                if (val != null && String(val).trim().length > 0) optTexts.push(String(val));
+            }
+        }
+
+        if (optTexts.length === 0) {
+            container.innerHTML += '<p>No options available for this question.</p>';
+            return;
+        }
+
+        const listRoot = document.createElement('div');
+        if (optTexts.length > 6) {
+            const hint = document.createElement('div');
+            hint.className = 'scroll-hint';
+            hint.style.cssText = 'margin:6px 0 8px; padding:8px 10px; background:#eaf4ff; border-left:3px solid #2196f3; color:#084298; font-size:0.9em; border-radius:4px;';
+            hint.textContent = 'Scroll down to see more options';
+            container.appendChild(hint);
+            // Height is computed dynamically to avoid overlapping bottom nav
+            listRoot.style.overflowY = 'auto';
+            listRoot.style.paddingRight = '6px';
+            // dynamic bottom padding so last option clears the bottom bar
+            const bottomNav2 = document.getElementById('bottom-navigation');
+            const safePad2 = (bottomNav2 ? bottomNav2.offsetHeight : 64) + 24; // nav height + buffer
+            listRoot.style.paddingBottom = safePad2 + 'px';
+            // Ensure only the options list scrolls
+            const examContent = document.getElementById('exam-content');
+            if (examContent) examContent.style.overflow = 'hidden';
+            try { document.body.style.overflowY = 'hidden'; } catch(_) {}
+            const answerPanel = document.getElementById('answer-panel');
+            if (answerPanel) answerPanel.style.overflowY = 'hidden';
+            if (answerPanel) answerPanel.style.paddingBottom = (safePad2 - 8) + 'px';
+            // Save reference and compute height now
+            this.currentOptionsListEl = listRoot;
+            this.adjustOptionsListHeight();
+            requestAnimationFrame(() => this.adjustOptionsListHeight());
+            setTimeout(() => this.adjustOptionsListHeight(), 60);
+        }
+
+        // Restore spacing between options
+        listRoot.style.display = 'flex';
+        listRoot.style.flexDirection = 'column';
+        listRoot.style.gap = '15px';
+
+        optTexts.forEach((text, idx) => {
+            const letter = String.fromCharCode(65 + idx);
             const optionDiv = document.createElement('div');
             optionDiv.className = 'answer-option';
             optionDiv.innerHTML = `
-                <input type="checkbox" name="answer" value="${option}" id="option-${option}">
-                <span class="option-text">${option}. ${text}</span>
+                <input type="checkbox" name="answer" value="${letter}" id="option-${letter}">
+                <span class="option-text">${letter}. ${this.escapeHtml(String(text))}</span>
             `;
-            
-            // Handle clicks on the entire option area
             const handleOptionClick = (e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                
-                const checkbox = optionDiv.querySelector('input[type="checkbox"]');
+                const checkbox = optionDiv.querySelector('input[type=\"checkbox\"]');
                 checkbox.checked = !checkbox.checked;
                 optionDiv.classList.toggle('selected', checkbox.checked);
-                
-                this.updateMultipleChoiceAnswers();
+                const checkboxes = listRoot.querySelectorAll('input[name=\"answer\"]:checked');
+                const selectedOptions = Array.from(checkboxes).map(cb => cb.value);
+                if (selectedOptions.length > 0) {
+                    this.userAnswers.set(this.currentQuestionIndex, selectedOptions);
+                } else {
+                    this.userAnswers.delete(this.currentQuestionIndex);
+                }
+                this.updateCounters();
+                this.updateQuestionNumberHighlights();
             };
-            
             optionDiv.addEventListener('click', handleOptionClick);
             const checkbox = optionDiv.querySelector('input[type="checkbox"]');
             checkbox.addEventListener('click', handleOptionClick);
-            
-            container.appendChild(optionDiv);
+            listRoot.appendChild(optionDiv);
         });
 
+        container.appendChild(listRoot);
         container.style.display = 'flex';
         container.style.flexDirection = 'column';
         container.style.gap = '15px';
+        if (optTexts.length <= 6) {
+            const answerPanel = document.getElementById('answer-panel');
+            if (answerPanel) answerPanel.style.overflowY = 'hidden';
+        }
     }
 
     updateMultipleChoiceAnswers() {
@@ -714,8 +736,18 @@ class ExamEngine {
         
         // Shuffle right items for the matching exercise
         const shuffledRightItems = [...rightItems].sort(() => Math.random() - 0.5);
-        
-        container.innerHTML = `
+
+        // Build content in a wrapper so we can decide whether to scroll it or not
+        container.innerHTML = '';
+    const hint = document.createElement('div');
+        hint.className = 'scroll-hint';
+    hint.style.cssText = 'display:none;margin:4px 0 4px; padding:6px 10px; background:#eaf4ff; border-left:3px solid #2196f3; color:#084298; font-size:0.9em; border-radius:4px;';
+        hint.textContent = 'Scroll down to see more options';
+        container.appendChild(hint);
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'match-wrapper';
+        wrapper.innerHTML = `
             <div class="match-container">
                 <div class="match-left">
                     <h4>Match items from left to right:</h4>
@@ -737,8 +769,72 @@ class ExamEngine {
                         `<div class="match-item match-option">${item}</div>`
                     ).join('')}
                 </div>
-            </div>
-        `;
+            </div>`;
+        container.appendChild(wrapper);
+        // Reduce the default top margin of the match container to tighten spacing under the hint
+        try {
+            const mc = wrapper.querySelector('.match-container');
+            if (mc) mc.style.marginTop = '4px';
+        } catch(_) {}
+        
+        // Make column headers sticky within the scrollable wrapper
+        const stickifyHeaders = () => {
+            try {
+                const leftH = wrapper.querySelector('.match-left h4');
+                const rightH = wrapper.querySelector('.match-right h4');
+                [leftH, rightH].forEach(h => {
+                    if (!h) return;
+                    h.style.position = 'sticky';
+                    h.style.top = '0px';
+                    h.style.zIndex = '5';
+                    h.style.background = '#ffffff';
+                    h.style.padding = '8px 6px 8px 0';
+                    h.style.marginBottom = '10px';
+                    h.style.boxShadow = '0 2px 0 rgba(0,0,0,0.05)';
+                });
+            } catch(_) {}
+        };
+        stickifyHeaders();
+
+        // After attaching, decide if we need an inner scrollbar (avoid double scroll)
+        const adjustMatchHeight = () => {
+            const bottomNav = document.getElementById('bottom-navigation');
+            const boundary = bottomNav ? bottomNav.getBoundingClientRect().top : (window.innerHeight || document.documentElement.clientHeight);
+            const rect = wrapper.getBoundingClientRect();
+            const buffer = 12;
+            const available = Math.max(140, boundary - rect.top - buffer);
+            const needsScroll = wrapper.scrollHeight > available + 4; // tolerate rounding
+            if (needsScroll) {
+                hint.style.display = 'block';
+                wrapper.style.overflowY = 'auto';
+                wrapper.style.maxHeight = available + 'px';
+                wrapper.style.paddingRight = '6px';
+                const navH = bottomNav ? bottomNav.offsetHeight : 64;
+                wrapper.style.paddingBottom = (navH + 24) + 'px';
+                wrapper.style.position = 'relative';
+                const examContent = document.getElementById('exam-content');
+                if (examContent) examContent.style.overflow = 'hidden';
+                const answerPanel = document.getElementById('answer-panel');
+                if (answerPanel) {
+                    answerPanel.style.overflowY = 'hidden';
+                    answerPanel.style.paddingBottom = (navH + 16) + 'px';
+                }
+                this.currentOptionsListEl = wrapper;
+                this.adjustOptionsListHeight();
+            } else {
+                hint.style.display = 'none';
+                wrapper.style.overflowY = '';
+                wrapper.style.maxHeight = '';
+                wrapper.style.paddingRight = '';
+                wrapper.style.paddingBottom = '';
+                const answerPanel = document.getElementById('answer-panel');
+                if (answerPanel) answerPanel.style.overflowY = 'hidden';
+            }
+        };
+        // Initial compute and after layout settles
+        adjustMatchHeight();
+        requestAnimationFrame(adjustMatchHeight);
+        setTimeout(adjustMatchHeight, 60);
         
         // Add event listeners for the select dropdowns
         const selects = container.querySelectorAll('.match-select');
@@ -868,6 +964,10 @@ class ExamEngine {
         // Update nav info with enhanced statistics
         const navInfo = document.getElementById('nav-info');
         if (navInfo) {
+            const candidateLabel = (function(){ try { return localStorage.getItem('candidateLabel') || 'Examinee'; } catch(_) { return 'Examinee'; } })();
+            const candidateSeg = this.candidateName && String(this.candidateName).trim().length > 0
+                ? ` | <span class="stat-item candidate-name"><span style="opacity:0.85;">${this.escapeHtml(String(candidateLabel))}:</span> <strong>${this.escapeHtml(String(this.candidateName))}</strong></span>`
+                : '';
             navInfo.innerHTML = `
                 <span class="stat-item">
                     <strong>${answeredCount}/${this.questions.length}</strong> answered 
@@ -878,7 +978,7 @@ class ExamEngine {
                 </span> |
                 <span class="stat-item">
                     <strong>${remaining}</strong> remaining
-                </span>
+                </span>${candidateSeg}
             `;
         }
     }
@@ -1013,7 +1113,7 @@ class ExamEngine {
             } else if (Array.isArray(answer)) {
                 // For multiple choice questions, convert array of letters to array of option texts
                 userAnswerText = answer.map(letter => {
-                    if (typeof letter === 'string' && letter.length === 1 && /[A-F]/.test(letter)) {
+                    if (typeof letter === 'string' && letter.length === 1 && /[A-Z]/i.test(letter)) {
                         const optionField = `option_${letter.toLowerCase()}`;
                         let optionText = question[optionField] || 
                                         question[`option${letter}`] || 
@@ -1031,7 +1131,7 @@ class ExamEngine {
                     }
                     return letter;
                 });
-            } else if (typeof answer === 'string' && answer.length === 1 && /[A-F]/.test(answer)) {
+            } else if (typeof answer === 'string' && answer.length === 1 && /[A-Z]/i.test(answer)) {
                 // For single choice MCQ questions, convert letter (A, B, C, D) to full option text
                 const optionField = `option_${answer.toLowerCase()}`;
                 userAnswerText = question[optionField] || 
@@ -1132,6 +1232,27 @@ class ExamEngine {
             <p><strong>Time Spent:</strong> ${timeSpentMinutes}m ${timeSpentSeconds}s</p>
             <p><strong>Bookmarked:</strong> ${this.bookmarkedQuestions.size}</p>
         `;
+
+        // Inject candidate name into the results header area
+        try {
+            const scoreDisplay = document.getElementById('score-display');
+            if (scoreDisplay) {
+                let candidateLine = document.getElementById('candidate-name-result');
+                const label = (function(){ try { return localStorage.getItem('candidateLabel') || 'Examinee'; } catch(_) { return 'Examinee'; } })();
+                const safeName = this.escapeHtml(String(this.candidateName || ''));
+                if (!candidateLine) {
+                    candidateLine = document.createElement('p');
+                    candidateLine.id = 'candidate-name-result';
+                    candidateLine.style.marginTop = '0';
+                    candidateLine.style.marginBottom = '8px';
+                    candidateLine.style.fontSize = '0.95em';
+                    candidateLine.innerHTML = `<strong>${this.escapeHtml(String(label))}:</strong> ${safeName || '<em>(not provided)</em>'}`;
+                    scoreDisplay.insertAdjacentElement('afterbegin', candidateLine);
+                } else {
+                    candidateLine.innerHTML = `<strong>${this.escapeHtml(String(label))}:</strong> ${safeName || '<em>(not provided)</em>'}`;
+                }
+            }
+        } catch(_) { /* noop */ }
         
         modal.style.display = 'flex';
     }
@@ -1161,7 +1282,7 @@ class ExamEngine {
                 // Transform user answer to text similar to calculateResults
                 if (Array.isArray(rawUser)) {
                     userAnswerText = rawUser.map(letter => {
-                        if (typeof letter === 'string' && letter.length === 1 && /[A-F]/.test(letter)) {
+                        if (typeof letter === 'string' && letter.length === 1 && /[A-Z]/i.test(letter)) {
                             const optionField = `option_${letter.toLowerCase()}`;
                             let optionText = q[optionField] || q[`option${letter}`] || q[letter.toLowerCase()] || q[`choice_${letter.toLowerCase()}`];
                             if (!optionText && Array.isArray(q.options)) {
@@ -1172,7 +1293,7 @@ class ExamEngine {
                         }
                         return letter;
                     }).join(', ');
-                } else if (typeof rawUser === 'string' && rawUser.length === 1 && /[A-F]/.test(rawUser)) {
+                } else if (typeof rawUser === 'string' && rawUser.length === 1 && /[A-Z]/i.test(rawUser)) {
                     const optField = `option_${rawUser.toLowerCase()}`;
                     userAnswerText = q[optField] || q[`option${rawUser}`] || q[rawUser.toLowerCase()] || q[`choice_${rawUser.toLowerCase()}`];
                     if (!userAnswerText && Array.isArray(q.options)) {
@@ -1188,6 +1309,35 @@ class ExamEngine {
                 }
                 // Compute correctness including match object deep compare (case-insensitive)
                 const isCorrect = (function() {
+                    // Helpers to normalize answers for comparison
+                    const getOptionTextByLetter = (letter) => {
+                        if (!letter || typeof letter !== 'string') return null;
+                        const L = letter.trim().toUpperCase();
+                        if (!/^[A-Z]$/.test(L)) return null;
+                        let text = null;
+                        // Prefer options array when present
+                        if (Array.isArray(q.options)) {
+                            const idx = L.charCodeAt(0) - 65; // A->0
+                            if (idx >= 0 && idx < q.options.length) text = q.options[idx];
+                        }
+                        // Fallback to individual fields if needed
+                        if (!text) {
+                            const field = `option_${L.toLowerCase()}`;
+                            text = q[field] || q[`option${L}`] || q[L.toLowerCase()] || q[`choice_${L.toLowerCase()}`] || null;
+                        }
+                        return (typeof text === 'string') ? text : null;
+                    };
+                    const toTextIfLetter = (val) => {
+                        if (typeof val === 'string' && val.trim().length === 1 && /[A-F]/i.test(val.trim())) {
+                            const mapped = getOptionTextByLetter(val.trim());
+                            return mapped ?? val; // if no mapping, keep original
+                        }
+                        return val;
+                    };
+                    const normalizeArrayToTexts = (arr) => Array.isArray(arr) ? arr.map(toTextIfLetter) : arr;
+                    const normSet = (arr) => arr
+                        .map(x => String(x).trim().toLowerCase())
+                        .sort();
                     // Match questions (object of pairs)
                     if (correctAnswer && typeof correctAnswer === 'object' && !Array.isArray(correctAnswer) && rawUser && typeof rawUser === 'object' && !Array.isArray(rawUser)) {
                         const cKeys = Object.keys(correctAnswer);
@@ -1199,10 +1349,14 @@ class ExamEngine {
                         });
                     }
                     if (Array.isArray(correctAnswer) && Array.isArray(rawUser)) {
-                        const norm = arr => arr.map(x=>String(x).trim().toLowerCase()).sort();
-                        return JSON.stringify(norm(correctAnswer)) === JSON.stringify(norm(rawUser));
+                        // Normalize both arrays to option texts if any values are letters (A-F)
+                        const corrTexts = normalizeArrayToTexts(correctAnswer);
+                        const userTexts = normalizeArrayToTexts(rawUser);
+                        return JSON.stringify(normSet(corrTexts)) === JSON.stringify(normSet(userTexts));
                     } else if (typeof correctAnswer === 'string' && typeof userAnswerText === 'string') {
-                        return correctAnswer.trim().toLowerCase() === userAnswerText.trim().toLowerCase();
+                        const cNorm = toTextIfLetter(correctAnswer) ?? correctAnswer;
+                        const uNorm = toTextIfLetter(userAnswerText) ?? userAnswerText;
+                        return String(cNorm).trim().toLowerCase() === String(uNorm).trim().toLowerCase();
                     } else {
                         return correctAnswer === rawUser;
                     }
@@ -1257,9 +1411,11 @@ class ExamEngine {
         const timeSpentMinutes = Math.floor(timeSpent / 60);
         const timeSpentSeconds = timeSpent % 60;
 
-        const summaryHtml = `
+    const labelForPdf = (function(){ try { return localStorage.getItem('candidateLabel') || 'Examinee'; } catch(_) { return 'Examinee'; } })();
+    const summaryHtml = `
             <div class="summary">
                 <h1>Exam Report</h1>
+        <p><strong>${this.escapeHtml(String(labelForPdf))}:</strong> ${this.escapeHtml(String(this.candidateName || '')) || '(not provided)'}</p>
                 <p><strong>Date:</strong> ${ts.toLocaleDateString()} ${ts.toLocaleTimeString()}</p>
                 <p><strong>Duration (configured):</strong> ${this.examDuration} minutes</p>
                 <p><strong>Time Spent:</strong> ${timeSpentMinutes}m ${timeSpentSeconds}s</p>
@@ -1292,9 +1448,21 @@ class ExamEngine {
                 table.match-table { width:100%; border-collapse:collapse; margin:6px 0 8px; font-size:12.5px; }
                 table.match-table th, table.match-table td { border:1px solid #bbb; padding:4px 6px; vertical-align:top; }
                 table.match-table th { background:#e0e0e0; text-align:left; }
-                table.match-table tr.correct-row td { background:#e8f5e9; }
-                table.match-table tr.incorrect-row td { background:#ffebee; }
-                @media print { .no-print { display:none !important; } }
+                                table.match-table tr.correct-row td { background:#e8f5e9; }
+                                table.match-table tr.incorrect-row td { background:#ffebee; }
+                                /* Add strong visual accents that survive print even if backgrounds are stripped */
+                                table.match-table tr.incorrect-row td:first-child { border-left: 4px solid #c62828; }
+                                table.match-table tr.correct-row td:first-child { border-left: 4px solid #2e7d32; }
+                                @media print {
+                                    .no-print { display:none !important; }
+                                    /* Force browsers to keep background colors on print when possible */
+                                    html, body, .summary, .question-block, table.match-table tr.correct-row td, table.match-table tr.incorrect-row td, table.match-table th {
+                                        -webkit-print-color-adjust: exact; print-color-adjust: exact;
+                                    }
+                                    table.match-table th { background:#e0e0e0 !important; }
+                                    table.match-table tr.correct-row td { background:#e8f5e9 !important; }
+                                    table.match-table tr.incorrect-row td { background:#ffebee !important; }
+                                }
             </style>`;
 
         const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${docTitle}</title>${style}</head><body>${summaryHtml}<hr>${questionsHtml}</body></html>`;
@@ -1330,6 +1498,24 @@ class ExamEngine {
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;')
             .replace(/'/g, '&#39;');
+    }
+
+    // Read candidate name from cookie/localStorage as a fallback
+    getCandidateNameFromCookie() {
+        try {
+            const nameEQ = encodeURIComponent('candidateName') + '=';
+            const parts = document.cookie.split(';');
+            for (let c of parts) {
+                c = c.trim();
+                if (c.indexOf(nameEQ) === 0) {
+                    return decodeURIComponent(c.substring(nameEQ.length));
+                }
+            }
+        } catch(_) { /* ignore */ }
+        try {
+            const v = localStorage.getItem('candidateName');
+            return v ? String(v) : '';
+        } catch(_) { return ''; }
     }
 
     /**

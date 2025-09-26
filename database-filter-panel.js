@@ -417,7 +417,7 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
   
   // After restoration, update parent topic checkbox states to reflect subtopic selections
   if (shouldRestore && !savedState.allTopicsSelected) {
-    setTimeout(() => {
+  setTimeout(async () => {
       const topicCheckboxes = topicDiv.querySelectorAll('.topic-checkbox');
       topicCheckboxes.forEach(topicCb => {
         const topic = topicCb.value;
@@ -586,7 +586,7 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
   
   // After restoration, update "Selected Types" checkbox visual state to reflect individual selections
   if (shouldRestore && !savedState.allTypesSelected) {
-    setTimeout(() => {
+  setTimeout(async () => {
       const typeCheckboxes = typeDiv.querySelectorAll('input[type="checkbox"]');
       const allTypesCheckbox = typeCheckboxes[0]; // First checkbox is "Selected Types"
       const individualTypeCheckboxes = Array.from(typeCheckboxes).slice(1); // Skip the first "Selected Types" checkbox
@@ -876,10 +876,51 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
   // Determine saved test mode
   const savedTestMode = shouldRestore && savedState.testMode ? savedState.testMode : 'learning';
   
+  // Inject lightweight styles once for the mode cards
+  if (!document.getElementById('test-mode-card-styles')) {
+    const styleEl = document.createElement('style');
+    styleEl.id = 'test-mode-card-styles';
+    styleEl.textContent = `
+      .mode-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 8px 0 4px; }
+      .mode-card { display: flex; align-items: center; gap: 14px; padding: 14px 16px; border: 2px solid #e0e0e0; border-radius: 10px; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,0.04); cursor: pointer; transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.02s ease; }
+      .mode-card:hover { border-color: #90caf9; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+      .mode-card.selected { border-color: #1976d2; box-shadow: 0 0 0 3px rgba(25,118,210,0.15); background: #f6fbff; }
+      .mode-card .icon { font-size: 28px; }
+      .mode-card .title { font-weight: 700; color: #0d47a1; margin: 0; font-size: 1.05em; }
+      .mode-card .desc { margin: 2px 0 0; color: #444; font-size: 0.92em; line-height: 1.35; }
+      @media (max-width: 700px) { .mode-cards { grid-template-columns: 1fr; } }
+    `;
+    document.head.appendChild(styleEl);
+  }
+  
   testModeDiv.innerHTML = `
     <h3>Test Mode</h3>
-    <label><input type="radio" name="testMode" value="learning" ${savedTestMode === 'learning' ? 'checked' : ''}> Learning Mode (Interactive practice with full feedback)</label><br>
-    <label><input type="radio" name="testMode" value="exam" ${savedTestMode === 'exam' ? 'checked' : ''}> Exam Practice Mode (Timed simulation with minimal feedback)</label>
+    <!-- Hidden radios kept for compatibility with existing logic -->
+    <input type="radio" name="testMode" value="learning" id="testMode-learning" ${savedTestMode === 'learning' ? 'checked' : ''} style="position:absolute; left:-9999px; width:1px; height:1px;">
+    <input type="radio" name="testMode" value="exam" id="testMode-exam" ${savedTestMode === 'exam' ? 'checked' : ''} style="position:absolute; left:-9999px; width:1px; height:1px;">
+    
+    <div id="candidate-name-row" style="display:flex; align-items:center; gap:10px; margin: 8px 0 4px; padding:8px 10px; background:#f8fafc; border:1px solid #e0e0e0; border-radius:8px;">
+      <span id="candidate-name-label" style="font-weight:600; color:#0d47a1;">${(function(){ try { return (localStorage.getItem('candidateLabel') || 'Examinee') + ':'; } catch(_) { return 'Examinee:'; } })()}</span>
+      <span id="candidate-name-display" style="color:#333;">${(function(){ try { const nameEQ = encodeURIComponent('candidateName') + '='; const parts = document.cookie.split(';'); for (let c of parts) { c = c.trim(); if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length)); } } catch(_){} try { return localStorage.getItem('candidateName') || 'Not set'; } catch(_) { return 'Not set'; } })()}</span>
+      <button id="clear-candidate-name" class="custom-btn" style="margin-left:auto; background:#dc3545; border-color:#dc3545;">Clear Name</button>
+    </div>
+    
+    <div class="mode-cards" role="group" aria-label="Select test mode">
+      <div id="mode-card-learning" class="mode-card" role="button" tabindex="0" aria-pressed="${savedTestMode === 'learning' ? 'true' : 'false'}" data-mode="learning">
+        <div class="icon">🎓</div>
+        <div>
+          <p class="title">Learning Mode</p>
+          <p class="desc">Interactive practice with instant feedback and explanations.</p>
+        </div>
+      </div>
+      <div id="mode-card-exam" class="mode-card" role="button" tabindex="0" aria-pressed="${savedTestMode === 'exam' ? 'true' : 'false'}" data-mode="exam">
+        <div class="icon">⏱️</div>
+        <div>
+          <p class="title">Exam Practice</p>
+          <p class="desc">Timed exam simulation with minimal feedback until the end.</p>
+        </div>
+      </div>
+    </div>
     
     <div style="margin-top: 10px; padding: 12px; background: #fff3cd; border-radius: 6px; font-size: 0.9em; color: #856404; line-height: 1.4; display: flex; gap: 20px;">
       <div style="flex: 1;">
@@ -905,8 +946,22 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
   // Add test mode change handlers to update number of questions limit and show/hide exam duration
   setTimeout(() => {
     const testModeRadios = document.querySelectorAll('input[name="testMode"]');
+    const clearNameBtn = document.getElementById('clear-candidate-name');
+    const nameDisplay = document.getElementById('candidate-name-display');
+    const nameLabel = document.getElementById('candidate-name-label');
+    if (clearNameBtn && nameDisplay) {
+      clearNameBtn.addEventListener('click', () => {
+        clearCandidateNameCookie();
+        nameDisplay.textContent = 'Not set';
+        if (nameLabel) { try { nameLabel.textContent = (localStorage.getItem('candidateLabel') || 'Examinee') + ':'; } catch(_) { nameLabel.textContent = 'Examinee:'; } }
+      });
+    }
     const examDurationSection = document.getElementById('exam-duration-section');
     const numInput = document.getElementById('numQuestions');
+    const learningCard = document.getElementById('mode-card-learning');
+    const examCard = document.getElementById('mode-card-exam');
+    const learningRadio = document.getElementById('testMode-learning');
+    const examRadio = document.getElementById('testMode-exam');
     
     // Function to update calculated exam duration
     function updateCalculatedDuration() {
@@ -930,8 +985,21 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
       }
     }
     
+    // Keep card UI in sync with the hidden radios
+    function syncCardsFromRadios() {
+      const selected = document.querySelector('input[name="testMode"]:checked');
+      const isExam = selected && selected.value === 'exam';
+      if (learningCard && examCard) {
+        learningCard.classList.toggle('selected', !isExam);
+        examCard.classList.toggle('selected', isExam);
+        learningCard.setAttribute('aria-pressed', String(!isExam));
+        examCard.setAttribute('aria-pressed', String(isExam));
+      }
+    }
+    
     // Set initial state
     updateExamDurationVisibility();
+    syncCardsFromRadios();
     
     // Add listeners to test mode radios
     testModeRadios.forEach(radio => {
@@ -943,8 +1011,42 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
         if (typeof updateMaxQuestions === 'function') {
           updateMaxQuestions();
         }
+        // Reflect selection on cards
+        syncCardsFromRadios();
       });
     });
+    
+    // Card click/keyboard interactions update hidden radios
+    function activateMode(mode) {
+      if (mode === 'exam' && examRadio) {
+        if (!examRadio.checked) {
+          examRadio.checked = true;
+          examRadio.dispatchEvent(new Event('change', { bubbles: true }));
+        } else {
+          syncCardsFromRadios();
+        }
+      } else if (mode === 'learning' && learningRadio) {
+        if (!learningRadio.checked) {
+          learningRadio.checked = true;
+          learningRadio.dispatchEvent(new Event('change', { bubbles: true }));
+        } else {
+          syncCardsFromRadios();
+        }
+      }
+    }
+    
+    if (learningCard) {
+      learningCard.addEventListener('click', () => activateMode('learning'));
+      learningCard.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activateMode('learning'); }
+      });
+    }
+    if (examCard) {
+      examCard.addEventListener('click', () => activateMode('exam'));
+      examCard.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activateMode('exam'); }
+      });
+    }
     
     // Add listener to number of questions input to update duration
     if (numInput) {
@@ -1083,6 +1185,32 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
   modeAndDurationContainer.appendChild(modeDiv);
   modeAndDurationContainer.appendChild(examDurationDiv);
   wrapper.appendChild(modeAndDurationContainer);
+
+  // === Candidate Name cookie helpers (never-expiring cookie with localStorage fallback) ===
+  function setCandidateNameCookie(name) {
+    try {
+      const expires = 'expires=Fri, 31 Dec 9999 23:59:59 GMT';
+      document.cookie = `${encodeURIComponent('candidateName')}=${encodeURIComponent(name)}; ${expires}; path=/`;
+    } catch (e) { console.warn('Cookie set failed, falling back to localStorage', e); }
+    try { localStorage.setItem('candidateName', name); } catch (_) {}
+  }
+  function getCandidateNameFromCookie() {
+    try {
+      const nameEQ = encodeURIComponent('candidateName') + '=';
+      const parts = document.cookie.split(';');
+      for (let c of parts) {
+        c = c.trim();
+        if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length));
+      }
+    } catch (_) {}
+    try { return localStorage.getItem('candidateName') || ''; } catch (_) { return ''; }
+  }
+  function clearCandidateNameCookie() {
+    try {
+      document.cookie = `${encodeURIComponent('candidateName')}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+    } catch (_) {}
+    try { localStorage.removeItem('candidateName'); } catch (_) {}
+  }
 
   // Start button and button container (EXACT GOLDEN 22)
   const startBtn = document.createElement("button");
@@ -1400,7 +1528,7 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
       }));
     }
     
-    setTimeout(() => {
+  setTimeout(async () => {
       console.log("=== ABOUT TO START TEST ===");
       console.log("Final chosen questions count:", chosenQuestions.length);
       
@@ -1412,24 +1540,38 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
         // Exam Practice Mode - navigate to exam.html
         console.log("Starting Exam Practice Mode");
         
-        // Calculate exam duration based on number of questions (1.5 minutes per question)
-        const examDuration = Math.round(chosenQuestions.length * 1.5);
-        
-        // Store exam data in sessionStorage for exam-engine.js
-        const examData = {
-          questions: chosenQuestions,
-          startTime: new Date().toISOString(),
-          mode: 'exam',
-          duration: examDuration,
-          // Store database state for proper restoration
-          dbFileName: AppState.dbFileName,
-          dbTopics: AppState.dbTopics,
-          dbTypes: AppState.dbTypes
+        // Ensure candidate name is captured and stored before starting via a cute HTML dialog
+        const resolveName = () => {
+          const existing = getCandidateNameFromCookie();
+          if (existing) return Promise.resolve(existing);
+          return openCandidateNameDialog();
         };
-        sessionStorage.setItem('examData', JSON.stringify(examData));
-        
-        // Navigate to exam page
-        window.location.href = 'exam.html';
+        resolveName().then((candidateName) => {
+          if (!candidateName) { return; }
+          setCandidateNameCookie(candidateName);
+          // Store on AppState for convenience (optional future use)
+          AppState.candidateName = candidateName;
+
+          // Calculate exam duration based on number of questions (1.5 minutes per question)
+          const examDuration = Math.round(chosenQuestions.length * 1.5);
+
+          // Store exam data in sessionStorage for exam-engine.js
+          const examData = {
+            questions: chosenQuestions,
+            startTime: new Date().toISOString(),
+            mode: 'exam',
+            duration: examDuration,
+            candidateName,
+            // Store database state for proper restoration
+            dbFileName: AppState.dbFileName,
+            dbTopics: AppState.dbTopics,
+            dbTypes: AppState.dbTypes
+          };
+          sessionStorage.setItem('examData', JSON.stringify(examData));
+
+          // Navigate to exam page
+          window.location.href = 'exam.html';
+        });
       } else {
         // Learning Mode - use existing test-engine.js flow
         console.log("Starting Learning Mode");
@@ -1438,7 +1580,7 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
         document.getElementById("restart-bottom").style.display = "none";
         startTest(chosenQuestions);
       }
-    }, 500);
+  }, 500);
   });
   
   // Create tooltip container for balanced mode
@@ -1969,6 +2111,54 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
   }
   
   panel.appendChild(wrapper);
+}
+
+// ===== Cute HTML dialog for candidate name (max 50 chars) =====
+function ensureCandidateNameDialog() {
+  if (document.getElementById('candidate-name-modal')) return;
+  const modal = document.createElement('div');
+  modal.id = 'candidate-name-modal';
+  modal.style.cssText = 'position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.4);z-index:10000;';
+  modal.innerHTML = `
+    <div class="cn-card" role="dialog" aria-modal="true" aria-labelledby="cn-title" style="background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.15);width:min(92vw,480px);padding:18px 18px 14px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <div style="font-size:22px">📝</div>
+        <h3 id="cn-title" style="margin:0;font-size:1.15em;color:#0d47a1;">Enter your name</h3>
+      </div>
+      <p id="cn-sub" style="margin:0 0 10px;color:#444;">This name will appear on your exam and report.</p>
+      <label for="cn-input" style="display:block;font-weight:600;color:#333;margin-bottom:6px;">Name</label>
+      <input id="cn-input" type="text" maxlength="50" placeholder="Your full name" style="width:100%;padding:10px 12px;border:1px solid #cfd8dc;border-radius:8px;font-size:14px;">
+      <div id="cn-error" aria-live="polite" style="color:#c62828;font-size:12.5px;margin-top:6px;display:none;">Please enter your name (max 50 characters).</div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px;">
+        <button id="cn-cancel" class="custom-btn" style="background:#eceff1;color:#37474f;border-color:#cfd8dc;">Cancel</button>
+        <button id="cn-okay" class="custom-btn" style="background:#1976d2;border-color:#1976d2;">Start Exam</button>
+      </div>
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+function openCandidateNameDialog() {
+  return new Promise((resolve) => {
+    ensureCandidateNameDialog();
+    const modal = document.getElementById('candidate-name-modal');
+    const input = document.getElementById('cn-input');
+    const ok = document.getElementById('cn-okay');
+    const cancel = document.getElementById('cn-cancel');
+    const err = document.getElementById('cn-error');
+    const show = () => { modal.style.display = 'flex'; setTimeout(() => input && input.focus(), 30); };
+    const hide = () => { modal.style.display = 'none'; };
+    const submit = () => {
+      const v = (input.value || '').trim();
+      if (!v || v.length > 50) { err.style.display = 'block'; return; }
+      err.style.display = 'none';
+      hide();
+      resolve(v);
+    };
+    ok.onclick = submit;
+    input.onkeydown = (e) => { if (e.key === 'Enter') { e.preventDefault(); submit(); } };
+    cancel.onclick = () => { hide(); resolve(''); };
+    show();
+  });
 }
 
 // Balanced selection algorithm for database mode

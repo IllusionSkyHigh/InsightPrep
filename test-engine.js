@@ -1011,12 +1011,28 @@ function showFinalScore() {
     cssClass = "poor";
   }
 
-  // Display final score with branding
+  // Read candidate label and name (shared with Exam mode cookies)
+  const candidateLabel = (function(){ try { return localStorage.getItem('candidateLabel') || 'Examinee'; } catch(_) { return 'Examinee'; } })();
+  const candidateName = (function(){
+    try {
+      const nameEQ = encodeURIComponent('candidateName') + '=';
+      const parts = document.cookie.split(';');
+      for (let c of parts) { c = c.trim(); if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length)); }
+    } catch(_){ }
+    try { return localStorage.getItem('candidateName') || ''; } catch(_) { return ''; }
+  })();
+  const safeName = (function(s){
+    const t = (s || '').toString().slice(0,50);
+    return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  })(candidateName);
+
+  // Display final score with branding and candidate name
   document.getElementById("scoreboard").innerHTML = `
     <div style="text-align: center; margin-bottom: 20px;">
       <h2 style="color: #0078d7; margin: 0; font-size: 1.8em;">InsightPrep</h2>
       <p style="color: #666; margin: 5px 0 0 0; font-style: italic;">Where Preparation Meets Reflection</p>
     </div>
+    <div style="margin-bottom:8px;${safeName ? '' : 'display:none;'}"><strong>${candidateLabel}:</strong> ${safeName || ''}</div>
     <div><strong>Your Score:</strong> ${AppState.score} / ${total} (${percent}%)</div>
     <div id="message" class="${cssClass}">${message}</div>
   `;
