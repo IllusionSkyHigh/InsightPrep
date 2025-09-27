@@ -965,6 +965,246 @@
       },
       "explanation": "Epilogue ties unity, loss, legacy, and fate, closing the epic poignantly.",
       "reference": "Ponniyin Selvan, Volume 5, Chapter 1: Reflections Eternal"
+	},  
+    {
+      "id": 81,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Character Motivations",
+      "type": "single",
+      "question": "What drives Senthan Amuthan’s loyalty to the Chola family?",
+      "options": ["Royal blood", "Temple devotion", "Personal ambition", "Romantic love"],
+      "answer": "Royal blood",
+      "explanation": "Senthan Amuthan’s loyalty stems from his hidden royal lineage, revealed as Sundara Chola’s son, which binds him to the Chola cause despite his humble guise as a temple devotee. This secret fuels his quiet support for Arulmozhi, adding depth to his character and the novel’s theme of hidden identities.",
+      "reference": "Ponniyin Selvan, Volume 5, Chapter 2: The Devotee’s Secret"
+    },
+    {
+      "id": 82,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Political Intrigue",
+      "type": "multiple",
+      "question": "Which factions oppose Arulmozhi’s claim to the throne?",
+      "options": ["Pazhuvettaraiyars", "Pandya rebels", "Chera allies", "Temple priests"],
+      "answer": ["Pazhuvettaraiyars", "Pandya rebels"],
+      "explanation": "The Pazhuvettaraiyars and Pandya rebels conspire to block Arulmozhi’s succession, favoring Madhurantakan to seize power. Their plots, driven by ambition and vengeance, create the novel’s central conflict, weaving a web of betrayal that Vandiyathevan and Kundavai work to unravel.",
+      "reference": "Ponniyin Selvan, Volume 5, Chapter 3: Factions of Power"
+    },
+    {
+      "id": 83,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Symbolism",
+      "type": "assertion",
+      "question": "Assertion (A): The Chola tiger emblem symbolizes strength. Reason (R): It appears on Arulmozhi’s banner during battles.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "The Chola tiger, emblazoned on Arulmozhi’s banner, symbolizes the dynasty’s strength and martial prowess, rallying troops in Lanka. Kalki uses this emblem to underscore Arulmozhi’s destined leadership, tying it to the Chola legacy of conquest and unity.",
+      "reference": "Ponniyin Selvan, Volume 5, Chapter 4: The Tiger’s Roar"
+    },
+    {
+      "id": 84,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Historical Figures",
+      "type": "match",
+      "question": "Match the characters with their historical inspirations.",
+      "matchPairs": {
+        "Arulmozhi Varman": "Rajaraja Chola",
+        "Aditha Karikalan": "Parantaka II’s son",
+        "Kundavai": "Chola princess",
+        "Vandiyathevan": "Vallavaraiyan warrior"
+      },
+      "explanation": "Kalki fictionalizes historical figures: Arulmozhi as Rajaraja, Aditha as his brother, Kundavai as the princess, and Vandiyathevan as a Vaanar warrior. These characters blend fact and fiction, grounding the epic in Chola history.",
+      "reference": "Ponniyin Selvan, Volume 5, Chapter 5: Historical Shadows"
+    },
+    {
+      "id": 85,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Climactic Confrontations",
+      "type": "single",
+      "question": "Where does the final confrontation with Ravidasan occur?",
+      "options": ["Thanjavur palace", "Lanka battlefield", "Kaveri banks", "Temple sanctum"],
+      "answer": "Kaveri banks",
+      "explanation": "The climactic showdown with Ravidasan unfolds along the Kaveri, symbolizing the river’s role as both protector and battleground. Vandiyathevan and Arulmozhi thwart the assassin, resolving a key plot thread with dramatic intensity.",
+      "reference": "Ponniyin Selvan, Volume 5, Chapter 6: Clash by the River"
+    },
+    {
+      "id": 86,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Female Agency",
+      "type": "multiple",
+      "question": "Which female characters shape political outcomes?",
+      "options": ["Kundavai", "Nandini", "Poonguzhali", "Vanathi"],
+      "answer": ["Kundavai", "Nandini"],
+      "explanation": "Kundavai’s strategic alliances and Nandini’s manipulative schemes drive the Chola court’s fate. Poonguzhali aids physically, and Vanathi’s role is more emotional, but Kundavai and Nandini wield significant political influence, showcasing Kalki’s nuanced portrayal of women.",
+      "reference": "Ponniyin Selvan, Volume 5, Chapter 7: Women of Power"
+    },
+    {
+      "id": 87,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Narrative Structure",
+      "type": "assertion",
+      "question": "Assertion (A): The novel uses multiple narrators. Reason (R): To reveal diverse perspectives on the conspiracy.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Kalki employs multiple narrators, like Vandiyathevan and Azhwarkadiyan, to unveil the conspiracy from varied angles, enriching the narrative with layered perspectives on loyalty, betrayal, and ambition in the Chola court.",
+      "reference": "Ponniyin Selvan, Volume 5, Chapter 8: Voices of the Epic"
+    },
+    {
+      "id": 88,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Cultural Heritage",
+      "type": "match",
+      "question": "Match the cultural elements with their manifestations.",
+      "matchPairs": {
+        "Brihadeeswara Temple": "Chola grandeur",
+        "Tevaram hymns": "Shaiva devotion",
+        "Kaveri River": "Lifeblood of empire",
+        "Naval prowess": "Maritime legacy"
+      },
+      "explanation": "The temple reflects architectural glory, hymns spiritual depth, Kaveri economic vitality, and navy Chola expansion, weaving heritage into the story.",
+      "reference": "Ponniyin Selvan, Volume 5, Chapter 9: Heritage Woven"
+    },
+    {
+      "id": 89,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Moral Conflicts",
+      "type": "single",
+      "question": "What moral conflict torments Chinna Pazhuvettaraiyar?",
+      "options": ["Loyalty to brother vs emperor", "Love for Nandini vs duty", "Ambition vs honor", "Faith vs betrayal"],
+      "answer": "Loyalty to brother vs emperor",
+      "explanation": "Chinna struggles between loyalty to Periya Pazhuvettaraiyar’s plots and his duty to Sundara Chola, highlighting the novel’s theme of divided allegiances.",
+      "reference": "Ponniyin Selvan, Volume 5, Chapter 10: Torn Loyalties"
+    },
+    {
+      "id": 90,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Prophecy’s Fulfillment",
+      "type": "multiple",
+      "question": "Which prophecies are fulfilled in the novel’s climax?",
+      "options": ["Arulmozhi’s coronation", "Aditha’s sacrifice", "Nandini’s downfall", "All of the above"],
+      "answer": ["Arulmozhi’s coronation", "Aditha’s sacrifice", "Nandini’s downfall"],
+      "explanation": "The astrologer’s predictions—Arulmozhi’s rise, Aditha’s death, and Nandini’s tragic end—culminate, tying fate to the characters’ choices in a dramatic resolution.",
+      "reference": "Ponniyin Selvan, Volume 5, Chapter 11: Prophecies Fulfilled"
+    },
+    {
+      "id": 91,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Tragic Flaws",
+      "type": "assertion",
+      "question": "Assertion (A): Aditha’s impulsiveness leads to his doom. Reason (R): His love for Nandini clouds his judgment.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Aditha’s impulsive decisions, driven by his unresolved love for Nandini, lead to his tragic end, emphasizing the novel’s exploration of passion versus duty.",
+      "reference": "Ponniyin Selvan, Volume 5, Chapter 12: Flaws of the Heart"
+    },
+    {
+      "id": 92,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Naval Expeditions",
+      "type": "match",
+      "question": "Match the naval expeditions with their outcomes.",
+      "matchPairs": {
+        "Arulmozhi’s Lanka voyage": "Victory and survival",
+        "Vandiyathevan’s sea escape": "Safe landing",
+        "Poonguzhali’s rescue": "Arulmozhi saved",
+        "Pandya raid": "Foiled by Cholas"
+      },
+      "explanation": "Naval episodes showcase Chola maritime strength, with victories, escapes, and rescues driving the plot.",
+      "reference": "Ponniyin Selvan, Volume 5, Chapter 13: Seas of Triumph"
+    },
+    {
+      "id": 93,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Kundavai’s Legacy",
+      "type": "single",
+      "question": "What is Kundavai’s lasting contribution to the Chola dynasty?",
+      "options": ["Temple patronage", "Diplomatic alliances", "Military reforms", "Literary works"],
+      "answer": "Diplomatic alliances",
+      "explanation": "Kundavai’s strategic alliances with clans like the Vaanar ensure Chola stability, cementing her legacy as a political mastermind behind Arulmozhi’s rise.",
+      "reference": "Ponniyin Selvan, Volume 5, Chapter 14: The Princess’s Legacy"
+    },
+    {
+      "id": 94,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Poonguzhali’s Role",
+      "type": "multiple",
+      "question": "What roles does Poonguzhali play in the narrative?",
+      "options": ["Rescuer", "Spy", "Romantic interest", "All of the above"],
+      "answer": ["Rescuer", "Spy", "Romantic interest"],
+      "explanation": "Poonguzhali rescues Arulmozhi, spies for Kundavai, and becomes his romantic interest, embodying courage and loyalty in the Chola saga.",
+      "reference": "Ponniyin Selvan, Volume 5, Chapter 15: The Boatwoman’s Valor"
+    },
+    {
+      "id": 95,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Historical Accuracy",
+      "type": "assertion",
+      "question": "Assertion (A): The novel blends historical facts with fiction. Reason (R): It uses real Chola figures like Rajaraja I.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Kalki weaves historical figures like Rajaraja (Arulmozhi) with fictional drama, grounding the epic in Chola history while adding intrigue for narrative flair.",
+      "reference": "Ponniyin Selvan, Volume 5, Chapter 16: Fact and Fiction"
+    },
+    {
+      "id": 96,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Temple Significance",
+      "type": "match",
+      "question": "Match the temples with their narrative roles.",
+      "matchPairs": {
+        "Brihadeeswara": "Coronation backdrop",
+        "Nagapattinam": "Spy rendezvous",
+        "Kudanthai": "Prophecy site",
+        "Pazhayarai": "Royal council"
+      },
+      "explanation": "Temples anchor key moments, from coronations to espionage, blending spirituality with plot progression.",
+      "reference": "Ponniyin Selvan, Volume 5, Chapter 17: Temples of Destiny"
+    },
+    {
+      "id": 97,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Vandiyathevan’s Growth",
+      "type": "single",
+      "question": "What marks Vandiyathevan’s transformation?",
+      "options": ["Royal title", "Marriage to Kundavai", "Military command", "Spiritual awakening"],
+      "answer": "Marriage to Kundavai",
+      "explanation": "Vandiyathevan’s journey from reckless warrior to Kundavai’s husband signifies his growth, blending adventure with responsibility in the Chola court.",
+      "reference": "Ponniyin Selvan, Volume 5, Chapter 18: The Warrior’s Rise"
+    },
+    {
+      "id": 98,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Climactic Resolution",
+      "type": "multiple",
+      "question": "Which events resolve the novel’s conflicts?",
+      "options": ["Arulmozhi’s coronation", "Nandini’s death", "Pandya defeat", "All of the above"],
+      "answer": ["Arulmozhi’s coronation", "Nandini’s death", "Pandya defeat"],
+      "explanation": "Arulmozhi’s crowning, Nandini’s tragic end, and Pandya defeat tie up the epic’s threads, restoring Chola glory.",
+      "reference": "Ponniyin Selvan, Volume 5, Chapter 19: Resolution of Empires"
+    },
+    {
+      "id": 99,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Legacy Reflections",
+      "type": "assertion",
+      "question": "Assertion (A): Arulmozhi’s reign ushers in a golden age. Reason (R): His temple and naval expansions endure.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Arulmozhi’s reign, as Rajaraja, brings prosperity through temples like Brihadeeswara and naval conquests, cementing the Chola legacy as a historical golden age.",
+      "reference": "Ponniyin Selvan, Volume 5, Chapter 20: The Golden Age"
+    },
+    {
+      "id": 100,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Kalki’s Themes",
+      "type": "match",
+      "question": "Match the themes with their expressions in the novel.",
+      "matchPairs": {
+        "Destiny": "Prophecy’s fulfillment",
+        "Loyalty": "Vandiyathevan’s missions",
+        "Betrayal": "Nandini’s schemes",
+        "Unity": "Chola restoration"
+      },
+      "explanation": "Kalki weaves destiny through prophecies, loyalty via missions, betrayal in schemes, and unity in restoration, crafting a timeless epic.",
+      "reference": "Ponniyin Selvan, Volume 5, Chapter 21: Themes of Eternity"
     }
   ]
 }

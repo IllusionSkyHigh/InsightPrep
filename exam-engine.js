@@ -316,7 +316,7 @@ class ExamEngine {
         const examDataStr = sessionStorage.getItem('examData');
         if (!examDataStr) {
             // ...removed debug alert...
-            window.location.href = 'mocktest.html';
+            window.location.href = 'InsightPrep.html';
             return;
         }
         
@@ -326,7 +326,7 @@ class ExamEngine {
             
             if (this.questions.length === 0) {
                 // ...removed debug alert...
-                window.location.href = 'mocktest.html';
+                window.location.href = 'InsightPrep.html';
                 return;
             }
             
@@ -358,7 +358,7 @@ class ExamEngine {
         } catch (error) {
             console.error('Error loading exam data:', error);
             // ...removed debug alert...
-            window.location.href = 'mocktest.html';
+            window.location.href = 'InsightPrep.html';
         }
     }
 
@@ -1735,8 +1735,8 @@ class ExamEngine {
         
         
         
-        // Simple, direct navigation - user starts fresh
-        window.location.href = 'mocktest.html';
+    // Simple, direct navigation - user starts fresh
+    window.location.href = 'InsightPrep.html';
     }
 
     /**
@@ -1804,7 +1804,7 @@ class ExamEngine {
         if (backButton) {
             backButton.style.display = 'block';
             backButton.onclick = () => {
-                window.location.href = 'mocktest.html';
+                window.location.href = 'InsightPrep.html';
             };
         }
     }
@@ -1815,9 +1815,9 @@ class ExamEngine {
   try {
     if (sessionStorage.getItem('examExitByRefresh') === '1') {
       sessionStorage.removeItem('examExitByRefresh');
-      // Optional message storage (can be read on mocktest.html to show notice)
+    // Optional message storage (can be read on InsightPrep.html to show notice)
       sessionStorage.setItem('examExitMessage','Exam ended due to page refresh.');
-      window.location.replace('mocktest.html');
+    window.location.replace('InsightPrep.html');
     }
   } catch(_) {}
 })();

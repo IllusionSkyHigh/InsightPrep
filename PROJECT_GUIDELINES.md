@@ -3,7 +3,7 @@
 ## Architecture Principles
 
 ### Core File Structure (DO NOT CHANGE WITHOUT CONSENT)
-- **mocktest.html** - Main page for database selection and filter options
+- **InsightPrep.html** - Main page for database selection and filter options
 - **exam.html** - Dedicated exam practice mode interface
 - **exam-engine.js** - Exam functionality and logic
 - **database-filter-panel.js** - Filter panel and test mode selection
@@ -21,7 +21,7 @@ Database Selection → Filter Options → Test Mode Selection
 ### 🚨 CRITICAL - Require Explicit Consent Before:
 1. **Changing core file architecture** (adding/removing main files)
 2. **Modifying navigation flow** between pages
-3. **Eliminating or merging major components** (exam.html, mocktest.html)
+3. **Eliminating or merging major components** (exam.html, InsightPrep.html)
 4. **Restructuring state management** systems
 5. **Major refactoring** of working functionality
 

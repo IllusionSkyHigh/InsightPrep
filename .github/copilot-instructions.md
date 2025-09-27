@@ -4,7 +4,7 @@
 InsightPrep is a browser-based exam and learning platform for question banks. It supports both interactive practice and timed exam simulation. The architecture is modular, with strict boundaries between UI, state management, and exam logic. Core files must not be restructured without explicit consent.
 
 ## Architecture & Data Flow
-- **mocktest.html**: Main entry for database selection, filter options, and launching tests.
+- **InsightPrep.html**: Main entry for database selection, filter options, and launching tests.
 - **exam.html**: Dedicated exam mode interface. Navigation to this page is required for exam simulation.
 - **database-filter-panel.js**: Builds the filter panel UI, manages topic/type selection, and launches tests.
 - **exam-engine.js**: Handles exam mode logic, question navigation, timing, and answer tracking.
