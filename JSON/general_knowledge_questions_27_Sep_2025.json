@@ -1,0 +1,600 @@
+{
+  "meta": {
+    "source": "generated",
+    "exportedAt": "2025-09-27T08:43:00.000Z",
+    "count": 50,
+    "mode": "random"
+  },
+  "questions": [
+    {
+      "id": 1,
+      "topic": "History",
+      "subtopic": "Indian Independence",
+      "type": "single",
+      "question": "Who was the first Prime Minister of independent India?",
+      "options": ["Jawaharlal Nehru", "Sardar Patel", "Mahatma Gandhi", "Subhas Chandra Bose"],
+      "answer": "Jawaharlal Nehru",
+      "explanation": "Jawaharlal Nehru served as India's first Prime Minister from 1947 to 1964.",
+      "reference": "Indian History"
+    },
+    {
+      "id": 2,
+      "topic": "Geography",
+      "subtopic": "World Geography",
+      "type": "multiple",
+      "question": "Which of these are official languages of India?",
+      "options": ["Hindi", "Tamil", "Mandarin", "Bengali"],
+      "answer": ["Hindi", "Tamil", "Bengali"],
+      "explanation": "India has 22 official languages, including Hindi, Tamil, and Bengali; Mandarin is not one of them.",
+      "reference": "Indian Constitution"
+    },
+    {
+      "id": 3,
+      "topic": "Science",
+      "subtopic": "Physics",
+      "type": "assertion",
+      "question": "Assertion (A): The Earth rotates on its axis. Reason (R): This causes the change of seasons.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A is true, R is false",
+      "explanation": "Earth’s rotation causes day and night, not seasons, which are due to its axial tilt.",
+      "reference": "NCERT Science"
+    },
+    {
+      "id": 4,
+      "topic": "History",
+      "subtopic": "World History",
+      "type": "match",
+      "question": "Match the historical figures with their countries.",
+      "matchPairs": {
+        "Mahatma Gandhi": "India",
+        "Nelson Mandela": "South Africa",
+        "Abraham Lincoln": "USA",
+        "Mao Zedong": "China"
+      },
+      "explanation": "Each figure is associated with significant historical events in their respective countries.",
+      "reference": "World History"
+    },
+    {
+      "id": 5,
+      "topic": "General Knowledge",
+      "subtopic": "Indian Culture",
+      "type": "single",
+      "question": "The festival of Diwali is primarily associated with which religion?",
+      "options": ["Hinduism", "Islam", "Christianity", "Buddhism"],
+      "answer": "Hinduism",
+      "explanation": "Diwali, the festival of lights, is a major Hindu festival celebrated across India.",
+      "reference": "Indian Culture"
+    },
+    {
+      "id": 6,
+      "topic": "Geography",
+      "subtopic": "Indian Geography",
+      "type": "assertion",
+      "question": "Assertion (A): The Ganga is the longest river in India. Reason (R): It originates in the Himalayas.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R does not explain A",
+      "explanation": "The Ganga is the longest river in India and originates in the Himalayas, but its length is not due to its origin.",
+      "reference": "Indian Geography"
+    },
+    {
+      "id": 7,
+      "topic": "Science",
+      "subtopic": "Biology",
+      "type": "single",
+      "question": "The human heart has how many chambers?",
+      "options": ["Two", "Three", "Four", "Five"],
+      "answer": "Four",
+      "explanation": "The human heart has four chambers: two atria and two ventricles.",
+      "reference": "Human Biology"
+    },
+    {
+      "id": 8,
+      "topic": "History",
+      "subtopic": "Indian History",
+      "type": "match",
+      "question": "Match the Indian freedom fighters with their movements.",
+      "matchPairs": {
+        "Gandhi": "Non-Cooperation",
+        "Bhagat Singh": "Revolutionary Movement",
+        "Subhas Chandra Bose": "Indian National Army",
+        "Tilak": "Swadeshi Movement"
+      },
+      "explanation": "Each freedom fighter led or was associated with a key movement in India’s independence struggle.",
+      "reference": "Indian History"
+    },
+    {
+      "id": 9,
+      "topic": "General Knowledge",
+      "subtopic": "World Organizations",
+      "type": "multiple",
+      "question": "Which of these are members of the United Nations Security Council?",
+      "options": ["India", "China", "Brazil", "Russia"],
+      "answer": ["China", "Russia"],
+      "explanation": "China and Russia are permanent members; India and Brazil are not.",
+      "reference": "International Relations"
+    },
+    {
+      "id": 10,
+      "topic": "Science",
+      "subtopic": "Chemistry",
+      "type": "assertion",
+      "question": "Assertion (A): Water is a compound. Reason (R): It is made of hydrogen and oxygen atoms.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Water is a compound because it is made of hydrogen and oxygen atoms chemically bonded.",
+      "reference": "Chemistry"
+    },
+    {
+      "id": 11,
+      "topic": "Geography",
+      "subtopic": "World Geography",
+      "type": "single",
+      "question": "Which is the smallest continent by land area?",
+      "options": ["Africa", "Australia", "Antarctica", "Asia"],
+      "answer": "Australia",
+      "explanation": "Australia is the smallest continent by land area, covering about 7.7 million sq km.",
+      "reference": "World Geography"
+    },
+    {
+      "id": 12,
+      "topic": "History",
+      "subtopic": "Indian History",
+      "type": "single",
+      "question": "Who founded the Maurya Empire in ancient India?",
+      "options": ["Ashoka", "Chandragupta Maurya", "Bindusara", "Akbar"],
+      "answer": "Chandragupta Maurya",
+      "explanation": "Chandragupta Maurya founded the Maurya Empire around 321 BCE.",
+      "reference": "Indian History"
+    },
+    {
+      "id": 13,
+      "topic": "Science",
+      "subtopic": "Physics",
+      "type": "match",
+      "question": "Match the scientists with their contributions.",
+      "matchPairs": {
+        "Newton": "Laws of Motion",
+        "Einstein": "Relativity",
+        "Tesla": "Alternating Current",
+        "Galileo": "Telescopic Astronomy"
+      },
+      "explanation": "Each scientist made significant contributions to physics.",
+      "reference": "Physics"
+    },
+    {
+      "id": 14,
+      "topic": "General Knowledge",
+      "subtopic": "Indian Politics",
+      "type": "single",
+      "question": "How many members are there in the Lok Sabha?",
+      "options": ["543", "552", "545", "530"],
+      "answer": "543",
+      "explanation": "The Lok Sabha, India’s lower house, has 543 elected members.",
+      "reference": "Indian Polity"
+    },
+    {
+      "id": 15,
+      "topic": "Geography",
+      "subtopic": "Indian Geography",
+      "type": "multiple",
+      "question": "Which of these states share a border with China?",
+      "options": ["Kerala", "Arunachal Pradesh", "Sikkim", "Tamil Nadu"],
+      "answer": ["Arunachal Pradesh", "Sikkim"],
+      "explanation": "Arunachal Pradesh and Sikkim share borders with China; Kerala and Tamil Nadu do not.",
+      "reference": "Indian Geography"
+    },
+    {
+      "id": 16,
+      "topic": "Science",
+      "subtopic": "Biology",
+      "type": "assertion",
+      "question": "Assertion (A): Plants perform photosynthesis. Reason (R): They contain chlorophyll.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Photosynthesis occurs in plants because chlorophyll absorbs light energy.",
+      "reference": "Biology"
+    },
+    {
+      "id": 17,
+      "topic": "History",
+      "subtopic": "World History",
+      "type": "single",
+      "question": "Who was the first woman to win a Nobel Prize?",
+      "options": ["Marie Curie", "Mother Teresa", "Jane Addams", "Pearl Buck"],
+      "answer": "Marie Curie",
+      "explanation": "Marie Curie won the Nobel Prize in Physics in 1903 and Chemistry in 1911.",
+      "reference": "World History"
+    },
+    {
+      "id": 18,
+      "topic": "General Knowledge",
+      "subtopic": "Indian Culture",
+      "type": "match",
+      "question": "Match the Indian classical dance forms with their states.",
+      "matchPairs": {
+        "Bharatanatyam": "Tamil Nadu",
+        "Kathak": "Uttar Pradesh",
+        "Odissi": "Odisha",
+        "Kathakali": "Kerala"
+      },
+      "explanation": "Each dance form is associated with a specific Indian state.",
+      "reference": "Indian Culture"
+    },
+    {
+      "id": 19,
+      "topic": "Geography",
+      "subtopic": "World Geography",
+      "type": "single",
+      "question": "Which country has the most deserts in the world?",
+      "options": ["Australia", "India", "USA", "Egypt"],
+      "answer": "Australia",
+      "explanation": "Australia has the highest proportion of desert land, covering about 18% of its area.",
+      "reference": "World Geography"
+    },
+    {
+      "id": 20,
+      "topic": "Science",
+      "subtopic": "Chemistry",
+      "type": "single",
+      "question": "What is the pH of pure water at 25°C?",
+      "options": ["5", "7", "9", "11"],
+      "answer": "7",
+      "explanation": "Pure water has a neutral pH of 7 at 25°C.",
+      "reference": "Chemistry"
+    },
+    {
+      "id": 21,
+      "topic": "History",
+      "subtopic": "Indian History",
+      "type": "assertion",
+      "question": "Assertion (A): The Taj Mahal was built by Shah Jahan. Reason (R): It was built to honor his wife Mumtaz Mahal.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Shah Jahan built the Taj Mahal as a mausoleum for his wife Mumtaz Mahal.",
+      "reference": "Indian History"
+    },
+    {
+      "id": 22,
+      "topic": "General Knowledge",
+      "subtopic": "Sports",
+      "type": "single",
+      "question": "Which sport is known as the ‘Gentleman’s Game’?",
+      "options": ["Football", "Cricket", "Hockey", "Tennis"],
+      "answer": "Cricket",
+      "explanation": "Cricket is often called the ‘Gentleman’s Game’ due to its traditions and sportsmanship.",
+      "reference": "Sports"
+    },
+    {
+      "id": 23,
+      "topic": "Science",
+      "subtopic": "Physics",
+      "type": "match",
+      "question": "Match the physical quantities with their SI units.",
+      "matchPairs": {
+        "Force": "Newton",
+        "Energy": "Joule",
+        "Power": "Watt",
+        "Pressure": "Pascal"
+      },
+      "explanation": "Each physical quantity has a specific SI unit in physics.",
+      "reference": "Physics"
+    },
+    {
+      "id": 24,
+      "topic": "Geography",
+      "subtopic": "Indian Geography",
+      "type": "single",
+      "question": "Which Indian state is known as the ‘Land of Five Rivers’?",
+      "options": ["Punjab", "Haryana", "Gujarat", "Rajasthan"],
+      "answer": "Punjab",
+      "explanation": "Punjab is called the ‘Land of Five Rivers’ due to its five major rivers.",
+      "reference": "Indian Geography"
+    },
+    {
+      "id": 25,
+      "topic": "General Knowledge",
+      "subtopic": "World Politics",
+      "type": "assertion",
+      "question": "Assertion (A): The United Nations was founded in 1945. Reason (R): It was established after World War II to promote peace.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "The UN was founded in 1945 to promote global peace after World War II.",
+      "reference": "International Relations"
+    },
+    {
+      "id": 26,
+      "topic": "Science",
+      "subtopic": "Biology",
+      "type": "single",
+      "question": "What is the largest organ in the human body?",
+      "options": ["Liver", "Skin", "Heart", "Lungs"],
+      "answer": "Skin",
+      "explanation": "The skin is the largest organ, covering the entire body.",
+      "reference": "Human Biology"
+    },
+    {
+      "id": 27,
+      "topic": "History",
+      "subtopic": "World History",
+      "type": "match",
+      "question": "Match the historical events with their years.",
+      "matchPairs": {
+        "World War I": "1914",
+        "World War II": "1939",
+        "Moon Landing": "1969",
+        "Fall of Berlin Wall": "1989"
+      },
+      "explanation": "Each event is a significant milestone in world history.",
+      "reference": "World History"
+    },
+    {
+      "id": 28,
+      "topic": "General Knowledge",
+      "subtopic": "Indian Economy",
+      "type": "single",
+      "question": "Which is India’s central bank?",
+      "options": ["State Bank of India", "Reserve Bank of India", "ICICI Bank", "HDFC Bank"],
+      "answer": "Reserve Bank of India",
+      "explanation": "The Reserve Bank of India regulates the country’s monetary policy.",
+      "reference": "Indian Economy"
+    },
+    {
+      "id": 29,
+      "topic": "Geography",
+      "subtopic": "World Geography",
+      "type": "multiple",
+      "question": "Which of these are among the Seven Wonders of the Modern World?",
+      "options": ["Taj Mahal", "Great Wall of China", "Eiffel Tower", "Petra"],
+      "answer": ["Great Wall of China", "Petra"],
+      "explanation": "The Great Wall and Petra are part of the Seven Wonders; Taj Mahal and Eiffel Tower are not.",
+      "reference": "World Geography"
+    },
+    {
+      "id": 30,
+      "topic": "Science",
+      "subtopic": "Chemistry",
+      "type": "assertion",
+      "question": "Assertion (A): Helium is a noble gas. Reason (R): It is highly reactive.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A is true, R is false",
+      "explanation": "Helium is a noble gas, but it is chemically inert, not reactive.",
+      "reference": "Chemistry"
+    },
+    {
+      "id": 31,
+      "topic": "History",
+      "subtopic": "Indian History",
+      "type": "single",
+      "question": "Who led the Salt March in 1930?",
+      "options": ["Jawaharlal Nehru", "Mahatma Gandhi", "Subhas Chandra Bose", "Bhagat Singh"],
+      "answer": "Mahatma Gandhi",
+      "explanation": "Mahatma Gandhi led the Salt March to protest British salt taxes.",
+      "reference": "Indian History"
+    },
+    {
+      "id": 32,
+      "topic": "General Knowledge",
+      "subtopic": "Indian Culture",
+      "type": "match",
+      "question": "Match the Indian festivals with their primary states.",
+      "matchPairs": {
+        "Pongal": "Tamil Nadu",
+        "Baisakhi": "Punjab",
+        "Onam": "Kerala",
+        "Durga Puja": "West Bengal"
+      },
+      "explanation": "Each festival is prominently celebrated in its respective state.",
+      "reference": "Indian Culture"
+    },
+    {
+      "id": 33,
+      "topic": "Science",
+      "subtopic": "Physics",
+      "type": "single",
+      "question": "What is the primary source of energy for Earth’s climate system?",
+      "options": ["Moon", "Sun", "Earth’s core", "Wind"],
+      "answer": "Sun",
+      "explanation": "The Sun provides the primary energy driving Earth’s climate system.",
+      "reference": "Physics"
+    },
+    {
+      "id": 34,
+      "topic": "Geography",
+      "subtopic": "Indian Geography",
+      "type": "single",
+      "question": "Which Indian city is known as the ‘Silicon Valley of India’?",
+      "options": ["Mumbai", "Bengaluru", "Hyderabad", "Chennai"],
+      "answer": "Bengaluru",
+      "explanation": "Bengaluru is a major IT hub, earning the nickname ‘Silicon Valley of India.’",
+      "reference": "Indian Geography"
+    },
+    {
+      "id": 35,
+      "topic": "History",
+      "subtopic": "World History",
+      "type": "assertion",
+      "question": "Assertion (A): The Pyramids of Giza were built by the Egyptians. Reason (R): They were constructed as tombs for pharaohs.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "The Pyramids were built by Egyptians as tombs for their pharaohs.",
+      "reference": "World History"
+    },
+    {
+      "id": 36,
+      "topic": "General Knowledge",
+      "subtopic": "Sports",
+      "type": "single",
+      "question": "Which Indian cricketer is known as the ‘God of Cricket’?",
+      "options": ["Virat Kohli", "Sachin Tendulkar", "MS Dhoni", "Rahul Dravid"],
+      "answer": "Sachin Tendulkar",
+      "explanation": "Sachin Tendulkar is widely regarded as the ‘God of Cricket’ for his records.",
+      "reference": "Sports"
+    },
+    {
+      "id": 37,
+      "topic": "Science",
+      "subtopic": "Biology",
+      "type": "match",
+      "question": "Match the organs with their functions.",
+      "matchPairs": {
+        "Heart": "Pumps blood",
+        "Lungs": "Gas exchange",
+        "Liver": "Detoxification",
+        "Kidneys": "Filter blood"
+      },
+      "explanation": "Each organ has a specific function in the human body.",
+      "reference": "Biology"
+    },
+    {
+      "id": 38,
+      "topic": "Geography",
+      "subtopic": "World Geography",
+      "type": "single",
+      "question": "Which is the tallest mountain in the world?",
+      "options": ["K2", "Kangchenjunga", "Mount Everest", "Lhotse"],
+      "answer": "Mount Everest",
+      "explanation": "Mount Everest, at 8,848 meters, is the tallest mountain above sea level.",
+      "reference": "World Geography"
+    },
+    {
+      "id": 39,
+      "topic": "History",
+      "subtopic": "Indian History",
+      "type": "single",
+      "question": "Which Indian emperor was known for his policy of non-violence after converting to Buddhism?",
+      "options": ["Akbar", "Ashoka", "Chandragupta", "Harsha"],
+      "answer": "Ashoka",
+      "explanation": "Ashoka embraced Buddhism and promoted non-violence after the Kalinga War.",
+      "reference": "Indian History"
+    },
+    {
+      "id": 40,
+      "topic": "General Knowledge",
+      "subtopic": "Indian Polity",
+      "type": "assertion",
+      "question": "Assertion (A): India is a federal republic. Reason (R): It has a division of powers between the center and states.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "India’s federal structure divides powers between the central and state governments.",
+      "reference": "Indian Polity"
+    },
+    {
+      "id": 41,
+      "topic": "Science",
+      "subtopic": "Chemistry",
+      "type": "single",
+      "question": "Which gas is most abundant in Earth’s atmosphere?",
+      "options": ["Oxygen", "Nitrogen", "Carbon Dioxide", "Argon"],
+      "answer": "Nitrogen",
+      "explanation": "Nitrogen makes up about 78% of Earth’s atmosphere.",
+      "reference": "Chemistry"
+    },
+    {
+      "id": 42,
+      "topic": "Geography",
+      "subtopic": "Indian Geography",
+      "type": "match",
+      "question": "Match the Indian states with their capitals.",
+      "matchPairs": {
+        "Tamil Nadu": "Chennai",
+        "Maharashtra": "Mumbai",
+        "Karnataka": "Bengaluru",
+        "Uttar Pradesh": "Lucknow"
+      },
+      "explanation": "Each state in India has a designated capital city.",
+      "reference": "Indian Geography"
+    },
+    {
+      "id": 43,
+      "topic": "History",
+      "subtopic": "World History",
+      "type": "single",
+      "question": "Which country was the first to grant women the right to vote?",
+      "options": ["USA", "UK", "New Zealand", "France"],
+      "answer": "New Zealand",
+      "explanation": "New Zealand granted women suffrage in 1893, the first country to do so.",
+      "reference": "World History"
+    },
+    {
+      "id": 44,
+      "topic": "General Knowledge",
+      "subtopic": "Indian Culture",
+      "type": "single",
+      "question": "Which Indian musical instrument is a stringed instrument played with a bow?",
+      "options": ["Sitar", "Sarangi", "Tabla", "Flute"],
+      "answer": "Sarangi",
+      "explanation": "The Sarangi is a bowed string instrument used in Indian classical music.",
+      "reference": "Indian Culture"
+    },
+    {
+      "id": 45,
+      "topic": "Science",
+      "subtopic": "Physics",
+      "type": "assertion",
+      "question": "Assertion (A): Light travels faster than sound. Reason (R): Light is an electromagnetic wave.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Light travels faster than sound because it is an electromagnetic wave, requiring no medium.",
+      "reference": "Physics"
+    },
+    {
+      "id": 46,
+      "topic": "Geography",
+      "subtopic": "World Geography",
+      "type": "single",
+      "question": "Which is the largest ocean in the world?",
+      "options": ["Atlantic", "Indian", "Pacific", "Arctic"],
+      "answer": "Pacific",
+      "explanation": "The Pacific Ocean is the largest, covering about 30% of Earth’s surface.",
+      "reference": "World Geography"
+    },
+    {
+      "id": 47,
+      "topic": "History",
+      "subtopic": "Indian History",
+      "type": "match",
+      "question": "Match the Indian dynasties with their famous rulers.",
+      "matchPairs": {
+        "Maurya": "Ashoka",
+        "Mughal": "Akbar",
+        "Gupta": "Chandragupta II",
+        "Chola": "Rajaraja I"
+      },
+      "explanation": "Each dynasty had notable rulers who shaped Indian history.",
+      "reference": "Indian History"
+    },
+    {
+      "id": 48,
+      "topic": "General Knowledge",
+      "subtopic": "Sports",
+      "type": "single",
+      "question": "Which country hosted the 2024 Summer Olympics?",
+      "options": ["Japan", "France", "Brazil", "China"],
+      "answer": "France",
+      "explanation": "France hosted the 2024 Summer Olympics in Paris.",
+      "reference": "Sports"
+    },
+    {
+      "id": 49,
+      "topic": "Science",
+      "subtopic": "Biology",
+      "type": "single",
+      "question": "What is the main source of energy for humans?",
+      "options": ["Proteins", "Carbohydrates", "Vitamins", "Minerals"],
+      "answer": "Carbohydrates",
+      "explanation": "Carbohydrates are the primary source of energy for the human body.",
+      "reference": "Biology"
+    },
+    {
+      "id": 50,
+      "topic": "Geography",
+      "subtopic": "Indian Geography",
+      "type": "assertion",
+      "question": "Assertion (A): Kerala is known for its backwaters. Reason (R): It has a long coastline.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R does not explain A",
+      "explanation": "Kerala is famous for its backwaters, and it has a long coastline, but the coastline does not directly explain the backwaters.",
+      "reference": "Indian Geography"
+    }
+  ]
+}

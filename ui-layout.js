@@ -103,5 +103,5 @@ function initializeLayoutSystem() {
   // Initial positioning with slight delay to ensure DOM is fully ready
   setTimeout(updateCopyrightCardPosition, 200);
   
-  console.log('UI Layout System initialized');
+  // ...removed debug log...
 }

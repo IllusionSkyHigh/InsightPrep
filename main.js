@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Log successful initialization
-        console.log('MockTest application initialized successfully');
+    // ...removed debug log...
         
     } catch (error) {
         console.error('Error during application initialization:', error);
@@ -155,4 +155,4 @@ document.addEventListener('DOMContentLoaded', function() {
     window.MockTestMain.initialized = true;
 });
 
-console.log('Main application coordinator loaded');
+// ...removed debug log...

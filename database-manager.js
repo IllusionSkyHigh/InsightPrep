@@ -400,10 +400,10 @@ function rerunDatabaseTest() {
       selectionMode: params.selectionMode
     };
     
-    console.log('Building query with filters:', queryFilters);
+  // ...existing code...
     const { query, params: queryParams } = buildFilteredQuery(queryFilters);
-    console.log('Generated query:', query);
-    console.log('Query parameters:', queryParams);
+  // ...existing code...
+  // ...existing code...
     
     const results = executeSecureQueryAll(AppState.database, query, queryParams);
     
@@ -476,7 +476,7 @@ function rerunDatabaseTest() {
       return q;
     });
     
-    console.log(`Question transformation complete: ${transformedQuestions.length} questions processed`);
+  // ...existing code...
     
     // Update loading message before starting test
     if (fileChosenElement) {
@@ -531,5 +531,5 @@ function initializeDatabaseManager() {
     setTimeout(showTotalDbQuestions, 500);
   }
   
-  console.log('Database Manager module initialized');
+  // ...existing code...
 }

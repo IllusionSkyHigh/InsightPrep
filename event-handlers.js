@@ -135,7 +135,7 @@ async function checkAndRestoreDatabaseSession() {
         
         // Need to reload the database file since connection might be lost
         if (!AppState.database) {
-          console.log('Database connection lost, need to reload database file');
+          // ...removed debug log...
           document.getElementById("file-chosen").innerHTML = 
             `Restoring database session for <strong>${AppState.dbFileName}</strong>...`;
           
@@ -158,14 +158,14 @@ async function checkAndRestoreDatabaseSession() {
           `Database ready. Total questions: <strong>${totalQuestions}</strong>. Please select filters and number of questions.`;
         
         // Rebuild the database filter panel with existing topics and types
-        console.log('Rebuilding database filter panel with existing data');
+  // ...removed debug log...
         if (typeof buildDbFilterPanel === 'function') {
           buildDbFilterPanel(AppState.dbTopics, AppState.dbTypes, false); // Don't skip restore
         } else {
           console.error('buildDbFilterPanel function not found');
         }
         
-        console.log('Database session restored successfully');
+  // ...removed debug log...
         
       } else {
         console.warn('Database state not found, showing database selection');
@@ -285,7 +285,7 @@ function handleFileInput(e) {
       buildFilterPanel(data.questions);
     } catch (err) {
       console.error('JSON import failed:', err);
-      alert('Invalid JSON. Ensure the file contains an object with a "questions" array or just an array of question objects.');
+  // ...removed debug alert...
     }
   };
   reader.readAsText(file);
@@ -300,7 +300,7 @@ async function handleDatabaseSelection() {
   try {
     await loadSQLJS();
   } catch (error) {
-    alert('Database library failed to load. Please refresh the page and try again.');
+  // ...removed debug alert...
     return;
   }
   
@@ -341,7 +341,7 @@ async function handleDatabaseSelection() {
       
       // Close existing database connection if it exists
       if (AppState.database) {
-        console.log("Closing previous database connection...");
+  // ...removed debug log...
         AppState.database.close();
         AppState.database = null;
       }
@@ -360,15 +360,12 @@ async function handleDatabaseSelection() {
       const allTypes = typesRes[0]?.values.map(v => v[0]) || [];
       
       // Debug: Show what types were found
-      console.log("=== DATABASE QUESTION TYPES DEBUG ===");
-      console.log("All question types found in database:", allTypes);
+  // ...removed debug logs...
       
       // Remove the filter that was excluding 'Cohort-05-Match' - let's include all types
       const types = allTypes.filter(type => type && type.trim() !== ''); // Only filter out empty/null types
       
-      console.log("Question types after filtering:", types);
-      console.log("Types that would have been excluded by old filter:", allTypes.filter(type => type === 'Cohort-05-Match'));
-      console.log("==========================================");
+  // ...removed debug logs...
       
       // Store for later use when going back to options
       AppState.dbTopics = topics;
@@ -386,12 +383,12 @@ async function handleDatabaseSelection() {
                                   AppState.dbTopics.length > 0;
       
       if (isRestoringFromExam) {
-        console.log('🔄 Detected database restoration scenario - preserving previous settings');
+  // ...removed debug log...
         // Don't reset options to defaults - keep existing settings
         // Build database filter panel and allow restoration of previous settings
         buildDbFilterPanel(topics, types, false); // false = allow restoration
       } else {
-        console.log('🆕 New database selection - resetting to defaults');
+  // ...removed debug log...
         // Reset options to defaults after successful database loading
         resetOptionsToDefaults();
         // Build database filter panel, skip restore to ensure all types are checked by default
@@ -614,7 +611,7 @@ function initializeEventListeners() {
     if (AppState.database) {
       try {
         AppState.database.close();
-        console.log("Database connection closed on page unload");
+  // ...removed debug log...
       } catch (error) {
         console.warn("Error closing database on page unload:", error);
       }
@@ -624,5 +621,5 @@ function initializeEventListeners() {
   // Initialize layout system
   initializeLayoutSystem();
   
-  console.log("Event coordination system initialized");
+  // ...removed debug log...
 }

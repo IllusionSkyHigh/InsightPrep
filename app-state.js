@@ -265,7 +265,7 @@ function saveOptionsState() {
     AppState.savedJsonOptions = state;
   }
   
-  console.log(`Saved ${isDbMode ? 'DB' : 'JSON'} options state:`, state);
+  // ...removed debug log...
 }
 
 /**
@@ -279,11 +279,11 @@ function restoreOptionsState() {
   const state = isDbMode ? AppState.savedDbOptions : AppState.savedJsonOptions;
   
   if (!state) {
-    console.log(`No saved ${isDbMode ? 'DB' : 'JSON'} options to restore`);
+  // ...removed debug log...
     return false;
   }
   
-  console.log(`Restoring ${isDbMode ? 'DB' : 'JSON'} options state:`, state);
+  // ...removed debug log...
   
   // Wait for DOM to be ready
   setTimeout(() => {
@@ -446,7 +446,7 @@ function restoreOptionsState() {
  */
 function removeAllEventListeners() {
   // This will be implemented when event-handlers.js is created
-  console.log("Event listeners cleanup - to be implemented");
+  // ...removed debug log...
 }
 
 /**
@@ -458,7 +458,7 @@ function resetWorkflow() {
   if (AppState.database) {
     try {
       AppState.database.close();
-      console.log("Database connection closed");
+  // ...removed debug log...
     } catch (error) {
       console.warn("Error closing database connection:", error);
     }
@@ -534,7 +534,7 @@ function resetOptionsToDefaults() {
   AppState.showCorrectAnswer = true;
   AppState.explanationMode = 2; // "Both when right and wrong"
   
-  console.log("Reset all options to defaults after loading new data source");
+  // ...removed debug log...
 }
 
 // ============================================

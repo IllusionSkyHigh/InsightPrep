@@ -315,7 +315,7 @@ class ExamEngine {
     loadExamData() {
         const examDataStr = sessionStorage.getItem('examData');
         if (!examDataStr) {
-            alert('Error loading exam. Please try again.');
+            // ...removed debug alert...
             window.location.href = 'mocktest.html';
             return;
         }
@@ -325,7 +325,7 @@ class ExamEngine {
             this.questions = examData.questions || examData.selectedQuestions || [];
             
             if (this.questions.length === 0) {
-                alert('No questions found. Please try again.');
+                // ...removed debug alert...
                 window.location.href = 'mocktest.html';
                 return;
             }
@@ -357,7 +357,7 @@ class ExamEngine {
             
         } catch (error) {
             console.error('Error loading exam data:', error);
-            alert('Error loading exam. Please try again.');
+            // ...removed debug alert...
             window.location.href = 'mocktest.html';
         }
     }
@@ -1055,7 +1055,7 @@ class ExamEngine {
 
     timeUp() {
         clearInterval(this.examTimer);
-        alert('Time is up! The exam will now be submitted automatically.');
+    // ...removed debug alert...
         this.submitExam();
     }
 
@@ -1781,10 +1781,7 @@ class ExamEngine {
             errorElement.style.display = 'block';
         }
         
-        // Also show alert as fallback
-        setTimeout(() => {
-            alert(`Exam Loading Error: ${message}`);
-        }, 2000);
+        // ...removed debug alert fallback...
     }
     
     handleInitializationError(error) {
@@ -1827,17 +1824,4 @@ class ExamEngine {
 
 // Duplicate DOMContentLoaded initialization removed; exam.html handles instantiation.
 // Global one-time alert suppression for legacy "Popup blocked" message
-(() => {
-    if (window.__popupBlockAlertSuppressed) return;
-    const originalAlert = window.alert;
-    window.alert = function(msg, ...rest) {
-        try {
-            if (typeof msg === 'string' && msg.includes('Popup blocked') && msg.includes('PDF report')) {
-                
-                return; // swallow
-            }
-        } catch(_) {}
-        return originalAlert.call(this, msg, ...rest);
-    };
-    window.__popupBlockAlertSuppressed = true;
-})();
+// ...removed global alert suppression for legacy "Popup blocked" message...

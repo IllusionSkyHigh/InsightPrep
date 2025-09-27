@@ -1,0 +1,970 @@
+{
+  "meta": {
+    "source": "generated",
+    "exportedAt": "2025-09-27T09:30:00.000Z",
+    "count": 80,
+    "mode": "sequential"
+  },
+  "questions": [
+    {
+      "id": 1,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Introduction",
+      "type": "single",
+      "question": "In which year does the story of Ponniyin Selvan primarily begin?",
+      "options": ["950 AD", "970 AD", "985 AD", "1000 AD"],
+      "answer": "970 AD",
+      "explanation": "The novel opens in 970 AD during the reign of Emperor Sundara Chola, capturing the political intrigue and familial tensions in the Chola court. This setting allows Kalki to weave historical events with fictional drama, highlighting the young Arulmozhi Varman's rise amid conspiracies.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 1: The First Flood"
+    },
+    {
+      "id": 2,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Main Characters",
+      "type": "multiple",
+      "question": "Which of the following are the three sons of Emperor Sundara Chola?",
+      "options": ["Aditha Karikalan", "Arulmozhi Varman", "Madhurantakan", "Vandiyathevan"],
+      "answer": ["Aditha Karikalan", "Arulmozhi Varman", "Madhurantakan"],
+      "explanation": "Sundara Chola's sons—Aditha Karikalan (the crown prince), Arulmozhi Varman (Ponniyin Selvan), and the adopted Madhurantakan—form the core of succession conflicts. Vandiyathevan is a loyal messenger, not a son, adding adventure to the plot.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 2: The Vaanar Messenger"
+    },
+    {
+      "id": 3,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Plot Intrigue",
+      "type": "assertion",
+      "question": "Assertion (A): Vandiyathevan is sent on a mission by Aditha Karikalan. Reason (R): To deliver secret messages to the emperor amid palace conspiracies.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Vandiyathevan's mission from Aditha Karikalan to Thanjavur uncovers plots by the Pazhuvettaraiyars against the throne. This sets the novel's thriller pace, blending loyalty and danger in the Chola court's shadowy politics.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 3: The Palace of the Lord of Pazhuvoor"
+    },
+    {
+      "id": 4,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Characters and Relationships",
+      "type": "match",
+      "question": "Match the characters with their roles in the Chola court.",
+      "matchPairs": {
+        "Kundavai": "Princess and strategist",
+        "Periya Pazhuvettaraiyar": "Conspirator and treasurer",
+        "Nandini": "Mysterious consort",
+        "Azhwarkadiyan": "Spy and devotee"
+      },
+      "explanation": "Kundavai, Sundara's daughter, navigates alliances; Periya Pazhuvettaraiyar plots for power; Nandini weaves intrigue with her allure; Azhwarkadiyan's dual loyalties add layers to the espionage theme.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 4: The Beautiful Woman"
+    },
+    {
+      "id": 5,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Historical Context",
+      "type": "single",
+      "question": "What historical event inspires the novel's backdrop of war?",
+      "options": ["Battle of Takkolam", "Conquest of Lanka", "Kalinga War", "Battle of Panipat"],
+      "answer": "Conquest of Lanka",
+      "explanation": "The novel draws from Rajaraja Chola's early campaigns in Lanka, fictionalizing Arulmozhi's role. This context grounds the story in Chola expansionism, contrasting courtly drama with battlefield valor.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 5: The Messenger's Peril"
+    },
+    {
+      "id": 6,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Themes",
+      "type": "multiple",
+      "question": "Which themes are central to the early chapters of Ponniyin Selvan?",
+      "options": ["Loyalty and betrayal", "Love and duty", "Power struggles", "Nature's symbolism"],
+      "answer": ["Loyalty and betrayal", "Love and duty", "Power struggles"],
+      "explanation": "Early chapters explore loyalty through Vandiyathevan's mission, love via emerging romances, and power via Pazhuvettaraiyar plots. These interweave to critique ambition in a dynasty's twilight.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 6: The Astrologer's Prophecy"
+    },
+    {
+      "id": 7,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Key Events",
+      "type": "assertion",
+      "question": "Assertion (A): Vandiyathevan encounters danger in the flooded Kaveri. Reason (R): It symbolizes the turbulent fate of the Chola princes.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Vandiyathevan's Kaveri crossing amid floods mirrors the princes' precarious positions. Kalki uses nature to foreshadow chaos, enriching the novel's poetic symbolism.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 7: The River in Spate"
+    },
+    {
+      "id": 8,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Female Characters",
+      "type": "match",
+      "question": "Match the female characters with their influences.",
+      "matchPairs": {
+        "Kundavai": "Political advisor",
+        "Nandini": "Manipulator of alliances",
+        "Poonguzhali": "Lighthouse keeper's kin",
+        "Vanathi": "Arulmozhi's admirer"
+      },
+      "explanation": "Kalki's strong women drive the plot: Kundavai advises, Nandini schemes, Poonguzhali aids escapes, Vanathi yearns. They embody agency in a patriarchal court.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 8: The Lighthouse"
+    },
+    {
+      "id": 9,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Intrigue and Conspiracy",
+      "type": "single",
+      "question": "Who leads the conspiracy against Sundara Chola?",
+      "options": ["Periya Pazhuvettaraiyar", "Aditha Karikalan", "Azhwarkadiyan", "Madhurantakan"],
+      "answer": "Periya Pazhuvettaraiyar",
+      "explanation": "Periya Pazhuvettaraiyar, head of the Pazhuvettaraiyar clan, orchestrates the plot to install Madhurantakan, driven by ambition and Nandini's influence, heightening court tensions.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 9: The Conspiracy Unfolds"
+    },
+    {
+      "id": 10,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Adventure Elements",
+      "type": "multiple",
+      "question": "Which elements add adventure to Vandiyathevan's journey?",
+      "options": ["Sea voyages", "Horse chases", "Disguises", "Sword fights"],
+      "answer": ["Sea voyages", "Horse chases", "Disguises"],
+      "explanation": "Vandiyathevan's escapades involve perilous sea crossings, high-speed pursuits, and clever disguises, infusing the novel with swashbuckling energy amid political depth.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 10: The Chase Begins"
+    },
+    {
+      "id": 11,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Prophecy and Fate",
+      "type": "assertion",
+      "question": "Assertion (A): Arulmozhi is prophesied to conquer distant lands. Reason (R): This motivates his Lanka campaign.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "The astrologer's prophecy of Arulmozhi's conquests foreshadows his destiny as Rajaraja, spurring his Lanka exploits and underscoring themes of fate versus free will.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 11: The Prophecy Revealed"
+    },
+    {
+      "id": 12,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Court Life",
+      "type": "match",
+      "question": "Match the locations with their significance in the plot.",
+      "matchPairs": {
+        "Thanjavur": "Imperial capital",
+        "Pazhayarai": "Kundavai's residence",
+        "Nagapattinam": "Port for spies",
+        "Sri Lanka": "Arulmozhi's battlefield"
+      },
+      "explanation": "Thanjavur hosts intrigues, Pazhayarai Kundavai's base, Nagapattinam espionage hub, Lanka Arulmozhi's proving ground—each locale advances the multi-threaded narrative.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 12: Arrival at Thanjavur"
+    },
+    {
+      "id": 13,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Romance",
+      "type": "single",
+      "question": "Who is Vandiyathevan's romantic interest?",
+      "options": ["Nandini", "Kundavai", "Poonguzhali", "Vanathi"],
+      "answer": "Kundavai",
+      "explanation": "Vandiyathevan's attraction to the intelligent Kundavai evolves from admiration to love, contrasting the novel's political storms with tender personal moments.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 13: Sparks of Romance"
+    },
+    {
+      "id": 14,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Spy Network",
+      "type": "multiple",
+      "question": "Which characters form the spy network for the Cholas?",
+      "options": ["Azhwarkadiyan", "Vandiyathevan", "Kannan", "Periya Karuppan"],
+      "answer": ["Azhwarkadiyan", "Vandiyathevan", "Kannan"],
+      "explanation": "Azhwarkadiyan's Vaishnava guise, Vandiyathevan's missions, and Kannan's stealth create a web of intelligence, vital against Pazhuvettaraiyar threats.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 14: The Spies Assemble"
+    },
+    {
+      "id": 15,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Family Dynamics",
+      "type": "assertion",
+      "question": "Assertion (A): Sundara Chola's illness fuels succession plots. Reason (R): It creates uncertainty among the princes.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Sundara's leprosy-like ailment sparks rivalries, with Aditha's valor clashing against Madhurantakan's claims, heightening familial and political drama.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 15: The Emperor's Ailment"
+    },
+    {
+      "id": 16,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Mysterious Figures",
+      "type": "match",
+      "question": "Match the mysterious figures with their secrets.",
+      "matchPairs": {
+        "Nandini": "Aditha's past love",
+        "Poonguzhali": "Arulmozhi's savior",
+        "Idaikadar": "Forest informant",
+        "Ravidasan": "Assassin leader"
+      },
+      "explanation": "Nandini's allure hides vendettas, Poonguzhali's rescues conceal affections, Iだaikadar provides wilderness intel, Ravidasan plots assassinations—unraveling layers of deception.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 16: Shadows of the Past"
+    },
+    {
+      "id": 17,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Naval Adventures",
+      "type": "single",
+      "question": "What peril faces Vandiyathevan at sea?",
+      "options": ["Pirate attack", "Storm wreck", "Mutiny", "Whirlpool"],
+      "answer": "Storm wreck",
+      "explanation": "A fierce storm wrecks Vandiyathevan's ship, stranding him with Poonguzhali, blending adventure with budding romance amid Chola naval prowess.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 17: The Storm at Sea"
+    },
+    {
+      "id": 18,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Political Alliances",
+      "type": "multiple",
+      "question": "Which alliances are forged in the early plot?",
+      "options": ["Chola-Vanar", "Pazhuvettaraiyar-Pandya", "Kundavai-Vanathi", "Azhwarkadiyan-Vaishnava"],
+      "answer": ["Chola-Vanar", "Pazhuvettaraiyar-Pandya", "Kundavai-Vanathi"],
+      "explanation": "Vanar clan's loyalty to Cholas, Pazhuvettaraiyar's Pandya ties, and Kundavai-Vanathi's friendship counter conspiracies, showcasing strategic bonds.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 18: Forged Bonds"
+    },
+    {
+      "id": 19,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Prophetic Visions",
+      "type": "assertion",
+      "question": "Assertion (A): The astrologer predicts Arulmozhi's greatness. Reason (R): It influences court decisions on succession.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "The prophecy of Arulmozhi's conquests sways opinions, fueling Madhurantakan's jealousy and Aditha's protectiveness in the succession debate.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 19: Visions of Destiny"
+    },
+    {
+      "id": 20,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Cultural Elements",
+      "type": "match",
+      "question": "Match the cultural elements with their roles.",
+      "matchPairs": {
+        "Tevaram Hymns": "Shaiva devotion",
+        "Astrology": "Fate guidance",
+        "Boat Songs": "River folklore",
+        "Sword Duels": "Warrior honor"
+      },
+      "explanation": "Tevaram inspires faith, astrology shapes plots, boat songs evoke Kaveri mysticism, duels test valor—infusing Chola culture into the narrative.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 20: Cultural Echoes"
+    },
+    {
+      "id": 21,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Escape and Pursuit",
+      "type": "single",
+      "question": "Who aids Vandiyathevan in escaping the Pazhuvettaraiyars?",
+      "options": ["Kundavai", "Poonguzhali", "Nandini", "Vanathi"],
+      "answer": "Poonguzhali",
+      "explanation": "Poonguzhali's quick thinking and boat skills rescue Vandiyathevan from pursuers, sparking their romance and highlighting women's resourcefulness.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 21: The Escape"
+    },
+    {
+      "id": 22,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Brotherly Bonds",
+      "type": "multiple",
+      "question": "Which brothers share a strong bond in the story?",
+      "options": ["Aditha and Arulmozhi", "Periya and Chinna Pazhuvettaraiyar", "Ravidasan and Soman", "Kannappan and Idaiyappar"],
+      "answer": ["Aditha and Arulmozhi", "Periya and Chinna Pazhuvettaraiyar"],
+      "explanation": "Aditha-Arulmozhi's protective brotherhood contrasts the scheming Pazhuvettaraiyar brothers, emphasizing loyalty versus ambition.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 22: Bonds of Blood"
+    },
+    {
+      "id": 23,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Astrological Influences",
+      "type": "assertion",
+      "question": "Assertion (A): Madhurantakan's horoscope favors him for the throne. Reason (R): It sows discord among the royals.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Madhurantakan's favorable horoscope is exploited by conspirators, igniting rivalries and underscoring superstition's role in Chola politics.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 23: Stars Align"
+    },
+    {
+      "id": 24,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Romantic Tensions",
+      "type": "match",
+      "question": "Match the romantic pairs with their challenges.",
+      "matchPairs": {
+        "Vandiyathevan-Kundavai": "Class differences",
+        "Aditha-Nandini": "Past betrayal",
+        "Arulmozhi-Vanathi": "Distance and duty",
+        "Poonguzhali-Arulmozhi": "Unspoken affection"
+      },
+      "explanation": "Each pair navigates societal barriers, betrayals, and duties, adding emotional depth to the epic's political canvas.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 24: Hearts Entwined"
+    },
+    {
+      "id": 25,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Lanka Campaign",
+      "type": "single",
+      "question": "What title does Arulmozhi earn in Lanka?",
+      "options": ["Gangaikonda", "Ponniyin Selvan", "Madhurantaka", "Karikalan"],
+      "answer": "Ponniyin Selvan",
+      "explanation": "Arulmozhi's Lanka victories and Kaveri rescue earn him 'Ponniyin Selvan,' symbolizing divine favor and heroic destiny.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 25: Hero of Lanka"
+    },
+    {
+      "id": 26,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Conspiracy Layers",
+      "type": "multiple",
+      "question": "Which groups are involved in the anti-Chola conspiracy?",
+      "options": ["Pazhuvettaraiyars", "Pandyas", "Rashtrakutas", "Cheras"],
+      "answer": ["Pazhuvettaraiyars", "Pandyas"],
+      "explanation": "Pazhuvettaraiyars ally with Pandya remnants for revenge, layering vendettas that threaten Chola stability.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 26: Layers of Deceit"
+    },
+    {
+      "id": 27,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Nature Symbolism",
+      "type": "assertion",
+      "question": "Assertion (A): The Kaveri River saves Arulmozhi as a child. Reason (R): It represents maternal protection in the narrative.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "The Kaveri's 'rescue' of young Arulmozhi embodies Ponni's nurturing force, recurring as a motif of fate and Chola resilience.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 27: The River's Grace"
+    },
+    {
+      "id": 28,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Comic Relief",
+      "type": "match",
+      "question": "Match the comic elements with their characters.",
+      "matchPairs": {
+        "Azhwarkadiyan": "Religious banter",
+        "Vandiyathevan": "Witty escapes",
+        "Senthan Amuthan": "Naive devotion",
+        "Idaikadar": "Folksy wisdom"
+      },
+      "explanation": "Kalki's humor lightens tension through Azhwarkadiyan's debates, Vandiyathevan's quips, Amuthan's innocence, and Iだaikadar's tales.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 28: Laughter in Shadows"
+    },
+    {
+      "id": 29,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Assassination Attempts",
+      "type": "single",
+      "question": "Who is the target of Ravidasan's first assassination plot?",
+      "options": ["Sundara Chola", "Aditha Karikalan", "Arulmozhi Varman", "Kundavai"],
+      "answer": "Aditha Karikalan",
+      "explanation": "Ravidasan, a Pandya loyalist, targets Aditha in Ilangai, escalating the conspiracy's violence and testing Chola vigilance.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 29: The Dagger's Edge"
+    },
+    {
+      "id": 30,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Sisterly Influence",
+      "type": "multiple",
+      "question": "How does Kundavai influence the plot?",
+      "options": ["Deciphers messages", "Recruits spies", "Advises emperor", "All of the above"],
+      "answer": ["Deciphers messages", "Recruits spies", "Advises emperor"],
+      "explanation": "Kundavai's intellect decodes secrets, recruits allies like Vandiyathevan, and counsels Sundara, portraying her as the Chola brain trust.",
+      "reference": "Ponniyin Selvan, Volume 1, Chapter 30: The Princess's Counsel"
+    },
+    {
+      "id": 31,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Shipwreck Drama",
+      "type": "assertion",
+      "question": "Assertion (A): Arulmozhi survives a shipwreck. Reason (R): Poonguzhali rescues him from the sea.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "The shipwreck tests Arulmozhi's fate, with Poonguzhali's bravery saving him, deepening their bond and advancing the adventure thread.",
+      "reference": "Ponniyin Selvan, Volume 2, Chapter 1: The Wreck"
+    },
+    {
+      "id": 32,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Lighthouse Secrets",
+      "type": "match",
+      "question": "Match the lighthouse scenes with outcomes.",
+      "matchPairs": {
+        "Poonguzhali's signal": "Guides the ship",
+        "Vandiyathevan's hideout": "Evasion success",
+        "Arulmozhi's recovery": "Revelation of identity",
+        "Storm's fury": "Dramatic rescue"
+      },
+      "explanation": "Lighthouse episodes blend romance and suspense, with signals, hideouts, and storms driving character revelations.",
+      "reference": "Ponniyin Selvan, Volume 2, Chapter 2: Lighthouse Mysteries"
+    },
+    {
+      "id": 33,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Pandya Revenge",
+      "type": "single",
+      "question": "What motivates the Pandya conspirators?",
+      "options": ["Throne claim", "Revenge for defeat", "Religious zeal", "Economic gain"],
+      "answer": "Revenge for defeat",
+      "explanation": "Pandyas seek vengeance for Chola conquests, with Ravidasan leading assassinations to destabilize the empire.",
+      "reference": "Ponniyin Selvan, Volume 2, Chapter 3: Vengeance Flames"
+    },
+    {
+      "id": 34,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Devotional Elements",
+      "type": "multiple",
+      "question": "Which devotional figures appear?",
+      "options": ["Azhwarkadiyan", "Senthan Amuthan", "Thirumalaiappan", "All of the above"],
+      "answer": ["Azhwarkadiyan", "Senthan Amuthan", "Thirumalaiappan"],
+      "explanation": "Azhwarkadiyan's Vaishnava faith, Amuthan's simple piety, and Thirumalaiappan's temple ties contrast Shaiva dominance, exploring religious harmony.",
+      "reference": "Ponniyin Selvan, Volume 2, Chapter 4: Faith's Threads"
+    },
+    {
+      "id": 35,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Court Intrigues",
+      "type": "assertion",
+      "question": "Assertion (A): Nandini manipulates Periya Pazhuvettaraiyar. Reason (R): Her beauty and intellect sway his ambitions.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Nandini's allure and cunning direct Periya's plots, embodying the novel's theme of women as power brokers.",
+      "reference": "Ponniyin Selvan, Volume 2, Chapter 5: Web of Influence"
+    },
+    {
+      "id": 36,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Island Adventures",
+      "type": "match",
+      "question": "Match the island events with participants.",
+      "matchPairs": {
+        "Shipwreck survival": "Arulmozhi and Poonguzhali",
+        "Lanka battles": "Aditha Karikalan",
+        "Spy infiltration": "Vandiyathevan",
+        "Prophecy fulfillment": "Kudanthai Jothidar"
+      },
+      "explanation": "Island sequences heighten drama, with survivals, battles, infiltrations, and prophecies intertwining fates.",
+      "reference": "Ponniyin Selvan, Volume 2, Chapter 6: Isles of Fate"
+    },
+    {
+      "id": 37,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Forbidden Love",
+      "type": "single",
+      "question": "What complicates Aditha and Nandini's relationship?",
+      "options": ["Class disparity", "Past vendetta", "Political marriage", "Prophetic curse"],
+      "answer": "Past vendetta",
+      "explanation": "Aditha and Nandini's childhood love turns toxic due to betrayal, fueling her role in the conspiracy.",
+      "reference": "Ponniyin Selvan, Volume 2, Chapter 7: Shadows of Love"
+    },
+    {
+      "id": 38,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Messenger's Trials",
+      "type": "multiple",
+      "question": "What trials does Vandiyathevan face?",
+      "options": ["Flood crossing", "Assassin chase", "Court interrogation", "All of the above"],
+      "answer": ["Flood crossing", "Assassin chase", "Court interrogation"],
+      "explanation": "Vandiyathevan endures floods, pursuits, and grillings, embodying the hero's perilous journey.",
+      "reference": "Ponniyin Selvan, Volume 2, Chapter 8: Trials of the Brave"
+    },
+    {
+      "id": 39,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Royal Illness",
+      "type": "assertion",
+      "question": "Assertion (A): Sundara's condition is kept secret. Reason (R): To prevent panic and plots.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Sundara's hidden ailment averts chaos, but leaks fuel succession crises, heightening urgency.",
+      "reference": "Ponniyin Selvan, Volume 2, Chapter 9: Hidden Ailments"
+    },
+    {
+      "id": 40,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Forest Encounters",
+      "type": "match",
+      "question": "Match the forest encounters with revelations.",
+      "matchPairs": {
+        "Idaikadar's hut": "Conspiracy hints",
+        "Tribal alliances": "Loyalty oaths",
+        "Night ambushes": "Assassin foiled",
+        "Herbal cures": "Sundara's hope"
+      },
+      "explanation": "Forest scenes reveal secrets, forge pacts, thwart attacks, and offer remedies, expanding the world.",
+      "reference": "Ponniyin Selvan, Volume 2, Chapter 10: Whispers in the Woods"
+    },
+    {
+      "id": 41,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Vanathi's Yearning",
+      "type": "single",
+      "question": "What is Vanathi's primary desire?",
+      "options": ["Throne for Madhurantakan", "Marriage to Arulmozhi", "Revenge on Pandyas", "Temple patronage"],
+      "answer": "Marriage to Arulmozhi",
+      "explanation": "Vanathi's devotion to Arulmozhi, fueled by childhood affection, adds poignant romance amid turmoil.",
+      "reference": "Ponniyin Selvan, Volume 2, Chapter 11: Yearnings of the Heart"
+    },
+    {
+      "id": 42,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Dual Loyalties",
+      "type": "multiple",
+      "question": "Which characters exhibit dual loyalties?",
+      "options": ["Azhwarkadiyan", "Chinna Pazhuvettaraiyar", "Senthan Amuthan", "All of the above"],
+      "answer": ["Azhwarkadiyan", "Chinna Pazhuvettaraiyar", "Senthan Amuthan"],
+      "explanation": "Azhwarkadiyan balances faiths, Chinna questions family plots, Amuthan hides royal blood—exploring moral conflicts.",
+      "reference": "Ponniyin Selvan, Volume 2, Chapter 12: Divided Hearts"
+    },
+    {
+      "id": 43,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Festival Intrigue",
+      "type": "assertion",
+      "question": "Assertion (A): The festival masks assassination attempts. Reason (R): Crowds provide cover for spies.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Festivals like Indra Vizha conceal plots, with crowds aiding Ravidasan's moves, blending celebration with suspense.",
+      "reference": "Ponniyin Selvan, Volume 2, Chapter 13: Festival of Deceit"
+    },
+    {
+      "id": 44,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Brother's Sacrifice",
+      "type": "match",
+      "question": "Match the sacrifices with brothers.",
+      "matchPairs": {
+        "Aditha's vigilance": "Protects Arulmozhi",
+        "Arulmozhi's campaigns": "Honors Aditha",
+        "Madhurantakan's claim": "Yields for peace",
+        "Vandiyathevan's risks": "For royal brothers"
+      },
+      "explanation": "Aditha's watch, Arulmozhi's battles, Madhurantakan's restraint, and Vandiyathevan's perils underscore fraternal devotion.",
+      "reference": "Ponniyin Selvan, Volume 2, Chapter 14: Sacrifices Made"
+    },
+    {
+      "id": 45,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Mysterious Births",
+      "type": "single",
+      "question": "What secret surrounds Nandini's birth?",
+      "options": ["Royal bastard", "Pandya princess", "Temple orphan", "Foreign envoy's daughter"],
+      "answer": "Royal bastard",
+      "explanation": "Nandini's hidden royal ties to Sundara Chola drive her vendetta, a pivotal twist blending tragedy and intrigue.",
+      "reference": "Ponniyin Selvan, Volume 2, Chapter 15: Birth Secrets"
+    },
+    {
+      "id": 46,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "River Folklore",
+      "type": "multiple",
+      "question": "Which folklore elements feature in the Kaveri scenes?",
+      "options": ["River goddess saves", "Boatman legends", "Flood prophecies", "All of the above"],
+      "answer": ["River goddess saves", "Boatman legends", "Flood prophecies"],
+      "explanation": "Kaveri tales of rescues, boat songs, and flood omens infuse mysticism, symbolizing Chola destiny.",
+      "reference": "Ponniyin Selvan, Volume 2, Chapter 16: Legends of Ponni"
+    },
+    {
+      "id": 47,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Alliance Building",
+      "type": "assertion",
+      "question": "Assertion (A): Kundavai builds alliances with Vanar clan. Reason (R): To counter Pazhuvettaraiyar influence.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Kundavai's diplomacy with Vanars strengthens Chola defenses, showcasing her as a master strategist.",
+      "reference": "Ponniyin Selvan, Volume 2, Chapter 17: Weaving Alliances"
+    },
+    {
+      "id": 48,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Comic Interludes",
+      "type": "match",
+      "question": "Match the comic interludes with sources.",
+      "matchPairs": {
+        "Azhwarkadiyan's debates": "Shaiva-Vaishnava rivalry",
+        "Vandiyathevan's mishaps": "Disguise failures",
+        "Amuthan's naivety": "Royal mix-ups",
+        "Idaikadar's tales": "Exaggerated folklore"
+      },
+      "explanation": "These humorous beats, from debates to blunders, provide relief, humanizing the epic's grandeur.",
+      "reference": "Ponniyin Selvan, Volume 2, Chapter 18: Moments of Mirth"
+    },
+    {
+      "id": 49,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Assassin’s Code",
+      "type": "single",
+      "question": "What code binds Ravidasan and his men?",
+      "options": ["Pandya oath", "Blood vengeance", "Temple vow", "Gold promise"],
+      "answer": "Pandya oath",
+      "explanation": "The Pandya survivors' oath of revenge unites Ravidasan's band, driving relentless pursuits.",
+      "reference": "Ponniyin Selvan, Volume 2, Chapter 19: Oath of Vengeance"
+    },
+    {
+      "id": 50,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Healing Arts",
+      "type": "multiple",
+      "question": "Which healing arts are depicted?",
+      "options": ["Herbal remedies", "Astrological cures", "Temple rituals", "All of the above"],
+      "answer": ["Herbal remedies", "Astrological cures", "Temple rituals"],
+      "explanation": "Siddha herbs, star-based treatments, and Shaiva rites blend medicine and mysticism for Sundara's care.",
+      "reference": "Ponniyin Selvan, Volume 2, Chapter 20: Arts of Healing"
+    },
+    {
+      "id": 51,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Lanka Revelations",
+      "type": "assertion",
+      "question": "Assertion (A): Arulmozhi learns of court plots in Lanka. Reason (R): Vandiyathevan's message reaches him.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Vandiyathevan's urgent dispatch alerts Arulmozhi to conspiracies, prompting his return amid victories.",
+      "reference": "Ponniyin Selvan, Volume 3, Chapter 1: Messages from Lanka"
+    },
+    {
+      "id": 52,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Return Journey",
+      "type": "match",
+      "question": "Match the return journey perils with survivors.",
+      "matchPairs": {
+        "Sea storm": "Arulmozhi and Poonguzhali",
+        "Forest ambush": "Vandiyathevan and Azhwarkadiyan",
+        "River crossing": "Vanathi and Kundavai",
+        "Court entry": "All reunite"
+      },
+      "explanation": "Perils test alliances, culminating in reunion, symbolizing Chola unity.",
+      "reference": "Ponniyin Selvan, Volume 3, Chapter 2: Perils of Return"
+    },
+    {
+      "id": 53,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Throne Aspirants",
+      "type": "single",
+      "question": "Who aspires to the throne via marriage?",
+      "options": ["Madhurantakan", "Periya Pazhuvettaraiyar", "Nandini", "Chinna Pazhuvettaraiyar"],
+      "answer": "Madhurantakan",
+      "explanation": "Madhurantakan's claim, backed by Pazhuvettaraiyars, hinges on marriage to a princess, igniting rivalries.",
+      "reference": "Ponniyin Selvan, Volume 3, Chapter 3: Claims to Power"
+    },
+    {
+      "id": 54,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Devotee’s Dilemma",
+      "type": "multiple",
+      "question": "What dilemmas face Azhwarkadiyan?",
+      "options": ["Faith vs loyalty", "Spy vs saint", "Friend vs foe", "All of the above"],
+      "answer": ["Faith vs loyalty", "Spy vs saint", "Friend vs foe"],
+      "explanation": "Azhwarkadiyan grapples with Vaishnava devotion, espionage duties, and shifting allegiances.",
+      "reference": "Ponniyin Selvan, Volume 3, Chapter 4: Dilemmas of Devotion"
+    },
+    {
+      "id": 55,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Nandini’s Motives",
+      "type": "assertion",
+      "question": "Assertion (A): Nandini seeks revenge on Sundara Chola. Reason (R): For abandoning her as a child.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Nandini's vendetta stems from perceived abandonment, her tragic backstory fueling manipulative schemes.",
+      "reference": "Ponniyin Selvan, Volume 3, Chapter 5: Motives Unveiled"
+    },
+    {
+      "id": 56,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Festival of Indra",
+      "type": "match",
+      "question": "Match the Indra Vizha events with impacts.",
+      "matchPairs": {
+        "Dance performances": "Reveals affections",
+        "Sword contests": "Tests warriors",
+        "Astrologer readings": "Sows doubts",
+        "Conspiracy meetings": "Advances plots"
+      },
+      "explanation": "Indra Vizha's festivities mask tensions, with dances, contests, readings, and meetings advancing drama.",
+      "reference": "Ponniyin Selvan, Volume 3, Chapter 6: Festival Flames"
+    },
+    {
+      "id": 57,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Vanathi's Trials",
+      "type": "single",
+      "question": "What trial does Vanathi undergo?",
+      "options": ["Kidnapping by Pandyas", "Flood survival", "Court testimony", "Prophecy curse"],
+      "answer": "Flood survival",
+      "explanation": "Vanathi's Kaveri flood ordeal tests her resolve, paralleling Arulmozhi's rescues.",
+      "reference": "Ponniyin Selvan, Volume 3, Chapter 7: Trials of Love"
+    },
+    {
+      "id": 58,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Pazhuvettaraiyar Rivalry",
+      "type": "multiple",
+      "question": "What rivalry divides the Pazhuvettaraiyars?",
+      "options": ["Brotherly ambition", "Nandini’s favor", "Throne loyalty", "All of the above"],
+      "answer": ["Brotherly ambition", "Nandini’s favor", "Throne loyalty"],
+      "explanation": "Periya and Chinna's fraternal strife over Nandini and power fractures their conspiracy.",
+      "reference": "Ponniyin Selvan, Volume 3, Chapter 8: Rival Brothers"
+    },
+    {
+      "id": 59,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Astrologer's Role",
+      "type": "assertion",
+      "question": "Assertion (A): The astrologer influences Madhurantakan's claim. Reason (R): His readings favor the prince's horoscope.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Kudanthai Jothidar's horoscope bolsters Madhurantakan, manipulating court opinions.",
+      "reference": "Ponniyin Selvan, Volume 3, Chapter 9: Stars of Ambition"
+    },
+    {
+      "id": 60,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Reunion Scenes",
+      "type": "match",
+      "question": "Match the reunions with emotions.",
+      "matchPairs": {
+        "Arulmozhi-Vandiyathevan": "Brotherly joy",
+        "Kundavai-Vanathi": "Sisterly relief",
+        "Sundara-Aditha": "Paternal concern",
+        "Nandini-Periya": "Tense alliance"
+      },
+      "explanation": "Reunions evoke joy, relief, concern, and tension, pivotal for emotional arcs.",
+      "reference": "Ponniyin Selvan, Volume 3, Chapter 10: Reunions and Tears"
+    },
+    {
+      "id": 61,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Sword of Fate",
+      "type": "single",
+      "question": "What is the significance of the 'killer sword'?",
+      "options": ["Aditha's weapon", "Assassin's tool", "Royal heirloom", "Prophetic relic"],
+      "answer": "Assassin's tool",
+      "explanation": "The cursed sword, wielded by Ravidasan, symbolizes inevitable doom in the conspiracy.",
+      "reference": "Ponniyin Selvan, Volume 3, Chapter 11: The Cursed Blade"
+    },
+    {
+      "id": 62,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Poonguzhali's Courage",
+      "type": "multiple",
+      "question": "What acts of courage define Poonguzhali?",
+      "options": ["Boat rescues", "Defying elders", "Spying for Kundavai", "All of the above"],
+      "answer": ["Boat rescues", "Defying elders", "Spying for Kundavai"],
+      "explanation": "Poonguzhali's bravery in rescues, rebellion, and espionage marks her as a fierce ally.",
+      "reference": "Ponniyin Selvan, Volume 3, Chapter 12: Courage of the Waves"
+    },
+    {
+      "id": 63,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Throne Debates",
+      "type": "assertion",
+      "question": "Assertion (A): Succession debates divide the council. Reason (R): Prophecies clash with traditions.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Council arguments pit Arulmozhi's prophecy against Madhurantakan's lineage, testing Chola unity.",
+      "reference": "Ponniyin Selvan, Volume 3, Chapter 13: Debates of Destiny"
+    },
+    {
+      "id": 64,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Hidden Identities",
+      "type": "match",
+      "question": "Match the hidden identities with holders.",
+      "matchPairs": {
+        "Senthan Amuthan": "Royal bastard",
+        "Nandini": "Sundara's daughter",
+        "Ravidasan": "Pandya survivor",
+        "Azhwarkadiyan": "Chola spy"
+      },
+      "explanation": "Reveals of Amuthan's blood, Nandini's ties, Ravidasan's past, and Azhwarkadiyan's role twist the plot.",
+      "reference": "Ponniyin Selvan, Volume 3, Chapter 14: Masks Fall"
+    },
+    {
+      "id": 65,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Battle Preparations",
+      "type": "single",
+      "question": "What prepares the Cholas for external threats?",
+      "options": ["Naval reforms", "Army drills", "Diplomatic envoys", "All of the above"],
+      "answer": "All of the above",
+      "explanation": "Reforms, drills, and envoys fortify against Pandyas and Rashtrakutas, showcasing strategic depth.",
+      "reference": "Ponniyin Selvan, Volume 3, Chapter 15: Gearing for War"
+    },
+    {
+      "id": 66,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Love's Labyrinth",
+      "type": "multiple",
+      "question": "Which loves navigate labyrinths?",
+      "options": ["Vandiyathevan-Kundavai", "Arulmozhi-Poonguzhali", "Aditha-Nandini", "Vanathi-Madhurantakan"],
+      "answer": ["Vandiyathevan-Kundavai", "Arulmozhi-Poonguzhali", "Aditha-Nandini"],
+      "explanation": "These tangled romances, fraught with duty and deception, humanize the epic.",
+      "reference": "Ponniyin Selvan, Volume 3, Chapter 16: Labyrinths of Love"
+    },
+    {
+      "id": 67,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Prophecy's Shadow",
+      "type": "assertion",
+      "question": "Assertion (A): The prophecy haunts Arulmozhi. Reason (R): It predicts both glory and peril.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Dual-edged prophecy of triumphs and dangers propels Arulmozhi's arc, blending hope and fear.",
+      "reference": "Ponniyin Selvan, Volume 3, Chapter 17: Shadows of Prophecy"
+    },
+    {
+      "id": 68,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Temple Sanctuaries",
+      "type": "match",
+      "question": "Match the temples with plot roles.",
+      "matchPairs": {
+        "Thanjavur Brihadeeswara": "Future vision",
+        "Nagaipattinam": "Spy haven",
+        "Pazhayarai": "Kundavai's council",
+        "Kudanthai": "Astrologer's abode"
+      },
+      "explanation": "Temples serve as sanctuaries for visions, spies, councils, and oracles, sacred backdrops to intrigue.",
+      "reference": "Ponniyin Selvan, Volume 3, Chapter 18: Sanctuaries of Stone"
+    },
+    {
+      "id": 69,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Betrayal's Price",
+      "type": "single",
+      "question": "What price does Chinna pay for betrayal?",
+      "options": ["Exile", "Imprisonment", "Death", "Redemption"],
+      "answer": "Redemption",
+      "explanation": "Chinna's shift from conspiracy to loyalty earns redemption, highlighting moral growth.",
+      "reference": "Ponniyin Selvan, Volume 3, Chapter 19: Price of Betrayal"
+    },
+    {
+      "id": 70,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Climactic Revelations",
+      "type": "multiple",
+      "question": "What revelations climax the volume?",
+      "options": ["Nandini's parentage", "Amuthan's identity", "Sword's curse", "All of the above"],
+      "answer": ["Nandini's parentage", "Amuthan's identity", "Sword's curse"],
+      "explanation": "Parentage bombshells, identity shocks, and cursed artifacts converge for dramatic peaks.",
+      "reference": "Ponniyin Selvan, Volume 3, Chapter 20: Revelations Peak"
+    },
+    {
+      "id": 71,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Crown's Burden",
+      "type": "assertion",
+      "question": "Assertion (A): The crown weighs heavy on Sundara. Reason (R): Conspiracies erode his health.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Sundara's burden from plots accelerates decline, poignant in his abdication musings.",
+      "reference": "Ponniyin Selvan, Volume 4, Chapter 1: Weight of the Crown"
+    },
+    {
+      "id": 72,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Pinnacle Climbs",
+      "type": "match",
+      "question": "Match the climbs with symbolic meanings.",
+      "matchPairs": {
+        "Throne ascent": "Power grasp",
+        "Mountain trek": "Peril overcome",
+        "Social ladder": "Class defiance",
+        "Emotional peak": "Love confessed"
+      },
+      "explanation": "Ascents symbolize triumphs over power, danger, barriers, and hearts.",
+      "reference": "Ponniyin Selvan, Volume 4, Chapter 2: Ascents to Power"
+    },
+    {
+      "id": 73,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Sacrifice's Call",
+      "type": "single",
+      "question": "Who makes the ultimate sacrifice?",
+      "options": ["Aditha Karikalan", "Sundara Chola", "Nandini", "Ravidasan"],
+      "answer": "Aditha Karikalan",
+      "explanation": "Aditha's self-sacrifice averts greater tragedy, his valor etching eternal legacy.",
+      "reference": "Ponniyin Selvan, Volume 4, Chapter 3: Call of Sacrifice"
+    },
+    {
+      "id": 74,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Legacy Forged",
+      "type": "multiple",
+      "question": "What forges the Chola legacy?",
+      "options": ["Arulmozhi's coronation", "Temple constructions", "Naval victories", "All of the above"],
+      "answer": ["Arulmozhi's coronation", "Temple constructions", "Naval victories"],
+      "explanation": "Coronation, temples, and fleets cement Rajaraja's enduring empire.",
+      "reference": "Ponniyin Selvan, Volume 4, Chapter 4: Forging Legacy"
+    },
+    {
+      "id": 75,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Redemption Arcs",
+      "type": "assertion",
+      "question": "Assertion (A): Chinna redeems through confession. Reason (R): It exposes the full conspiracy.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Chinna's confession dismantles plots, his arc from villain to ally resolving tensions.",
+      "reference": "Ponniyin Selvan, Volume 4, Chapter 5: Arcs of Redemption"
+    },
+    {
+      "id": 76,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Epic Climax",
+      "type": "match",
+      "question": "Match the climax elements with resolutions.",
+      "matchPairs": {
+        "Final duel": "Assassins defeated",
+        "Coronation ceremony": "Arulmozhi ascends",
+        "Nandini's fate": "Tragic end",
+        "Romantic unions": "Hearts united"
+      },
+      "explanation": "Duels end threats, ceremony crowns hero, fates seal tragedies, unions heal wounds.",
+      "reference": "Ponniyin Selvan, Volume 4, Chapter 6: Climax of Empires"
+    },
+    {
+      "id": 77,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Kalki's Craft",
+      "type": "single",
+      "question": "What technique builds suspense?",
+      "options": ["Cliffhanger chapters", "Flashbacks", "Multiple POVs", "All of the above"],
+      "answer": "All of the above",
+      "explanation": "Cliffhangers, flashbacks, and POV shifts masterfully sustain tension across volumes.",
+      "reference": "Ponniyin Selvan, Volume 4, Chapter 7: Kalki's Mastery"
+    },
+    {
+      "id": 78,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Chola Glory",
+      "type": "multiple",
+      "question": "What symbolizes Chola glory?",
+      "options": ["Brihadeeswara Temple", "Naval fleet", "Kaveri banks", "All of the above"],
+      "answer": ["Brihadeeswara Temple", "Naval fleet", "Kaveri banks"],
+      "explanation": "Temple grandeur, sea power, and river vitality embody the dynasty's zenith.",
+      "reference": "Ponniyin Selvan, Volume 4, Chapter 8: Symbols of Glory"
+    },
+    {
+      "id": 79,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Tragic Heroine",
+      "type": "assertion",
+      "question": "Assertion (A): Nandini is a tragic heroine. Reason (R): Her ambitions lead to self-destruction.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Nandini's drive for revenge culminates in tragedy, her complexity evoking sympathy.",
+      "reference": "Ponniyin Selvan, Volume 4, Chapter 9: Tragedy of Ambition"
+    },
+    {
+      "id": 80,
+      "topic": "Ponniyin Selvan",
+      "subtopic": "Epilogue Reflections",
+      "type": "match",
+      "question": "Match the epilogue reflections with themes.",
+      "matchPairs": {
+        "Arulmozhi's rule": "Unity and expansion",
+        "Lost loves": "Sacrifice's cost",
+        "Chola legacy": "Eternal glory",
+        "Kaveri's flow": "Timeless fate"
+      },
+      "explanation": "Epilogue ties unity, loss, legacy, and fate, closing the epic poignantly.",
+      "reference": "Ponniyin Selvan, Volume 5, Chapter 1: Reflections Eternal"
+    }
+  ]
+}

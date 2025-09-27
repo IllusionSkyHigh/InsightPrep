@@ -293,7 +293,7 @@ function updateHeaderTitle(titleText = "InsightPrep<br><span style='font-size: 0
 // Load SQL.js library immediately when module loads
 loadSQLJS().catch(error => {
   console.error('Error loading SQL.js:', error);
-  alert('Failed to load database library. Database features will not work.');
+  // ...removed debug alert...
 });
 
 // Set up window resize listener for copyright positioning

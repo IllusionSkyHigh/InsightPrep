@@ -181,9 +181,13 @@ function updateInvalidQuestionsButton(invalidQuestions, totalQuestions) {
       if (typeof showInvalidQuestionsPopup === 'function') {
         showInvalidQuestionsPopup(invalidQuestions, totalQuestions);
       } else {
-        alert(`Found ${invalidQuestions.length} invalid questions:\n\n` + 
-              invalidQuestions.slice(0, 3).map(q => `• ${q.reason}`).join('\n') + 
-              (invalidQuestions.length > 3 ? '\n... and more' : ''));
+        // Could display invalid questions in a custom popup or UI element here if needed
+        // Example: Show first 3 invalid reasons in the console (or handle as needed)
+        /*
+        const reasons = invalidQuestions.slice(0, 3).map(q => `• ${q.reason}`).join('\n') +
+          (invalidQuestions.length > 3 ? '\n... and more' : '');
+        // Optionally display in UI
+        */
       }
     });
     
@@ -400,7 +404,7 @@ function renderTest(questions) {
           isSingleChoice = (correctCount === 1);
           isMultipleChoice = (correctCount > 1);
           
-          console.log(`Question ${q.id}: ${correctCount} correct answers → ${isMultipleChoice ? 'multiple choice (checkboxes)' : 'single choice (radio buttons)'}`);
+          // ...removed debug log...
         } catch (error) {
           console.warn(`Error checking correct answers for question ${q.id}:`, error);
           // Default to single choice if error
@@ -417,8 +421,9 @@ function renderTest(questions) {
         isMultipleChoice = true;
       }
       
-      // Debug logging
-      console.log(`Question ${qIndex + 1}:`, {
+      // Debug logging removed
+      // Object construction preserved
+      const questionInfo = {
         id: q.id,
         questionText: questionText?.substring(0, 50) + '...',
         question_type: q.question_type,
@@ -430,7 +435,7 @@ function renderTest(questions) {
         optionsCount: q.options?.length || 0,
         firstOption: q.options?.[0],
         answer: q.answer
-      });
+      };
       
       // Format question text with advanced formatting
       const formattedQuestion = formatQuestionWithLists(questionText);
@@ -446,13 +451,13 @@ function renderTest(questions) {
       // Render question type-specific content
       if ((questionType === "match" || questionType === "Match") && q.matchPairs && typeof q.matchPairs === 'object' && Object.keys(q.matchPairs).length > 0) {
         // Matching questions (requires createMatchQuestion from core-utils.js)
-        console.log(`Rendering match question ${q.id}:`, {
+        const matchInfo = {
           questionType: questionType,
           hasMatchPairs: !!q.matchPairs,
           matchPairCount: Object.keys(q.matchPairs || {}).length,
           matchPairs: q.matchPairs,
           createMatchQuestionAvailable: typeof createMatchQuestion === 'function'
-        });
+        };
         
         if (typeof createMatchQuestion === 'function') {
           createMatchQuestion(q, qDiv, qIndex);
@@ -654,7 +659,7 @@ function handleAnswer(question, chosen, qDiv, qIndex) {
     }
     
     AppState.score++;
-    console.log(`Question ${qIndex + 1} answered correctly. Score: ${AppState.score}/${AppState.questions.length}`);
+  // ...removed debug log...
     
     // Progress to next question or show final score
     progressToNextQuestion(qIndex);
@@ -721,7 +726,7 @@ function progressToNextQuestion(currentIndex) {
     }, 10);
   } else {
     // This was the last question, show final score
-    console.log("Test completed! Showing final score.");
+  // ...removed debug log...
     showFinalScore();
   }
 }
@@ -988,10 +993,10 @@ function renderSingleQuestion(q, qDiv, qIndex) {
  * Handles both immediate and delayed feedback modes
  */
 function showFinalScore() {
-  console.log("showFinalScore() called!");
+  // ...removed debug log...
   const total = AppState.questions.length;
   const percent = Math.round((AppState.score / total) * 100);
-  console.log(`Final score: ${AppState.score}/${total} (${percent}%)`);
+  // ...removed debug log...
 
   let message = "";
   let cssClass = "";
@@ -1193,7 +1198,7 @@ function formatTime(seconds) {
 }
 
 function handleTimeUp() {
-  alert('Time\'s up! Your exam will now be submitted.');
+  // ...removed debug alert...
   
   // Auto-submit the exam
   showExamResults();

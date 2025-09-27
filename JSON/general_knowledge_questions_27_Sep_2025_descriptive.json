@@ -1,0 +1,600 @@
+{
+  "meta": {
+    "source": "generated",
+    "exportedAt": "2025-09-27T08:47:00.000Z",
+    "count": 50,
+    "mode": "random"
+  },
+  "questions": [
+    {
+      "id": 1,
+      "topic": "History",
+      "subtopic": "Indian Independence",
+      "type": "single",
+      "question": "Who was the first Prime Minister of independent India?",
+      "options": ["Jawaharlal Nehru", "Sardar Patel", "Mahatma Gandhi", "Subhas Chandra Bose"],
+      "answer": "Jawaharlal Nehru",
+      "explanation": "Jawaharlal Nehru, fondly called 'Pandit Nehru,' served as India’s first Prime Minister from August 15, 1947, until his death in 1964. A key figure in the independence movement, he shaped India’s early policies, emphasizing secularism and modernization. His leadership laid the foundation for India's democratic framework and non-aligned foreign policy during the Cold War era.",
+      "reference": "‘The Discovery of India’ by Jawaharlal Nehru"
+    },
+    {
+      "id": 2,
+      "topic": "Geography",
+      "subtopic": "World Geography",
+      "type": "multiple",
+      "question": "Which of these are official languages of India?",
+      "options": ["Hindi", "Tamil", "Mandarin", "Bengali"],
+      "answer": ["Hindi", "Tamil", "Bengali"],
+      "explanation": "India’s Constitution recognizes 22 scheduled languages, including Hindi, Tamil, and Bengali, reflecting the country’s rich linguistic diversity. Hindi is often promoted as a link language, while Tamil and Bengali have ancient literary traditions. Mandarin, a Chinese language, is not an official language in India, though it’s studied in some educational institutions.",
+      "reference": "Constitution of India, 8th Schedule"
+    },
+    {
+      "id": 3,
+      "topic": "Science",
+      "subtopic": "Physics",
+      "type": "assertion",
+      "question": "Assertion (A): The Earth rotates on its axis. Reason (R): This causes the change of seasons.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A is true, R is false",
+      "explanation": "The Earth completes one rotation on its axis every 24 hours, causing the cycle of day and night. However, the change of seasons is not due to this rotation but rather the Earth’s axial tilt of about 23.5 degrees as it orbits the Sun, which affects the angle and intensity of sunlight received in different regions throughout the year.",
+      "reference": "NCERT Class 8 Science Textbook"
+    },
+    {
+      "id": 4,
+      "topic": "History",
+      "subtopic": "World History",
+      "type": "match",
+      "question": "Match the historical figures with their countries.",
+      "matchPairs": {
+        "Mahatma Gandhi": "India",
+        "Nelson Mandela": "South Africa",
+        "Abraham Lincoln": "USA",
+        "Mao Zedong": "China"
+      },
+      "explanation": "Mahatma Gandhi led India’s non-violent independence movement; Nelson Mandela fought apartheid in South Africa; Abraham Lincoln abolished slavery in the USA; and Mao Zedong established communist rule in China. Each figure’s legacy profoundly shaped their nation’s history and global perceptions of leadership and justice.",
+      "reference": "‘Long Walk to Freedom’ by Nelson Mandela"
+    },
+    {
+      "id": 5,
+      "topic": "General Knowledge",
+      "subtopic": "Indian Culture",
+      "type": "single",
+      "question": "The festival of Diwali is primarily associated with which religion?",
+      "options": ["Hinduism", "Islam", "Christianity", "Buddhism"],
+      "answer": "Hinduism",
+      "explanation": "Diwali, known as the Festival of Lights, is a cornerstone of Hindu culture, celebrating the victory of light over darkness and good over evil. Rooted in the epic Ramayana, it marks Lord Rama’s return to Ayodhya. Families light oil lamps, share sweets, and burst fireworks, creating a vibrant, joyous atmosphere across India.",
+      "reference": "‘The Ramayana’ by Valmiki"
+    },
+    {
+      "id": 6,
+      "topic": "Geography",
+      "subtopic": "Indian Geography",
+      "type": "assertion",
+      "question": "Assertion (A): The Ganga is the longest river in India. Reason (R): It originates in the Himalayas.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R does not explain A",
+      "explanation": "The Ganga, stretching over 2,500 km, is indeed India’s longest river, revered as a lifeline for millions. It originates at Gangotri in the Himalayas, but its length is due to its extensive course through the plains, not solely its source. The river supports agriculture, spirituality, and urban life across northern India.",
+      "reference": "‘Ganga: The River of Life’ by Julian Crandall Hollick"
+    },
+    {
+      "id": 7,
+      "topic": "Science",
+      "subtopic": "Biology",
+      "type": "single",
+      "question": "The human heart has how many chambers?",
+      "options": ["Two", "Three", "Four", "Five"],
+      "answer": "Four",
+      "explanation": "The human heart comprises four chambers: two atria (left and right) that receive blood and two ventricles that pump it out. This structure ensures efficient circulation, separating oxygenated and deoxygenated blood, critical for sustaining life. The heart beats about 100,000 times daily, showcasing its remarkable design.",
+      "reference": "Gray’s Anatomy"
+    },
+    {
+      "id": 8,
+      "topic": "History",
+      "subtopic": "Indian History",
+      "type": "match",
+      "question": "Match the Indian freedom fighters with their movements.",
+      "matchPairs": {
+        "Gandhi": "Non-Cooperation",
+        "Bhagat Singh": "Revolutionary Movement",
+        "Subhas Chandra Bose": "Indian National Army",
+        "Tilak": "Swadeshi Movement"
+      },
+      "explanation": "Gandhi’s Non-Cooperation Movement boycotted British goods; Bhagat Singh’s revolutionary acts inspired youth; Subhas Chandra Bose led the INA against British rule; and Tilak’s Swadeshi Movement promoted self-reliance. These diverse strategies collectively pressured colonial authorities, paving the way for India’s independence in 1947.",
+      "reference": "‘India’s Struggle for Independence’ by Bipan Chandra"
+    },
+    {
+      "id": 9,
+      "topic": "General Knowledge",
+      "subtopic": "World Organizations",
+      "type": "multiple",
+      "question": "Which of these are members of the United Nations Security Council?",
+      "options": ["India", "China", "Brazil", "Russia"],
+      "answer": ["China", "Russia"],
+      "explanation": "The UN Security Council has five permanent members: China, Russia, USA, UK, and France, with veto powers. India and Brazil, though influential, are not permanent members but actively seek reforms for inclusion. The Council plays a critical role in maintaining global peace and security.",
+      "reference": "United Nations Charter"
+    },
+    {
+      "id": 10,
+      "topic": "Science",
+      "subtopic": "Chemistry",
+      "type": "assertion",
+      "question": "Assertion (A): Water is a compound. Reason (R): It is made of hydrogen and oxygen atoms.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Water (H₂O) is a compound because it consists of hydrogen and oxygen atoms chemically bonded in a fixed ratio. This molecular structure gives water unique properties, like its ability to dissolve many substances, making it essential for life. The chemical bond distinguishes it from a mixture.",
+      "reference": "‘Chemistry: The Central Science’ by Brown & LeMay"
+    },
+    {
+      "id": 11,
+      "topic": "Geography",
+      "subtopic": "World Geography",
+      "type": "single",
+      "question": "Which is the smallest continent by land area?",
+      "options": ["Africa", "Australia", "Antarctica", "Asia"],
+      "answer": "Australia",
+      "explanation": "Australia, with a land area of about 7.7 million square kilometers, is the smallest continent. Often called an ‘island continent,’ it’s known for its unique biodiversity, including kangaroos and the Great Barrier Reef. Its size contrasts with Asia, the largest continent, at 44 million square kilometers.",
+      "reference": "National Geographic Atlas of the World"
+    },
+    {
+      "id": 12,
+      "topic": "History",
+      "subtopic": "Indian History",
+      "type": "single",
+      "question": "Who founded the Maurya Empire in ancient India?",
+      "options": ["Ashoka", "Chandragupta Maurya", "Bindusara", "Akbar"],
+      "answer": "Chandragupta Maurya",
+      "explanation": "Chandragupta Maurya established the Maurya Empire around 321 BCE, unifying much of India under one rule. Mentored by Chanakya, he overthrew the Nanda dynasty and expanded his empire, creating a strong administrative system that influenced later Indian governance.",
+      "reference": "‘Arthashastra’ by Chanakya"
+    },
+    {
+      "id": 13,
+      "topic": "Science",
+      "subtopic": "Physics",
+      "type": "match",
+      "question": "Match the scientists with their contributions.",
+      "matchPairs": {
+        "Newton": "Laws of Motion",
+        "Einstein": "Relativity",
+        "Tesla": "Alternating Current",
+        "Galileo": "Telescopic Astronomy"
+      },
+      "explanation": "Newton’s laws govern classical mechanics; Einstein’s theory of relativity revolutionized modern physics; Tesla’s work on alternating current transformed electricity distribution; and Galileo’s telescopic observations confirmed heliocentrism, challenging scientific and religious dogmas of his time.",
+      "reference": "‘A Brief History of Time’ by Stephen Hawking"
+    },
+    {
+      "id": 14,
+      "topic": "General Knowledge",
+      "subtopic": "Indian Politics",
+      "type": "single",
+      "question": "How many members are there in the Lok Sabha?",
+      "options": ["543", "552", "545", "530"],
+      "answer": "543",
+      "explanation": "The Lok Sabha, India’s lower house of Parliament, consists of 543 elected members, representing constituencies across the nation. This number ensures proportional representation based on population, with elections held every five years, making it a cornerstone of India’s democratic system.",
+      "reference": "‘Indian Polity’ by M. Laxmikanth"
+    },
+    {
+      "id": 15,
+      "topic": "Geography",
+      "subtopic": "Indian Geography",
+      "type": "multiple",
+      "question": "Which of these states share a border with China?",
+      "options": ["Kerala", "Arunachal Pradesh", "Sikkim", "Tamil Nadu"],
+      "answer": ["Arunachal Pradesh", "Sikkim"],
+      "explanation": "Arunachal Pradesh and Sikkim share India’s northern border with China, part of a geopolitically sensitive region along the Line of Actual Control. Kerala and Tamil Nadu, located in southern India, are coastal states with no direct border with China.",
+      "reference": "‘Certificate Physical and Human Geography’ by Goh Cheng Leong"
+    },
+    {
+      "id": 16,
+      "topic": "Science",
+      "subtopic": "Biology",
+      "type": "assertion",
+      "question": "Assertion (A): Plants perform photosynthesis. Reason (R): They contain chlorophyll.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Photosynthesis allows plants to convert sunlight into energy, producing glucose and oxygen. Chlorophyll, the green pigment in plant cells, absorbs sunlight, enabling this process. Without chlorophyll, plants couldn’t harness light energy, making it essential for photosynthesis and plant survival.",
+      "reference": "‘Biology’ by Campbell & Reece"
+    },
+    {
+      "id": 17,
+      "topic": "History",
+      "subtopic": "World History",
+      "type": "single",
+      "question": "Who was the first woman to win a Nobel Prize?",
+      "options": ["Marie Curie", "Mother Teresa", "Jane Addams", "Pearl Buck"],
+      "answer": "Marie Curie",
+      "explanation": "Marie Curie won the Nobel Prize in Physics in 1903 for her work on radioactivity, shared with her husband Pierre and Henri Becquerel, and later in Chemistry in 1911 for discovering radium and polonium. Her groundbreaking research paved the way for advancements in science and medicine.",
+      "reference": "‘Madame Curie’ by Eve Curie"
+    },
+    {
+      "id": 18,
+      "topic": "General Knowledge",
+      "subtopic": "Indian Culture",
+      "type": "match",
+      "question": "Match the Indian classical dance forms with their states.",
+      "matchPairs": {
+        "Bharatanatyam": "Tamil Nadu",
+        "Kathak": "Uttar Pradesh",
+        "Odissi": "Odisha",
+        "Kathakali": "Kerala"
+      },
+      "explanation": "Bharatanatyam is Tamil Nadu’s graceful dance; Kathak, from Uttar Pradesh, blends storytelling with rhythmic footwork; Odissi, from Odisha, emphasizes fluid movements; and Kathakali, Kerala’s dramatic dance, uses elaborate costumes. Each reflects its region’s cultural heritage.",
+      "reference": "‘Indian Classical Dance: Tradition in Transition’ by Leela Venkataraman"
+    },
+    {
+      "id": 19,
+      "topic": "Geography",
+      "subtopic": "World Geography",
+      "type": "single",
+      "question": "Which country has the most deserts in the world?",
+      "options": ["Australia", "India", "USA", "Egypt"],
+      "answer": "Australia",
+      "explanation": "Australia’s vast interior, known as the Outback, is dominated by deserts like the Great Victoria and Simpson Deserts, covering about 18% of its land. This arid landscape, unique for its red sands and sparse vegetation, makes Australia the continent with the most desert coverage.",
+      "reference": "‘Deserts of the World’ by National Geographic"
+    },
+    {
+      "id": 20,
+      "topic": "Science",
+      "subtopic": "Chemistry",
+      "type": "single",
+      "question": "What is the pH of pure water at 25°C?",
+      "options": ["5", "7", "9", "11"],
+      "answer": "7",
+      "explanation": "At 25°C, pure water has a pH of 7, indicating neutrality, as the concentration of hydrogen ions equals hydroxide ions. This balance is critical for chemical reactions in living organisms and is a fundamental concept in understanding acid-base chemistry.",
+      "reference": "‘Chemistry: The Central Science’ by Brown & LeMay"
+    },
+    {
+      "id": 21,
+      "topic": "History",
+      "subtopic": "Indian History",
+      "type": "assertion",
+      "question": "Assertion (A): The Taj Mahal was built by Shah Jahan. Reason (R): It was built to honor his wife Mumtaz Mahal.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Shah Jahan commissioned the Taj Mahal in 1632 as a mausoleum for his beloved wife Mumtaz Mahal, who died during childbirth. This architectural marvel, a UNESCO World Heritage Site, symbolizes eternal love and Mughal artistry, blending Persian and Indian design elements.",
+      "reference": "‘The Taj Mahal’ by Ebba Koch"
+    },
+    {
+      "id": 22,
+      "topic": "General Knowledge",
+      "subtopic": "Sports",
+      "type": "single",
+      "question": "Which sport is known as the ‘Gentleman’s Game’?",
+      "options": ["Football", "Cricket", "Hockey", "Tennis"],
+      "answer": "Cricket",
+      "explanation": "Cricket earned the title ‘Gentleman’s Game’ due to its emphasis on fair play, sportsmanship, and traditions like players wearing whites in Test matches. Originating in England, it’s a cultural phenomenon in India, uniting millions during matches like the IPL or World Cup.",
+      "reference": "‘Beyond a Boundary’ by C.L.R. James"
+    },
+    {
+      "id": 23,
+      "topic": "Science",
+      "subtopic": "Physics",
+      "type": "match",
+      "question": "Match the physical quantities with their SI units.",
+      "matchPairs": {
+        "Force": "Newton",
+        "Energy": "Joule",
+        "Power": "Watt",
+        "Pressure": "Pascal"
+      },
+      "explanation": "Force is measured in Newtons, after Isaac Newton; energy in Joules, honoring James Joule; power in Watts, named for James Watt; and pressure in Pascals, after Blaise Pascal. These SI units standardize measurements, ensuring consistency in scientific and engineering applications worldwide.",
+      "reference": "‘Fundamentals of Physics’ by Halliday & Resnick"
+    },
+    {
+      "id": 24,
+      "topic": "Geography",
+      "subtopic": "Indian Geography",
+      "type": "single",
+      "question": "Which Indian state is known as the ‘Land of Five Rivers’?",
+      "options": ["Punjab", "Haryana", "Gujarat", "Rajasthan"],
+      "answer": "Punjab",
+      "explanation": "Punjab, meaning ‘land of five rivers,’ is named for the Beas, Chenab, Jhelum, Ravi, and Sutlej rivers. These rivers, originating in the Himalayas, make Punjab’s plains fertile, supporting its agricultural economy and vibrant culture, celebrated in festivals like Baisakhi.",
+      "reference": "‘India: A Regional Geography’ by R.L. Singh"
+    },
+    {
+      "id": 25,
+      "topic": "General Knowledge",
+      "subtopic": "World Politics",
+      "type": "assertion",
+      "question": "Assertion (A): The United Nations was founded in 1945. Reason (R): It was established after World War II to promote peace.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "The United Nations was established in 1945, following the devastation of World War II, to prevent future conflicts and foster international cooperation. Signed by 50 nations, its charter promotes peace, human rights, and global development, with headquarters in New York.",
+      "reference": "‘The UN at 75: A History’ by the United Nations"
+    },
+    {
+      "id": 26,
+      "topic": "Science",
+      "subtopic": "Biology",
+      "type": "single",
+      "question": "What is the largest organ in the human body?",
+      "options": ["Liver", "Skin", "Heart", "Lungs"],
+      "answer": "Skin",
+      "explanation": "The skin, or integumentary system, is the body’s largest organ, covering about 1.5–2 square meters in adults. It protects against pathogens, regulates temperature, and senses touch. Its layers—epidermis, dermis, and hypodermis—work together to maintain health and respond to environmental changes.",
+      "reference": "‘Human Anatomy & Physiology’ by Marieb & Hoehn"
+    },
+    {
+      "id": 27,
+      "topic": "History",
+      "subtopic": "World History",
+      "type": "match",
+      "question": "Match the historical events with their years.",
+      "matchPairs": {
+        "World War I": "1914",
+        "World War II": "1939",
+        "Moon Landing": "1969",
+        "Fall of Berlin Wall": "1989"
+      },
+      "explanation": "World War I began in 1914, triggered by Archduke Franz Ferdinand’s assassination; World War II started in 1939 with Germany’s invasion of Poland; the Moon Landing in 1969 marked Apollo 11’s success; and the Berlin Wall’s fall in 1989 symbolized the Cold War’s end.",
+      "reference": "‘A People’s History of the World’ by Chris Harman"
+    },
+    {
+      "id": 28,
+      "topic": "General Knowledge",
+      "subtopic": "Indian Economy",
+      "type": "single",
+      "question": "Which is India’s central bank?",
+      "options": ["State Bank of India", "Reserve Bank of India", "ICICI Bank", "HDFC Bank"],
+      "answer": "Reserve Bank of India",
+      "explanation": "The Reserve Bank of India (RBI), established in 1935, is the country’s central bank, responsible for monetary policy, currency issuance, and financial regulation. Headquartered in Mumbai, it plays a pivotal role in stabilizing India’s economy, managing inflation, and overseeing banking operations.",
+      "reference": "‘Indian Economy’ by Ramesh Singh"
+    },
+    {
+      "id": 29,
+      "topic": "Geography",
+      "subtopic": "World Geography",
+      "type": "multiple",
+      "question": "Which of these are among the Seven Wonders of the Modern World?",
+      "options": ["Taj Mahal", "Great Wall of China", "Eiffel Tower", "Petra"],
+      "answer": ["Great Wall of China", "Petra"],
+      "explanation": "The Great Wall of China, a massive fortification, and Petra, Jordan’s ancient rock city, are part of the Seven Wonders of the Modern World, selected in 2007. The Taj Mahal and Eiffel Tower, while iconic, didn’t make the list, which also includes Machu Picchu and the Colosseum.",
+      "reference": "New7Wonders Foundation Website"
+    },
+    {
+      "id": 30,
+      "topic": "Science",
+      "subtopic": "Chemistry",
+      "type": "assertion",
+      "question": "Assertion (A): Helium is a noble gas. Reason (R): It is highly reactive.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A is true, R is false",
+      "explanation": "Helium is a noble gas, characterized by a full valence electron shell, making it chemically inert. Contrary to the reason, helium’s lack of reactivity is why it’s used in balloons and diving tanks, as it doesn’t form compounds easily under normal conditions.",
+      "reference": "‘The Periodic Table’ by Primo Levi"
+    },
+    {
+      "id": 31,
+      "topic": "History",
+      "subtopic": "Indian History",
+      "type": "single",
+      "question": "Who led the Salt March in 1930?",
+      "options": ["Jawaharlal Nehru", "Mahatma Gandhi", "Subhas Chandra Bose", "Bhagat Singh"],
+      "answer": "Mahatma Gandhi",
+      "explanation": "In 1930, Mahatma Gandhi led the Salt March, a 240-mile protest against the British salt tax. Starting from Sabarmati Ashram, this act of civil disobedience galvanized millions, highlighting the power of non-violent resistance in India’s fight for independence.",
+      "reference": "‘The Life of Mahatma Gandhi’ by Louis Fischer"
+    },
+    {
+      "id": 32,
+      "topic": "General Knowledge",
+      "subtopic": "Indian Culture",
+      "type": "match",
+      "question": "Match the Indian festivals with their primary states.",
+      "matchPairs": {
+        "Pongal": "Tamil Nadu",
+        "Baisakhi": "Punjab",
+        "Onam": "Kerala",
+        "Durga Puja": "West Bengal"
+      },
+      "explanation": "Pongal celebrates the harvest in Tamil Nadu; Baisakhi marks the Sikh New Year in Punjab; Onam honors King Mahabali in Kerala; and Durga Puja venerates Goddess Durga in West Bengal. These festivals showcase India’s vibrant cultural diversity and regional traditions.",
+      "reference": "‘Festivals of India’ by Ministry of Culture, India"
+    },
+    {
+      "id": 33,
+      "topic": "Science",
+      "subtopic": "Physics",
+      "type": "single",
+      "question": "What is the primary source of energy for Earth’s climate system?",
+      "options": ["Moon", "Sun", "Earth’s core", "Wind"],
+      "answer": "Sun",
+      "explanation": "The Sun drives Earth’s climate system by providing solar radiation, which powers weather patterns, ocean currents, and the water cycle. About 99.9% of Earth’s energy budget comes from the Sun, influencing everything from monsoons in India to global temperature variations.",
+      "reference": "‘The Earth System’ by Lee R. Kump"
+    },
+    {
+      "id": 34,
+      "topic": "Geography",
+      "subtopic": "Indian Geography",
+      "type": "single",
+      "question": "Which Indian city is known as the ‘Silicon Valley of India’?",
+      "options": ["Mumbai", "Bengaluru", "Hyderabad", "Chennai"],
+      "answer": "Bengaluru",
+      "explanation": "Bengaluru, Karnataka’s capital, is dubbed the ‘Silicon Valley of India’ for its thriving IT industry, hosting giants like Infosys and Wipro. Its innovation hubs, startups, and research institutions make it a global tech powerhouse, attracting talent and investment.",
+      "reference": "‘Bangalore: The Story of a City’ by Maya Jayapal"
+    },
+    {
+      "id": 35,
+      "topic": "History",
+      "subtopic": "World History",
+      "type": "assertion",
+      "question": "Assertion (A): The Pyramids of Giza were built by the Egyptians. Reason (R): They were constructed as tombs for pharaohs.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "The Pyramids of Giza, built around 2600 BCE by ancient Egyptians, served as elaborate tombs for pharaohs like Khufu. These architectural wonders, constructed with millions of limestone blocks, reflect Egypt’s advanced engineering and belief in the afterlife, preserving royal legacies.",
+      "reference": "‘The Pyramids’ by Miroslav Verner"
+    },
+    {
+      "id": 36,
+      "topic": "General Knowledge",
+      "subtopic": "Sports",
+      "type": "single",
+      "question": "Which Indian cricketer is known as the ‘God of Cricket’?",
+      "options": ["Virat Kohli", "Sachin Tendulkar", "MS Dhoni", "Rahul Dravid"],
+      "answer": "Sachin Tendulkar",
+      "explanation": "Sachin Tendulkar, nicknamed the ‘God of Cricket,’ holds records like 100 international centuries. His 24-year career, marked by humility and skill, made him a national icon, inspiring generations of cricketers and fans across India and beyond.",
+      "reference": "‘Playing It My Way’ by Sachin Tendulkar"
+    },
+    {
+      "id": 37,
+      "topic": "Science",
+      "subtopic": "Biology",
+      "type": "match",
+      "question": "Match the organs with their functions.",
+      "matchPairs": {
+        "Heart": "Pumps blood",
+        "Lungs": "Gas exchange",
+        "Liver": "Detoxification",
+        "Kidneys": "Filter blood"
+      },
+      "explanation": "The heart circulates blood; lungs facilitate oxygen and carbon dioxide exchange; the liver detoxifies harmful substances and produces bile; and kidneys filter waste from blood, maintaining fluid balance. These functions are vital for homeostasis in the human body.",
+      "reference": "‘Human Anatomy & Physiology’ by Marieb & Hoehn"
+    },
+    {
+      "id": 38,
+      "topic": "Geography",
+      "subtopic": "World Geography",
+      "type": "single",
+      "question": "Which is the tallest mountain in the world?",
+      "options": ["K2", "Kangchenjunga", "Mount Everest", "Lhotse"],
+      "answer": "Mount Everest",
+      "explanation": "Mount Everest, at 8,848 meters above sea level, is the world’s tallest mountain, located in the Himalayas. First summited in 1953 by Edmund Hillary and Tenzing Norgay, it remains a pinnacle of human adventure and a symbol of nature’s grandeur.",
+      "reference": "‘Into Thin Air’ by Jon Krakauer"
+    },
+    {
+      "id": 39,
+      "topic": "History",
+      "subtopic": "Indian History",
+      "type": "single",
+      "question": "Which Indian emperor was known for his policy of non-violence after converting to Buddhism?",
+      "options": ["Akbar", "Ashoka", "Chandragupta", "Harsha"],
+      "answer": "Ashoka",
+      "explanation": "Ashoka, initially a fierce Mauryan emperor, embraced Buddhism after witnessing the Kalinga War’s devastation around 261 BCE. His policy of Dhamma promoted non-violence, tolerance, and welfare, spreading Buddhist principles across Asia through edicts carved on pillars and rocks.",
+      "reference": "‘Ashoka: The Search for India’s Lost Emperor’ by Charles Allen"
+    },
+    {
+      "id": 40,
+      "topic": "General Knowledge",
+      "subtopic": "Indian Polity",
+      "type": "assertion",
+      "question": "Assertion (A): India is a federal republic. Reason (R): It has a division of powers between the center and states.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "India’s federal republic structure, as outlined in its Constitution, divides powers between the central government and states via Union, State, and Concurrent Lists. This framework ensures cooperative federalism, balancing national unity with regional autonomy, a model unique to India’s diverse democracy.",
+      "reference": "‘Indian Polity’ by M. Laxmikanth"
+    },
+    {
+      "id": 41,
+      "topic": "Science",
+      "subtopic": "Chemistry",
+      "type": "single",
+      "question": "Which gas is most abundant in Earth’s atmosphere?",
+      "options": ["Oxygen", "Nitrogen", "Carbon Dioxide", "Argon"],
+      "answer": "Nitrogen",
+      "explanation": "Nitrogen constitutes about 78% of Earth’s atmosphere, far surpassing oxygen at 21%. Essential for life, it’s a key component of amino acids and DNA. Its abundance stabilizes the atmosphere, making Earth habitable, and it’s cycled through processes like nitrogen fixation by bacteria.",
+      "reference": "‘Chemistry: The Molecular Nature of Matter’ by Jespersen"
+    },
+    {
+      "id": 42,
+      "topic": "Geography",
+      "subtopic": "Indian Geography",
+      "type": "match",
+      "question": "Match the Indian states with their capitals.",
+      "matchPairs": {
+        "Tamil Nadu": "Chennai",
+        "Maharashtra": "Mumbai",
+        "Karnataka": "Bengaluru",
+        "Uttar Pradesh": "Lucknow"
+      },
+      "explanation": "Chennai, a cultural hub, is Tamil Nadu’s capital; Mumbai, India’s financial center, leads Maharashtra; Bengaluru, the tech capital, anchors Karnataka; and Lucknow, known for its heritage, is Uttar Pradesh’s capital. These cities reflect their states’ unique identities and histories.",
+      "reference": "‘India: A Regional Geography’ by R.L. Singh"
+    },
+    {
+      "id": 43,
+      "topic": "History",
+      "subtopic": "World History",
+      "type": "single",
+      "question": "Which country was the first to grant women the right to vote?",
+      "options": ["USA", "UK", "New Zealand", "France"],
+      "answer": "New Zealand",
+      "explanation": "New Zealand became the first country to grant women suffrage in 1893, following campaigns by activists like Kate Sheppard. This milestone marked a significant step in global gender equality, inspiring other nations to follow suit in the early 20th century.",
+      "reference": "‘The Suffragists’ by Jane Robinson"
+    },
+    {
+      "id": 44,
+      "topic": "General Knowledge",
+      "subtopic": "Indian Culture",
+      "type": "single",
+      "question": "Which Indian musical instrument is a stringed instrument played with a bow?",
+      "options": ["Sitar", "Sarangi", "Tabla", "Flute"],
+      "answer": "Sarangi",
+      "explanation": "The Sarangi, a bowed string instrument, is a staple in Indian classical music, known for its soulful, voice-like sound. Played with a bow and fingered strings, it’s used in Hindustani music to accompany vocalists, evoking deep emotions with its resonant tones.",
+      "reference": "‘The Music of India’ by Reginald Massey"
+    },
+    {
+      "id": 45,
+      "topic": "Science",
+      "subtopic": "Physics",
+      "type": "assertion",
+      "question": "Assertion (A): Light travels faster than sound. Reason (R): Light is an electromagnetic wave.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Light travels at 300,000 km/s, far faster than sound at 343 m/s in air, because it’s an electromagnetic wave that requires no medium. This property allows light to traverse space instantly, unlike sound, which relies on particle vibrations in a medium.",
+      "reference": "‘Physics for Scientists and Engineers’ by Serway & Jewett"
+    },
+    {
+      "id": 46,
+      "topic": "Geography",
+      "subtopic": "World Geography",
+      "type": "single",
+      "question": "Which is the largest ocean in the world?",
+      "options": ["Atlantic", "Indian", "Pacific", "Arctic"],
+      "answer": "Pacific",
+      "explanation": "The Pacific Ocean, covering about 155 million square kilometers, is the largest, spanning from Asia to the Americas. It’s home to the Mariana Trench, the deepest point on Earth, and influences global weather patterns like El Niño, shaping climate and marine ecosystems.",
+      "reference": "‘Ocean: The World’s Last Wilderness Revealed’ by DK Publishing"
+    },
+    {
+      "id": 47,
+      "topic": "History",
+      "subtopic": "Indian History",
+      "type": "match",
+      "question": "Match the Indian dynasties with their famous rulers.",
+      "matchPairs": {
+        "Maurya": "Ashoka",
+        "Mughal": "Akbar",
+        "Gupta": "Chandragupta II",
+        "Chola": "Rajaraja I"
+      },
+      "explanation": "Ashoka transformed the Maurya Empire with Buddhist principles; Akbar expanded Mughal rule with tolerance; Chandragupta II led the Gupta golden age; and Rajaraja I built the Chola Empire’s naval and cultural legacy, including the Brihadeeswara Temple.",
+      "reference": "‘A History of Ancient and Early Medieval India’ by Upinder Singh"
+    },
+    {
+      "id": 48,
+      "topic": "General Knowledge",
+      "subtopic": "Sports",
+      "type": "single",
+      "question": "Which country hosted the 2024 Summer Olympics?",
+      "options": ["Japan", "France", "Brazil", "China"],
+      "answer": "France",
+      "explanation": "France hosted the 2024 Summer Olympics in Paris, marking its third time as host. The event showcased iconic venues like the Eiffel Tower for beach volleyball and emphasized sustainability, with eco-friendly infrastructure, captivating global audiences with athletic excellence.",
+      "reference": "Official Paris 2024 Olympics Website"
+    },
+    {
+      "id": 49,
+      "topic": "Science",
+      "subtopic": "Biology",
+      "type": "single",
+      "question": "What is the main source of energy for humans?",
+      "options": ["Proteins", "Carbohydrates", "Vitamins", "Minerals"],
+      "answer": "Carbohydrates",
+      "explanation": "Carbohydrates, broken down into glucose, are the body’s primary energy source, fueling cells through glycolysis and ATP production. Found in foods like rice and bread, they provide quick energy, while proteins and fats serve other roles like tissue repair and long-term energy storage.",
+      "reference": "‘Biochemistry’ by Berg, Tymoczko & Stryer"
+    },
+    {
+      "id": 50,
+      "topic": "Geography",
+      "subtopic": "Indian Geography",
+      "type": "assertion",
+      "question": "Assertion (A): Kerala is known for its backwaters. Reason (R): It has a long coastline.",
+      "options": ["A and R are true, R does not explain A", "A and R are true, R explains A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R does not explain A",
+      "explanation": "Kerala’s backwaters, a network of lagoons and canals, are a major tourist attraction, especially in Alleppey and Kumarakom. While Kerala has a 590-km coastline, the backwaters’ formation is due to its unique geography of rivers and lakes, not directly the coastline’s length.",
+      "reference": "‘Kerala: God’s Own Country’ by Shashi Tharoor"
+    }
+  ]
+}

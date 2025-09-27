@@ -1,0 +1,1190 @@
+{
+  "meta": {
+    "source": "generated",
+    "exportedAt": "2025-09-27T09:10:00.000Z",
+    "count": 100,
+    "mode": "random"
+  },
+  "questions": [
+    {
+      "id": 1,
+      "topic": "History",
+      "subtopic": "Chola Dynasty",
+      "type": "single",
+      "question": "Who is considered the founder of the Imperial Chola Dynasty?",
+      "options": ["Vijayalaya", "Rajaraja I", "Rajendra I", "Aditya I"],
+      "answer": "Vijayalaya",
+      "explanation": "Vijayalaya Chola, around 848 CE, founded the Imperial Chola Dynasty by capturing Thanjavur from the Muttaraiyar chieftains. His conquest revived Chola power after centuries of decline, establishing a capital that became a cultural and political hub. His strategic alliances and military campaigns laid the foundation for the dynasty’s later dominance under rulers like Rajaraja I.",
+      "reference": "‘The Cholas’ by K.A. Nilakanta Sastri"
+    },
+    {
+      "id": 2,
+      "topic": "History",
+      "subtopic": "Chola Administration",
+      "type": "multiple",
+      "question": "Which of these were key administrative units under the Chola Empire?",
+      "options": ["Mandalam", "Nadu", "Kottam", "Panchayat"],
+      "answer": ["Mandalam", "Nadu", "Kottam"],
+      "explanation": "The Chola Empire’s administration was structured with Mandalam (provinces), Nadu (districts), and Kottam (sub-districts), enabling efficient governance and tax collection. Village assemblies managed local affairs, but Panchayats, as known in later periods, were not formal units. This system balanced central control with local autonomy, as seen in inscriptions like those at Uttiramerur.",
+      "reference": "‘South Indian Inscriptions, Volume II’ by Archaeological Survey of India"
+    },
+    {
+      "id": 3,
+      "topic": "Art and Architecture",
+      "subtopic": "Chola Temples",
+      "type": "assertion",
+      "question": "Assertion (A): The Brihadeeswara Temple was built by Rajaraja I. Reason (R): It was constructed to showcase Chola architectural grandeur.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Rajaraja I built the Brihadeeswara Temple in Thanjavur (1010 CE) as a monument to Chola power and devotion to Shiva. This UNESCO World Heritage Site, with its 66-meter vimana and detailed sculptures, exemplifies Dravidian architecture’s zenith, reflecting the empire’s wealth and cultural patronage under Rajaraja’s reign.",
+      "reference": "‘The Great Temple at Thanjavur’ by George Michell"
+    },
+    {
+      "id": 4,
+      "topic": "History",
+      "subtopic": "Chola Military",
+      "type": "match",
+      "question": "Match the Chola rulers with their military achievements.",
+      "matchPairs": {
+        "Rajaraja I": "Conquered Sri Lanka",
+        "Rajendra I": "Gangaikonda Cholapuram",
+        "Kulottunga I": "Restored Chola influence in Vengi",
+        "Aditya I": "Defeated Pallavas"
+      },
+      "explanation": "Rajaraja I annexed parts of Sri Lanka, expanding Chola influence; Rajendra I’s northern campaigns earned the title Gangaikonda; Kulottunga I strengthened ties with Vengi; and Aditya I’s victories over the Pallavas bolstered early Chola power. These conquests highlight the Chola military’s strategic prowess.",
+      "reference": "‘A History of South India’ by K.A. Nilakanta Sastri"
+    },
+    {
+      "id": 5,
+      "topic": "Culture",
+      "subtopic": "Chola Literature",
+      "type": "single",
+      "question": "Which Tamil literary work flourished under Chola patronage?",
+      "options": ["Silappadikaram", "Kamba Ramayanam", "Thirukkural", "Manimekalai"],
+      "answer": "Kamba Ramayanam",
+      "explanation": "The Kamba Ramayanam, a Tamil retelling of the Ramayana by poet Kambar, was composed under Chola patronage, likely during Kulottunga I’s reign. This epic, blending devotion and poetic brilliance, enriched Tamil literature and remains a cultural cornerstone, reflecting Chola support for literary arts.",
+      "reference": "‘Tamil Literature’ by Kamil Zvelebil"
+    },
+    {
+      "id": 6,
+      "topic": "Economy",
+      "subtopic": "Chola Trade",
+      "type": "assertion",
+      "question": "Assertion (A): The Cholas were known for maritime trade. Reason (R): They established trade links with Southeast Asia.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "The Cholas dominated Indian Ocean trade, with their navy enabling commerce with Southeast Asia, including Srivijaya and China. Ports like Nagapattinam thrived, exporting textiles and spices. Inscriptions reveal merchant guilds like the Ayyavole, underscoring the Cholas’ economic influence and maritime supremacy.",
+      "reference": "‘The Trading World of the Tamil Merchant’ by Kanakalatha Mukund"
+    },
+    {
+      "id": 7,
+      "topic": "Art and Architecture",
+      "subtopic": "Chola Bronzes",
+      "type": "single",
+      "question": "What is the iconic Chola bronze statue style known as?",
+      "options": ["Nataraja", "Ardhanarishvara", "Vishnu Anantasayana", "Gaja Lakshmi"],
+      "answer": "Nataraja",
+      "explanation": "Chola bronzes, particularly the Nataraja (dancing Shiva), are celebrated for their artistry using the lost-wax technique. Crafted during the 9th–11th centuries, these statues capture dynamic poses and spiritual depth, symbolizing Shiva’s cosmic dance. They remain iconic in global art history.",
+      "reference": "‘Chola Bronzes’ by Vidya Dehejia"
+    },
+    {
+      "id": 8,
+      "topic": "History",
+      "subtopic": "Chola Rulers",
+      "type": "multiple",
+      "question": "Which Chola rulers expanded the empire significantly?",
+      "options": ["Vijayalaya", "Rajaraja I", "Rajendra I", "Kulottunga III"],
+      "answer": ["Rajaraja I", "Rajendra I"],
+      "explanation": "Rajaraja I (985–1014 CE) expanded Chola territory through conquests in South India and Sri Lanka, establishing naval dominance. Rajendra I (1014–1044 CE) extended the empire to North India and Southeast Asia, earning the title Gangaikonda. Vijayalaya and Kulottunga III focused more on consolidation than expansion.",
+      "reference": "‘The Chola Empire’ by R. Nagaswamy"
+    },
+    {
+      "id": 9,
+      "topic": "Religion",
+      "subtopic": "Chola Temples",
+      "type": "match",
+      "question": "Match the Chola temples with their locations.",
+      "matchPairs": {
+        "Brihadeeswara": "Thanjavur",
+        "Gangaikonda Cholapuram": "Jayankondam",
+        "Airavateswara": "Darasuram",
+        "Kampahareswara": "Thirubhuvanam"
+      },
+      "explanation": "The Brihadeeswara Temple in Thanjavur, Gangaikonda Cholapuram’s temple in Jayankondam, Airavateswara in Darasuram, and Kampahareswara in Thirubhuvanam are Chola architectural gems. These temples, built for Shiva, showcase intricate carvings and grand vimanas, reflecting the dynasty’s devotion and artistic legacy.",
+      "reference": "‘Temples of South India’ by K.R. Srinivasan"
+    },
+    {
+      "id": 10,
+      "topic": "Administration",
+      "subtopic": "Chola Governance",
+      "type": "assertion",
+      "question": "Assertion (A): Chola village assemblies were autonomous. Reason (R): They managed local affairs like irrigation and justice.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Chola village assemblies, like the ‘sabha’ and ‘ur,’ enjoyed autonomy in managing irrigation, temples, and justice, as detailed in the Uttiramerur inscriptions. These democratic bodies, with elected members, ensured local governance aligned with central policies, showcasing the Cholas’ sophisticated administrative system.",
+      "reference": "‘Uttaramerur Inscriptions’ by Archaeological Survey of India"
+    },
+    {
+      "id": 11,
+      "topic": "History",
+      "subtopic": "Chola Rulers",
+      "type": "single",
+      "question": "Which Chola king was known as Gangaikonda Chola?",
+      "options": ["Rajaraja I", "Rajendra I", "Kulottunga I", "Aditya I"],
+      "answer": "Rajendra I",
+      "explanation": "Rajendra I earned the title Gangaikonda Chola after his successful military campaign to the Ganges River around 1023 CE. To commemorate this, he built the Gangaikonda Cholapuram temple and city, symbolizing Chola dominance over northern India and their naval prowess.",
+      "reference": "‘The Cholas’ by K.A. Nilakanta Sastri"
+    },
+    {
+      "id": 12,
+      "topic": "Art and Architecture",
+      "subtopic": "Chola Temples",
+      "type": "multiple",
+      "question": "Which features are characteristic of Chola temple architecture?",
+      "options": ["Gopuram", "Vimana", "Mandapa", "Dome"],
+      "answer": ["Vimana", "Mandapa"],
+      "explanation": "Chola temples, like Brihadeeswara, are known for their towering vimana (sanctum tower) and spacious mandapa (pillared hall). Gopurams became prominent in later Dravidian architecture, while domes are not typical. These features reflect Chola innovation in scale and sculptural detail.",
+      "reference": "‘Dravidian Architecture’ by P.R. Srinivasan"
+    },
+    {
+      "id": 13,
+      "topic": "Economy",
+      "subtopic": "Chola Trade",
+      "type": "assertion",
+      "question": "Assertion (A): Chola ports were trade hubs. Reason (R): Nagapattinam was a major port for Southeast Asian trade.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Chola ports like Nagapattinam were vital trade hubs, connecting India with Southeast Asia and China. They facilitated the export of textiles, spices, and gems, supported by merchant guilds. Nagapattinam’s prominence is evidenced by inscriptions detailing its maritime activities and Chola naval strength.",
+      "reference": "‘The Trading World of the Tamil Merchant’ by Kanakalatha Mukund"
+    },
+    {
+      "id": 14,
+      "topic": "History",
+      "subtopic": "Chola Military",
+      "type": "match",
+      "question": "Match the Chola rulers with their conquests.",
+      "matchPairs": {
+        "Rajaraja I": "Southern Sri Lanka",
+        "Rajendra I": "Srivijaya",
+        "Aditya I": "Tondaimandalam",
+        "Kulottunga II": "Kalinga"
+      },
+      "explanation": "Rajaraja I conquered southern Sri Lanka; Rajendra I raided Srivijaya; Aditya I captured Tondaimandalam from the Pallavas; and Kulottunga II subdued Kalinga. These conquests expanded Chola influence across South Asia, showcasing their military and naval capabilities.",
+      "reference": "‘A History of South India’ by K.A. Nilakanta Sastri"
+    },
+    {
+      "id": 15,
+      "topic": "Religion",
+      "subtopic": "Chola Devotion",
+      "type": "single",
+      "question": "Which deity was primarily worshipped in Chola temples?",
+      "options": ["Vishnu", "Shiva", "Durga", "Brahma"],
+      "answer": "Shiva",
+      "explanation": "The Cholas were ardent Shaivites, with most of their grand temples, like Brihadeeswara, dedicated to Lord Shiva. Their devotion is evident in the Nataraja iconography and hymns like the Tevaram, which they patronized, reinforcing Shaivism’s prominence in South Indian religious life.",
+      "reference": "‘The Dance of Siva’ by Ananda K. Coomaraswamy"
+    },
+    {
+      "id": 16,
+      "topic": "Culture",
+      "subtopic": "Chola Literature",
+      "type": "multiple",
+      "question": "Which works were composed or patronized during the Chola period?",
+      "options": ["Kamba Ramayanam", "Thirukkural", "Tevaram", "Silappadikaram"],
+      "answer": ["Kamba Ramayanam", "Tevaram"],
+      "explanation": "The Kamba Ramayanam and Tevaram hymns flourished under Chola patronage. Kambar’s epic retold the Ramayana, while the Tevaram, by Saiva saints, enriched devotional literature. Thirukkural and Silappadikaram predate the Imperial Cholas, belonging to the Sangam era, though revered in Chola times.",
+      "reference": "‘Tamil Literature’ by Kamil Zvelebil"
+    },
+    {
+      "id": 17,
+      "topic": "Art and Architecture",
+      "subtopic": "Chola Bronzes",
+      "type": "assertion",
+      "question": "Assertion (A): Chola bronzes used the lost-wax technique. Reason (R): This allowed intricate detailing in sculptures.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Chola bronzes, like the Nataraja, were crafted using the lost-wax technique, enabling intricate details in sculptures. This method involved molding wax, covering it with clay, and casting molten metal, resulting in dynamic and expressive statues that remain iconic in Indian art.",
+      "reference": "‘Chola Bronzes’ by Vidya Dehejia"
+    },
+    {
+      "id": 18,
+      "topic": "History",
+      "subtopic": "Chola Decline",
+      "type": "single",
+      "question": "Which dynasty contributed to the decline of the Cholas in the 13th century?",
+      "options": ["Pandya", "Pallava", "Chalukya", "Rashtrakuta"],
+      "answer": "Pandya",
+      "explanation": "The Pandya dynasty, under rulers like Jatavarman Sundara Pandya, overpowered the Cholas in the 13th century, capturing key territories. Internal conflicts and invasions by the Hoysalas and Delhi Sultanate further weakened the Cholas, ending their imperial dominance by around 1279 CE.",
+      "reference": "‘The Cholas’ by K.A. Nilakanta Sastri"
+    },
+    {
+      "id": 19,
+      "topic": "Economy",
+      "subtopic": "Chola Agriculture",
+      "type": "multiple",
+      "question": "Which crops were majorly cultivated in the Chola Empire?",
+      "options": ["Rice", "Wheat", "Spices", "Millets"],
+      "answer": ["Rice", "Spices", "Millets"],
+      "explanation": "The Chola Empire’s fertile Kaveri delta supported rice as a staple crop, while spices like pepper and cardamom were key exports. Millets were also grown in less fertile areas. Wheat was less common in South India, with rice dominating agricultural output.",
+      "reference": "‘Economic History of Early India’ by R.S. Sharma"
+    },
+    {
+      "id": 20,
+      "topic": "Administration",
+      "subtopic": "Chola Governance",
+      "type": "match",
+      "question": "Match the Chola administrative terms with their meanings.",
+      "matchPairs": {
+        "Mandalam": "Province",
+        "Nadu": "District",
+        "Sabha": "Village Assembly",
+        "Perundaram": "High-ranking Official"
+      },
+      "explanation": "Mandalam referred to provinces, Nadu to districts, Sabha to village assemblies, and Perundaram to high-ranking officials. This structured system, detailed in inscriptions, ensured efficient governance, with local assemblies handling community affairs under central oversight.",
+      "reference": "‘South Indian Inscriptions, Volume II’ by Archaeological Survey of India"
+    },
+    {
+      "id": 21,
+      "topic": "History",
+      "subtopic": "Chola Rulers",
+      "type": "single",
+      "question": "Which Chola king defeated the Cheras and Pandyas to consolidate South India?",
+      "options": ["Aditya I", "Rajaraja I", "Parantaka I", "Kulottunga I"],
+      "answer": "Rajaraja I",
+      "explanation": "Rajaraja I (985–1014 CE) defeated the Cheras and Pandyas, consolidating Chola control over South India. His campaigns also extended to Sri Lanka and the Maldives, establishing the Cholas as a regional superpower. His reign marked the zenith of Chola military and cultural influence.",
+      "reference": "‘The Chola Empire’ by R. Nagaswamy"
+    },
+    {
+      "id": 22,
+      "topic": "Art and Architecture",
+      "subtopic": "Chola Temples",
+      "type": "assertion",
+      "question": "Assertion (A): Chola temples were centers of community activity. Reason (R): They hosted festivals and education.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Chola temples, like Brihadeeswara, were not just religious sites but community hubs, hosting festivals, dances, and education. Inscriptions show they managed land, schools, and charity, integrating social, cultural, and economic activities, reflecting the Cholas’ holistic approach to governance.",
+      "reference": "‘Temples of South India’ by K.R. Srinivasan"
+    },
+    {
+      "id": 23,
+      "topic": "Economy",
+      "subtopic": "Chola Trade",
+      "type": "single",
+      "question": "Which Chola port was a major hub for trade with China?",
+      "options": ["Nagapattinam", "Kaveripattinam", "Mamallapuram", "Korkai"],
+      "answer": "Nagapattinam",
+      "explanation": "Nagapattinam was a bustling Chola port, facilitating trade with China, Srivijaya, and other Southeast Asian regions. It exported textiles and spices, supported by merchant guilds like the Ayyavole. Its prominence is documented in inscriptions and Chinese records, highlighting Chola maritime strength.",
+      "reference": "‘The Trading World of the Tamil Merchant’ by Kanakalatha Mukund"
+    },
+    {
+      "id": 24,
+      "topic": "History",
+      "subtopic": "Chola Military",
+      "type": "multiple",
+      "question": "Which regions were conquered by Rajendra I during his reign?",
+      "options": ["Sri Lanka", "Srivijaya", "Kalinga", "Maldives"],
+      "answer": ["Sri Lanka", "Srivijaya", "Maldives"],
+      "explanation": "Rajendra I expanded the Chola Empire by conquering Sri Lanka, raiding Srivijaya in Southeast Asia, and capturing the Maldives. His naval campaigns, around 1025 CE, established Chola dominance in the Indian Ocean. Kalinga was later subdued by Kulottunga II, not Rajendra.",
+      "reference": "‘A History of South India’ by K.A. Nilakanta Sastri"
+    },
+    {
+      "id": 25,
+      "topic": "Religion",
+      "subtopic": "Chola Devotion",
+      "type": "match",
+      "question": "Match the Chola rulers with their religious contributions.",
+      "matchPairs": {
+        "Rajaraja I": "Brihadeeswara Temple",
+        "Rajendra I": "Gangaikonda Cholapuram Temple",
+        "Kulottunga II": "Kampahareswara Temple",
+        "Parantaka I": "Nataraja Worship"
+      },
+      "explanation": "Rajaraja I built the Brihadeeswara Temple; Rajendra I constructed the Gangaikonda Cholapuram Temple; Kulottunga II patronized the Kampahareswara Temple; and Parantaka I promoted Nataraja worship. These contributions strengthened Shaivism and Chola cultural identity.",
+      "reference": "‘The Dance of Siva’ by Ananda K. Coomaraswamy"
+    },
+    {
+      "id": 26,
+      "topic": "Culture",
+      "subtopic": "Chola Music",
+      "type": "single",
+      "question": "Which musical tradition was patronized by the Cholas?",
+      "options": ["Carnatic", "Hindustani", "Folk", "Sufi"],
+      "answer": "Carnatic",
+      "explanation": "The Cholas patronized Carnatic music, integral to temple rituals and festivals. Instruments like the veena and performances of Tevaram hymns flourished, reflecting their cultural patronage. This tradition, rooted in South India, continues to influence classical music today.",
+      "reference": "‘The Music of India’ by Reginald Massey"
+    },
+    {
+      "id": 27,
+      "topic": "Art and Architecture",
+      "subtopic": "Chola Sculptures",
+      "type": "assertion",
+      "question": "Assertion (A): Chola sculptures adorned temple walls. Reason (R): They depicted mythological scenes.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Chola temple walls, like those of Brihadeeswara, were adorned with intricate sculptures depicting mythological scenes, such as Shiva’s cosmic dance or Ramayana episodes. These carvings, blending artistry and devotion, served as visual narratives, enhancing the temples’ spiritual and aesthetic appeal.",
+      "reference": "‘The Art and Architecture of the Indian Subcontinent’ by J.C. Harle"
+    },
+    {
+      "id": 28,
+      "topic": "History",
+      "subtopic": "Chola Navy",
+      "type": "single",
+      "question": "What was a key factor in the Chola navy’s success?",
+      "options": ["Gunpowder", "Shipbuilding", "Alliances", "Mercenaries"],
+      "answer": "Shipbuilding",
+      "explanation": "The Chola navy’s success stemmed from advanced shipbuilding techniques, producing sturdy vessels for long-distance trade and conquest. These ships enabled campaigns like Rajendra I’s raid on Srivijaya, establishing Chola dominance in the Indian Ocean and facilitating maritime trade.",
+      "reference": "‘The Chola Navy’ by R. Nagaswamy"
+    },
+    {
+      "id": 29,
+      "topic": "Economy",
+      "subtopic": "Chola Currency",
+      "type": "multiple",
+      "question": "Which materials were used for Chola coins?",
+      "options": ["Gold", "Silver", "Copper", "Iron"],
+      "answer": ["Gold", "Silver", "Copper"],
+      "explanation": "Chola coins, like the kasu, were made of gold, silver, and copper, facilitating trade and taxation. Gold coins symbolized wealth, while copper was common for daily transactions. Inscriptions and archaeological finds confirm their widespread use in domestic and international commerce.",
+      "reference": "‘Economic History of Early India’ by R.S. Sharma"
+    },
+    {
+      "id": 30,
+      "topic": "Administration",
+      "subtopic": "Chola Governance",
+      "type": "match",
+      "question": "Match the Chola inscriptions with their significance.",
+      "matchPairs": {
+        "Uttiramerur": "Village governance",
+        "Thanjavur": "Temple endowments",
+        "Anbil Plates": "Land grants",
+        "Karandai": "Military campaigns"
+      },
+      "explanation": "Uttiramerur inscriptions detail village governance; Thanjavur inscriptions record temple endowments; Anbil Plates document land grants; and Karandai inscriptions describe military campaigns. These records provide insights into Chola administration, economy, and military achievements.",
+      "reference": "‘South Indian Inscriptions, Volume III’ by Archaeological Survey of India"
+    },
+    {
+      "id": 31,
+      "topic": "History",
+      "subtopic": "Chola Diplomacy",
+      "type": "single",
+      "question": "Which Chola king sent an embassy to China?",
+      "options": ["Rajaraja I", "Rajendra I", "Kulottunga I", "Parantaka I"],
+      "answer": "Kulottunga I",
+      "explanation": "Kulottunga I sent an embassy to China in 1077 CE, strengthening trade and diplomatic ties with the Song dynasty. This mission, recorded in Chinese annals, highlights the Cholas’ far-reaching influence and their role as a major maritime power in Asia.",
+      "reference": "‘The Trading World of the Tamil Merchant’ by Kanakalatha Mukund"
+    },
+    {
+      "id": 32,
+      "topic": "Art and Architecture",
+      "subtopic": "Chola Temples",
+      "type": "assertion",
+      "question": "Assertion (A): Chola temples had gopurams. Reason (R): Gopurams were introduced by the Cholas.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A is true, R is false",
+      "explanation": "Chola temples, like Airavateswara, sometimes featured gopurams, but these gateways became prominent later under the Pandyas and Vijayanagara rulers. Chola architecture focused more on vimanas. The presence of smaller gopurams in later Chola temples reflects evolving Dravidian styles.",
+      "reference": "‘Dravidian Architecture’ by P.R. Srinivasan"
+    },
+    {
+      "id": 33,
+      "topic": "Economy",
+      "subtopic": "Chola Trade",
+      "type": "single",
+      "question": "Which merchant guild was prominent during the Chola period?",
+      "options": ["Ayyavole", "Manigramam", "Nagarattar", "All of the above"],
+      "answer": "All of the above",
+      "explanation": "The Ayyavole, Manigramam, and Nagarattar merchant guilds thrived under the Cholas, managing trade across South India and Southeast Asia. Inscriptions, like those in Barus, Indonesia, highlight their role in exporting textiles and spices, bolstering the Chola economy.",
+      "reference": "‘The Trading World of the Tamil Merchant’ by Kanakalatha Mukund"
+    },
+    {
+      "id": 34,
+      "topic": "History",
+      "subtopic": "Chola Rulers",
+      "type": "multiple",
+      "question": "Which Chola kings built major temples?",
+      "options": ["Rajaraja I", "Rajendra I", "Kulottunga II", "Vijayalaya"],
+      "answer": ["Rajaraja I", "Rajendra I", "Kulottunga II"],
+      "explanation": "Rajaraja I built the Brihadeeswara Temple, Rajendra I constructed the Gangaikonda Cholapuram Temple, and Kulottunga II patronized the Kampahareswara Temple. These temples, showcasing Chola architectural prowess, served as religious and cultural centers. Vijayalaya focused on conquests, not temple-building.",
+      "reference": "‘Temples of South India’ by K.R. Srinivasan"
+    },
+    {
+      "id": 35,
+      "topic": "Religion",
+      "subtopic": "Chola Devotion",
+      "type": "match",
+      "question": "Match the Chola rulers with their temple contributions.",
+      "matchPairs": {
+        "Rajaraja I": "Brihadeeswara",
+        "Rajendra I": "Gangaikonda Cholapuram",
+        "Kulottunga II": "Airavateswara",
+        "Rajadhiraja I": "Shiva Temples"
+      },
+      "explanation": "Rajaraja I’s Brihadeeswara, Rajendra I’s Gangaikonda Cholapuram, and Kulottunga II’s Airavateswara are iconic Chola temples. Rajadhiraja I also built Shiva temples, continuing the dynasty’s Shaivite legacy, with each temple reflecting architectural and religious advancements.",
+      "reference": "‘The Great Temple at Thanjavur’ by George Michell"
+    },
+    {
+      "id": 36,
+      "topic": "Culture",
+      "subtopic": "Chola Dance",
+      "type": "single",
+      "question": "Which dance form was patronized in Chola temples?",
+      "options": ["Bharatanatyam", "Kathak", "Odissi", "Kathakali"],
+      "answer": "Bharatanatyam",
+      "explanation": "Bharatanatyam, rooted in the Natya Shastra, flourished in Chola temples, performed by devadasis during festivals. Sculptures in temples like Brihadeeswara depict dance poses, reflecting its integration into religious and cultural life, a tradition that continues in Tamil Nadu today.",
+      "reference": "‘Indian Classical Dance: Tradition in Transition’ by Leela Venkataraman"
+    },
+    {
+      "id": 37,
+      "topic": "Art and Architecture",
+      "subtopic": "Chola Bronzes",
+      "type": "assertion",
+      "question": "Assertion (A): Chola bronzes were portable. Reason (R): They were used in temple processions.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Chola bronzes, like Nataraja statues, were portable, designed for temple processions during festivals. Crafted with handles, they were carried to symbolize divine presence, blending mobility with artistic excellence, as seen in their widespread use in South Indian rituals.",
+      "reference": "‘Chola Bronzes’ by Vidya Dehejia"
+    },
+    {
+      "id": 38,
+      "topic": "History",
+      "subtopic": "Chola Decline",
+      "type": "single",
+      "question": "Which event marked the final decline of the Chola Empire?",
+      "options": ["Pandya invasion", "Mongol invasion", "Vijayanagara rise", "British colonization"],
+      "answer": "Pandya invasion",
+      "explanation": "The Pandya invasion under Jatavarman Sundara Pandya around 1279 CE marked the Chola Empire’s final decline. The Pandyas captured key territories, and internal strife and invasions by Hoysalas and the Delhi Sultanate further eroded Chola power, ending their imperial legacy.",
+      "reference": "‘The Cholas’ by K.A. Nilakanta Sastri"
+    },
+    {
+      "id": 39,
+      "topic": "Economy",
+      "subtopic": "Chola Agriculture",
+      "type": "multiple",
+      "question": "Which irrigation systems were developed by the Cholas?",
+      "options": ["Canals", "Tanks", "Wells", "Dams"],
+      "answer": ["Canals", "Tanks", "Wells"],
+      "explanation": "The Cholas developed extensive irrigation systems, including canals, tanks, and wells, to support agriculture in the Kaveri delta. Inscriptions detail their maintenance of tanks like the Veeranam Eri, ensuring water supply for rice and spice cultivation, boosting economic prosperity.",
+      "reference": "‘Economic History of Early India’ by R.S. Sharma"
+    },
+    {
+      "id": 40,
+      "topic": "Administration",
+      "subtopic": "Chola Governance",
+      "type": "match",
+      "question": "Match the Chola administrative roles with their duties.",
+      "matchPairs": {
+        "Perundaram": "High officials",
+        "Adhikari": "Local administrators",
+        "Nattar": "Nadu supervisors",
+        "Kudavolai": "Election system"
+      },
+      "explanation": "Perundaram were high-ranking officials; Adhikari managed local affairs; Nattar oversaw Nadu districts; and Kudavolai was the election system for village assemblies. These roles, detailed in inscriptions, ensured effective governance across the Chola Empire’s vast territories.",
+      "reference": "‘Uttaramerur Inscriptions’ by Archaeological Survey of India"
+    },
+    {
+      "id": 41,
+      "topic": "History",
+      "subtopic": "Chola Rulers",
+      "type": "single",
+      "question": "Which Chola king was known for defeating the Chalukyas?",
+      "options": ["Rajadhiraja I", "Rajaraja I", "Vijayalaya", "Kulottunga I"],
+      "answer": "Rajadhiraja I",
+      "explanation": "Rajadhiraja I (1044–1054 CE) defeated the Chalukyas in battles like Koppam, strengthening Chola dominance. His campaigns maintained Chola supremacy in South India, though he died in battle. His reign continued the military legacy of Rajaraja I and Rajendra I.",
+      "reference": "‘A History of South India’ by K.A. Nilakanta Sastri"
+    },
+    {
+      "id": 42,
+      "topic": "Art and Architecture",
+      "subtopic": "Chola Temples",
+      "type": "assertion",
+      "question": "Assertion (A): Chola temples were made of granite. Reason (R): Granite was abundant in South India.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Chola temples, like Brihadeeswara, were constructed using granite, abundant in South India, allowing durable and intricate structures. Granite’s strength enabled the towering vimanas and detailed carvings, making these temples enduring symbols of Chola architectural excellence.",
+      "reference": "‘The Great Temple at Thanjavur’ by George Michell"
+    },
+    {
+      "id": 43,
+      "topic": "Economy",
+      "subtopic": "Chola Trade",
+      "type": "single",
+      "question": "Which Southeast Asian empire traded extensively with the Cholas?",
+      "options": ["Srivijaya", "Khmer", "Champa", "Majapahit"],
+      "answer": "Srivijaya",
+      "explanation": "The Cholas traded extensively with the Srivijaya Empire, a maritime power in Southeast Asia. This trade, involving textiles and spices, was facilitated by Chola ports like Nagapattinam. Rajendra I’s raid on Srivijaya in 1025 CE underscores their commercial rivalry and interaction.",
+      "reference": "‘The Trading World of the Tamil Merchant’ by Kanakalatha Mukund"
+    },
+    {
+      "id": 44,
+      "topic": "History",
+      "subtopic": "Chola Military",
+      "type": "multiple",
+      "question": "Which Chola kings were known for their naval campaigns?",
+      "options": ["Rajaraja I", "Rajendra I", "Parantaka I", "Kulottunga III"],
+      "answer": ["Rajaraja I", "Rajendra I"],
+      "explanation": "Rajaraja I and Rajendra I led significant naval campaigns, with Rajaraja conquering Sri Lanka and the Maldives, and Rajendra raiding Srivijaya in 1025 CE. Their navy, built on advanced shipbuilding, established Chola dominance in the Indian Ocean, unlike Parantaka I or Kulottunga III.",
+      "reference": "‘The Chola Navy’ by R. Nagaswamy"
+    },
+    {
+      "id": 45,
+      "topic": "Religion",
+      "subtopic": "Chola Devotion",
+      "type": "match",
+      "question": "Match the Chola religious practices with their descriptions.",
+      "matchPairs": {
+        "Tevaram": "Saiva hymns",
+        "Devadasi": "Temple dancers",
+        "Nataraja": "Cosmic dance",
+        "Agama": "Ritual texts"
+      },
+      "explanation": "Tevaram hymns were Saiva devotional songs; devadasis performed dances in temples; Nataraja symbolized Shiva’s cosmic dance; and Agama texts guided temple rituals. These practices, patronized by the Cholas, enriched South Indian Shaivism and cultural traditions.",
+      "reference": "‘The Dance of Siva’ by Ananda K. Coomaraswamy"
+    },
+    {
+      "id": 46,
+      "topic": "Culture",
+      "subtopic": "Chola Literature",
+      "type": "single",
+      "question": "Who composed the Tevaram hymns patronized by the Cholas?",
+      "options": ["Appar", "Kambar", "Thiruvalluvar", "Ilango Adigal"],
+      "answer": "Appar",
+      "explanation": "Appar, along with Sambandar and Sundarar, composed the Tevaram hymns, Saiva devotional poetry patronized by the Cholas. These hymns, sung in temples, strengthened Shaivism and Tamil literary traditions, with the Cholas promoting their compilation and performance.",
+      "reference": "‘Tamil Literature’ by Kamil Zvelebil"
+    },
+    {
+      "id": 47,
+      "topic": "Art and Architecture",
+      "subtopic": "Chola Temples",
+      "type": "assertion",
+      "question": "Assertion (A): Chola temples had large endowments. Reason (R): They were funded by royal grants.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Chola temples, like Brihadeeswara, received large endowments through royal grants, as recorded in inscriptions. These funds supported priests, festivals, and maintenance, making temples economic and cultural hubs. Royal patronage ensured their grandeur and longevity.",
+      "reference": "‘South Indian Inscriptions, Volume II’ by Archaeological Survey of India"
+    },
+    {
+      "id": 48,
+      "topic": "History",
+      "subtopic": "Chola Decline",
+      "type": "single",
+      "question": "Which Chola king was the last significant ruler before the decline?",
+      "options": ["Kulottunga III", "Rajendra III", "Rajaraja II", "Rajadhiraja I"],
+      "answer": "Kulottunga III",
+      "explanation": "Kulottunga III (1178–1218 CE) was the last significant Chola king, known for reviving Chola power temporarily through campaigns against the Pandyas and Sri Lanka. His death marked the onset of decline, as Pandya invasions and internal strife weakened the empire.",
+      "reference": "‘The Cholas’ by K.A. Nilakanta Sastri"
+    },
+    {
+      "id": 49,
+      "topic": "Economy",
+      "subtopic": "Chola Trade",
+      "type": "multiple",
+      "question": "Which goods were major exports of the Chola Empire?",
+      "options": ["Textiles", "Spices", "Gold", "Rice"],
+      "answer": ["Textiles", "Spices"],
+      "explanation": "The Chola Empire exported textiles, like cotton and silk, and spices, such as pepper and cardamom, to Southeast Asia and beyond. Gold was used in coinage but not a major export, and rice was primarily for domestic consumption, supported by the Kaveri delta.",
+      "reference": "‘The Trading World of the Tamil Merchant’ by Kanakalatha Mukund"
+    },
+    {
+      "id": 50,
+      "topic": "Administration",
+      "subtopic": "Chola Governance",
+      "type": "match",
+      "question": "Match the Chola rulers with their administrative reforms.",
+      "matchPairs": {
+        "Rajaraja I": "Standardized revenue",
+        "Rajendra I": "Expanded bureaucracy",
+        "Kulottunga I": "Reorganized navy",
+        "Parantaka I": "Local governance"
+      },
+      "explanation": "Rajaraja I standardized revenue collection; Rajendra I expanded the bureaucracy for his vast empire; Kulottunga I reorganized the navy for trade; and Parantaka I strengthened local governance. These reforms, documented in inscriptions, ensured efficient administration across Chola territories.",
+      "reference": "‘South Indian Inscriptions, Volume III’ by Archaeological Survey of India"
+    },
+    {
+      "id": 51,
+      "topic": "History",
+      "subtopic": "Chola Rulers",
+      "type": "single",
+      "question": "Which Chola king was known for the title ‘Ponniyin Selvan’?",
+      "options": ["Rajendra I", "Rajaraja I", "Arinjaya", "Sundara Chola"],
+      "answer": "Sundara Chola",
+      "explanation": "Sundara Chola, father of Rajaraja I, was called ‘Ponniyin Selvan’ (Son of the Kaveri), a title reflecting his connection to the fertile Kaveri region. His reign (957–970 CE) saw consolidation of Chola power, paving the way for his son’s imperial conquests.",
+      "reference": "‘Ponniyin Selvan’ by Kalki Krishnamurthy"
+    },
+    {
+      "id": 52,
+      "topic": "Art and Architecture",
+      "subtopic": "Chola Temples",
+      "type": "multiple",
+      "question": "Which Chola temples are UNESCO World Heritage Sites?",
+      "options": ["Brihadeeswara", "Gangaikonda Cholapuram", "Airavateswara", "Kailasanathar"],
+      "answer": ["Brihadeeswara", "Gangaikonda Cholapuram", "Airavateswara"],
+      "explanation": "The Brihadeeswara, Gangaikonda Cholapuram, and Airavateswara temples are UNESCO World Heritage Sites, recognized for their architectural brilliance and cultural significance. Kailasanathar in Kanchipuram, a Pallava temple, is not part of this group, though often confused due to regional proximity.",
+      "reference": "UNESCO World Heritage Centre Website"
+    },
+    {
+      "id": 53,
+      "topic": "Economy",
+      "subtopic": "Chola Agriculture",
+      "type": "assertion",
+      "question": "Assertion (A): The Cholas built the Veeranam Eri. Reason (R): It supported irrigation in the Kaveri delta.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "The Cholas constructed the Veeranam Eri, a large tank, to support irrigation in the fertile Kaveri delta. This engineering feat, attributed to Rajadhiraja I, ensured consistent water supply for rice cultivation, boosting agricultural productivity and the Chola economy.",
+      "reference": "‘Economic History of Early India’ by R.S. Sharma"
+    },
+    {
+      "id": 54,
+      "topic": "History",
+      "subtopic": "Chola Military",
+      "type": "match",
+      "question": "Match the Chola battles with their outcomes.",
+      "matchPairs": {
+        "Takkolam": "Defeated Rashtrakutas",
+        "Koppam": "Chalukya defeat",
+        "Kandalur": "Chera conquest",
+        "Vengi": "Eastern Chalukya alliance"
+      },
+      "explanation": "The Battle of Takkolam (949 CE) defeated the Rashtrakutas; Koppam saw Chalukya losses; Kandalur marked Chera conquest; and Vengi led to an alliance with the Eastern Chalukyas. These victories, detailed in inscriptions, highlight Chola military dominance.",
+      "reference": "‘A History of South India’ by K.A. Nilakanta Sastri"
+    },
+    {
+      "id": 55,
+      "topic": "Religion",
+      "subtopic": "Chola Devotion",
+      "type": "single",
+      "question": "Which Chola king compiled the Tevaram hymns?",
+      "options": ["Rajaraja I", "Rajendra I", "Parantaka I", "None"],
+      "answer": "None",
+      "explanation": "No Chola king directly compiled the Tevaram hymns, but Rajaraja I patronized their collection and performance by Nambiyandar Nambi around 1000 CE. These Saiva hymns, composed by Appar, Sambandar, and Sundarar, strengthened Shaivism under Chola patronage.",
+      "reference": "‘Tamil Literature’ by Kamil Zvelebil"
+    },
+    {
+      "id": 56,
+      "topic": "Culture",
+      "subtopic": "Chola Dance",
+      "type": "multiple",
+      "question": "Which groups performed dances in Chola temples?",
+      "options": ["Devadasis", "Brahmins", "Nattuvanars", "Royal guards"],
+      "answer": ["Devadasis", "Nattuvanars"],
+      "explanation": "Devadasis, dedicated temple dancers, performed Bharatanatyam in Chola temples, accompanied by Nattuvanars, who were dance masters and musicians. Brahmins focused on rituals, and royal guards had no dance role. These performances, depicted in temple sculptures, enriched Chola cultural life.",
+      "reference": "‘Indian Classical Dance: Tradition in Transition’ by Leela Venkataraman"
+    },
+    {
+      "id": 57,
+      "topic": "Art and Architecture",
+      "subtopic": "Chola Bronzes",
+      "type": "assertion",
+      "question": "Assertion (A): Chola bronzes depicted deities. Reason (R): They were used in worship.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Chola bronzes, like Nataraja and Parvati, depicted deities for temple worship and processions. Crafted using the lost-wax technique, they served as portable icons, embodying divine presence during rituals, blending artistic excellence with spiritual significance.",
+      "reference": "‘Chola Bronzes’ by Vidya Dehejia"
+    },
+    {
+      "id": 58,
+      "topic": "History",
+      "subtopic": "Chola Diplomacy",
+      "type": "single",
+      "question": "Which Chinese dynasty traded with the Cholas under Kulottunga I?",
+      "options": ["Tang", "Song", "Ming", "Yuan"],
+      "answer": "Song",
+      "explanation": "Kulottunga I’s embassy to the Song dynasty in 1077 CE strengthened Chola-China trade ties. This diplomatic mission, recorded in Chinese annals, facilitated the exchange of goods like textiles and spices, highlighting the Cholas’ prominence in Asian maritime networks.",
+      "reference": "‘The Trading World of the Tamil Merchant’ by Kanakalatha Mukund"
+    },
+    {
+      "id": 59,
+      "topic": "Economy",
+      "subtopic": "Chola Currency",
+      "type": "multiple",
+      "question": "Which Chola coins were widely circulated?",
+      "options": ["Kasu", "Fanam", "Pagoda", "Rupaka"],
+      "answer": ["Kasu", "Fanam"],
+      "explanation": "Kasu (copper) and Fanam (gold) were widely circulated Chola coins, used in trade and taxation. Pagodas were later Vijayanagara coins, and Rupakas were less common. Archaeological finds and inscriptions confirm their role in the Chola economy’s vibrancy.",
+      "reference": "‘Economic History of Early India’ by R.S. Sharma"
+    },
+    {
+      "id": 60,
+      "topic": "Administration",
+      "subtopic": "Chola Governance",
+      "type": "match",
+      "question": "Match the Chola administrative units with their functions.",
+      "matchPairs": {
+        "Mandalam": "Provincial governance",
+        "Nadu": "District administration",
+        "Kottam": "Sub-district management",
+        "Ur": "Village assembly"
+      },
+      "explanation": "Mandalam oversaw provinces, Nadu managed districts, Kottam handled sub-districts, and Ur were village assemblies. This hierarchical system, detailed in inscriptions like Uttiramerur, ensured efficient governance, balancing central authority with local autonomy across the Chola Empire.",
+      "reference": "‘South Indian Inscriptions, Volume II’ by Archaeological Survey of India"
+    },
+    {
+      "id": 61,
+      "topic": "History",
+      "subtopic": "Chola Rulers",
+      "type": "single",
+      "question": "Which Chola king was killed in the Battle of Koppam?",
+      "options": ["Rajadhiraja I", "Rajaraja I", "Rajendra I", "Kulottunga I"],
+      "answer": "Rajadhiraja I",
+      "explanation": "Rajadhiraja I died in the Battle of Koppam (1054 CE) against the Chalukyas, a significant event in Chola history. Despite his death, the Cholas won, showcasing their military resilience. His sacrifice marked a pivotal moment in maintaining Chola supremacy.",
+      "reference": "‘A History of South India’ by K.A. Nilakanta Sastri"
+    },
+    {
+      "id": 62,
+      "topic": "Art and Architecture",
+      "subtopic": "Chola Temples",
+      "type": "assertion",
+      "question": "Assertion (A): Chola temples had frescoes. Reason (R): They depicted religious narratives.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Chola temples, like Brihadeeswara, featured frescoes depicting religious narratives, such as Shiva’s exploits. These paintings, preserved in Thanjavur, enhanced the temples’ spiritual ambiance, complementing sculptures and serving as visual storytelling for devotees and visitors.",
+      "reference": "‘The Art and Architecture of the Indian Subcontinent’ by J.C. Harle"
+    },
+    {
+      "id": 63,
+      "topic": "Economy",
+      "subtopic": "Chola Trade",
+      "type": "single",
+      "question": "Which Chola port was known for pearl trade?",
+      "options": ["Nagapattinam", "Korkai", "Kaveripattinam", "Mamallapuram"],
+      "answer": "Korkai",
+      "explanation": "Korkai, an ancient Chola port, was renowned for its pearl trade, especially during the early Chola period. Its coastal location facilitated commerce with the Roman Empire and later Southeast Asia, contributing to the Chola economy’s wealth, as noted in Sangam literature.",
+      "reference": "‘The Trading World of the Tamil Merchant’ by Kanakalatha Mukund"
+    },
+    {
+      "id": 64,
+      "topic": "History",
+      "subtopic": "Chola Military",
+      "type": "multiple",
+      "question": "Which enemies did the Cholas defeat under Parantaka I?",
+      "options": ["Pandyas", "Cheras", "Rashtrakutas", "Chalukyas"],
+      "answer": ["Pandyas", "Cheras", "Rashtrakutas"],
+      "explanation": "Parantaka I (907–955 CE) defeated the Pandyas, Cheras, and Rashtrakutas, expanding Chola influence in South India. His victory at Takkolam against the Rashtrakutas was notable. The Chalukyas became significant rivals later, under Rajaraja I and his successors.",
+      "reference": "‘A History of South India’ by K.A. Nilakanta Sastri"
+    },
+    {
+      "id": 65,
+      "topic": "Religion",
+      "subtopic": "Chola Devotion",
+      "type": "match",
+      "question": "Match the Chola temples with their deities.",
+      "matchPairs": {
+        "Brihadeeswara": "Shiva",
+        "Airavateswara": "Shiva",
+        "Gangaikonda Cholapuram": "Shiva",
+        "Vishnu Kanchi": "Vishnu"
+      },
+      "explanation": "Brihadeeswara, Airavateswara, and Gangaikonda Cholapuram temples were dedicated to Shiva, reflecting Chola Shaivism. Vishnu Kanchi, though in Chola territory, was a Vaishnavite temple, showing their tolerance for diverse worship while prioritizing Shaiva traditions.",
+      "reference": "‘Temples of South India’ by K.R. Srinivasan"
+    },
+    {
+      "id": 66,
+      "topic": "Culture",
+      "subtopic": "Chola Literature",
+      "type": "single",
+      "question": "Which Chola-era text is a biography of Rajaraja I?",
+      "options": ["Thiruthondar Puranam", "Kalingattuparani", "Nandikalambakam", "None"],
+      "answer": "None",
+      "explanation": "No specific biography of Rajaraja I exists, but inscriptions like the Thiruvalangadu Plates detail his reign. Thiruthondar Puranam covers Saiva saints, Kalingattuparani describes Kulottunga I’s campaigns, and Nandikalambakam is unrelated. Inscriptions remain the primary source for his life.",
+      "reference": "‘South Indian Inscriptions, Volume I’ by Archaeological Survey of India"
+    },
+    {
+      "id": 67,
+      "topic": "Art and Architecture",
+      "subtopic": "Chola Bronzes",
+      "type": "assertion",
+      "question": "Assertion (A): Chola bronzes were cast in bronze. Reason (R): Bronze was durable and malleable.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Chola bronzes were cast in bronze, an alloy of copper and tin, valued for its durability and malleability. This allowed intricate designs, like the Nataraja, using the lost-wax technique, ensuring the statues’ longevity and suitability for temple worship and processions.",
+      "reference": "‘Chola Bronzes’ by Vidya Dehejia"
+    },
+    {
+      "id": 68,
+      "topic": "History",
+      "subtopic": "Chola Diplomacy",
+      "type": "single",
+      "question": "Which Chola king married into the Eastern Chalukya dynasty?",
+      "options": ["Kulottunga I", "Rajaraja I", "Rajendra I", "Parantaka I"],
+      "answer": "Kulottunga I",
+      "explanation": "Kulottunga I, born of Eastern Chalukya lineage, married a Chalukya princess, strengthening ties between the Cholas and Eastern Chalukyas. This alliance, around 1070 CE, secured Chola influence in Vengi, blending dynastic and diplomatic strategies to maintain regional power.",
+      "reference": "‘The Cholas’ by K.A. Nilakanta Sastri"
+    },
+    {
+      "id": 69,
+      "topic": "Economy",
+      "subtopic": "Chola Trade",
+      "type": "multiple",
+      "question": "Which regions traded with the Cholas?",
+      "options": ["China", "Srivijaya", "Rome", "Arabia"],
+      "answer": ["China", "Srivijaya", "Arabia"],
+      "explanation": "The Cholas traded with China (Song dynasty), Srivijaya, and Arabian regions, exporting textiles and spices. While earlier Tamil trade reached Rome, Imperial Chola trade focused on Asia and the Middle East, as evidenced by inscriptions and foreign records.",
+      "reference": "‘The Trading World of the Tamil Merchant’ by Kanakalatha Mukund"
+    },
+    {
+      "id": 70,
+      "topic": "Administration",
+      "subtopic": "Chola Governance",
+      "type": "match",
+      "question": "Match the Chola revenue terms with their meanings.",
+      "matchPairs": {
+        "Kadamai": "Land tax",
+        "Vetti": "Forced labor",
+        "Irayili": "Tax exemption",
+        "Pattam": "Lease rent"
+      },
+      "explanation": "Kadamai was the primary land tax; Vetti referred to forced labor; Irayili granted tax exemptions, often to temples; and Pattam was lease rent for land. These terms, found in inscriptions, highlight the Chola’s sophisticated revenue system supporting their economy.",
+      "reference": "‘South Indian Inscriptions, Volume II’ by Archaeological Survey of India"
+    },
+    {
+      "id": 71,
+      "topic": "History",
+      "subtopic": "Chola Rulers",
+      "type": "single",
+      "question": "Which Chola king was known as ‘Madurantaka’?",
+      "options": ["Parantaka I", "Sundara Chola", "Uttama Chola", "Aditya I"],
+      "answer": "Parantaka I",
+      "explanation": "Parantaka I (907–955 CE), known as ‘Madurantaka’ (Destroyer of Madurai), defeated the Pandyas, capturing their capital. His conquests expanded Chola territory significantly, laying the groundwork for later imperial rulers like Rajaraja I, as detailed in inscriptions.",
+      "reference": "‘A History of South India’ by K.A. Nilakanta Sastri"
+    },
+    {
+      "id": 72,
+      "topic": "Art and Architecture",
+      "subtopic": "Chola Temples",
+      "type": "multiple",
+      "question": "Which Chola temples feature intricate stone carvings?",
+      "options": ["Brihadeeswara", "Airavateswara", "Gangaikonda Cholapuram", "Kailasanathar"],
+      "answer": ["Brihadeeswara", "Airavateswara", "Gangaikonda Cholapuram"],
+      "explanation": "Brihadeeswara, Airavateswara, and Gangaikonda Cholapuram temples are renowned for their intricate stone carvings, depicting deities and mythological scenes. Kailasanathar, a Pallava temple, lacks the Chola style. These carvings reflect the dynasty’s artistic and religious devotion.",
+      "reference": "‘Temples of South India’ by K.R. Srinivasan"
+    },
+    {
+      "id": 73,
+      "topic": "Economy",
+      "subtopic": "Chola Agriculture",
+      "type": "assertion",
+      "question": "Assertion (A): The Cholas improved irrigation. Reason (R): They built tanks and canals.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "The Cholas enhanced agriculture through irrigation systems like tanks (e.g., Veeranam Eri) and canals in the Kaveri delta. These structures, maintained by village assemblies, ensured water supply for rice and spice cultivation, driving economic prosperity, as noted in inscriptions.",
+      "reference": "‘Economic History of Early India’ by R.S. Sharma"
+    },
+    {
+      "id": 74,
+      "topic": "History",
+      "subtopic": "Chola Military",
+      "type": "match",
+      "question": "Match the Chola rulers with their enemies.",
+      "matchPairs": {
+        "Parantaka I": "Rashtrakutas",
+        "Rajaraja I": "Cheras",
+        "Rajendra I": "Srivijaya",
+        "Rajadhiraja I": "Chalukyas"
+      },
+      "explanation": "Parantaka I fought the Rashtrakutas; Rajaraja I defeated the Cheras; Rajendra I raided Srivijaya; and Rajadhiraja I battled the Chalukyas. These conflicts, detailed in inscriptions, highlight the Chola military’s strategic campaigns across South Asia and beyond.",
+      "reference": "‘A History of South India’ by K.A. Nilakanta Sastri"
+    },
+    {
+      "id": 75,
+      "topic": "Religion",
+      "subtopic": "Chola Devotion",
+      "type": "single",
+      "question": "Which Saiva saints’ hymns were patronized by the Cholas?",
+      "options": ["Nayanars", "Alvars", "Siddhars", "Lingayats"],
+      "answer": "Nayanars",
+      "explanation": "The Cholas patronized the Nayanars, Saiva saints like Appar, Sambandar, and Sundarar, whose Tevaram hymns enriched Tamil devotional literature. Compiled under Rajaraja I, these hymns were sung in temples, strengthening Shaivism and the Chola cultural legacy.",
+      "reference": "‘Tamil Literature’ by Kamil Zvelebil"
+    },
+    {
+      "id": 76,
+      "topic": "Culture",
+      "subtopic": "Chola Dance",
+      "type": "multiple",
+      "question": "Which dances were depicted in Chola temple sculptures?",
+      "options": ["Bharatanatyam", "Kathakali", "Karagattam", "Odissi"],
+      "answer": ["Bharatanatyam", "Karagattam"],
+      "explanation": "Chola temple sculptures, like those in Brihadeeswara, depict Bharatanatyam poses performed by devadasis and folk dances like Karagattam. Kathakali and Odissi, linked to Kerala and Odisha, were not part of Chola art, reflecting the dynasty’s Tamil cultural focus.",
+      "reference": "‘Indian Classical Dance: Tradition in Transition’ by Leela Venkataraman"
+    },
+    {
+      "id": 77,
+      "topic": "Art and Architecture",
+      "subtopic": "Chola Bronzes",
+      "type": "assertion",
+      "question": "Assertion (A): Chola bronzes were made for temples. Reason (R): They were used in rituals.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Chola bronzes, like Nataraja and Parvati, were crafted for temple rituals and processions. Their portable design and intricate artistry, using the lost-wax technique, made them ideal for worship, embodying divine presence in Chola religious practices.",
+      "reference": "‘Chola Bronzes’ by Vidya Dehejia"
+    },
+    {
+      "id": 78,
+      "topic": "History",
+      "subtopic": "Chola Diplomacy",
+      "type": "single",
+      "question": "Which Chola king allied with the Eastern Chalukyas through marriage?",
+      "options": ["Kulottunga I", "Rajaraja I", "Rajendra I", "Parantaka I"],
+      "answer": "Kulottunga I",
+      "explanation": "Kulottunga I, of Chalukya-Chola descent, married an Eastern Chalukya princess, cementing an alliance around 1070 CE. This strengthened Chola control over Vengi, blending dynastic ties with diplomacy, as evidenced by inscriptions and regional stability.",
+      "reference": "‘The Cholas’ by K.A. Nilakanta Sastri"
+    },
+    {
+      "id": 79,
+      "topic": "Economy",
+      "subtopic": "Chola Trade",
+      "type": "multiple",
+      "question": "Which ports were key to Chola maritime trade?",
+      "options": ["Nagapattinam", "Kaveripattinam", "Korkai", "Mamallapuram"],
+      "answer": ["Nagapattinam", "Kaveripattinam", "Korkai"],
+      "explanation": "Nagapattinam, Kaveripattinam, and Korkai were key Chola ports, facilitating trade with Southeast Asia and Arabia. Mamallapuram, a Pallava port, was less significant under the Cholas. These ports, supported by merchant guilds, drove the empire’s economic prosperity.",
+      "reference": "‘The Trading World of the Tamil Merchant’ by Kanakalatha Mukund"
+    },
+    {
+      "id": 80,
+      "topic": "Administration",
+      "subtopic": "Chola Governance",
+      "type": "match",
+      "question": "Match the Chola inscriptions with their locations.",
+      "matchPairs": {
+        "Thiruvalangadu": "Tamil Nadu",
+        "Anbil Plates": "Tamil Nadu",
+        "Karandai": "Tamil Nadu",
+        "Barus": "Indonesia"
+      },
+      "explanation": "Thiruvalangadu, Anbil Plates, and Karandai inscriptions are from Tamil Nadu, detailing Chola history and administration. The Barus inscription in Indonesia highlights Chola trade with Southeast Asia, reflecting their maritime reach and cultural influence abroad.",
+      "reference": "‘South Indian Inscriptions, Volume I’ by Archaeological Survey of India"
+    },
+    {
+      "id": 81,
+      "topic": "History",
+      "subtopic": "Chola Rulers",
+      "type": "single",
+      "question": "Which Chola king revived the empire in the 12th century?",
+      "options": ["Kulottunga III", "Rajaraja II", "Rajendra II", "Vikrama Chola"],
+      "answer": "Kulottunga III",
+      "explanation": "Kulottunga III (1178–1218 CE) temporarily revived Chola power through campaigns against the Pandyas and Sri Lanka. His efforts, including temple patronage, delayed the empire’s decline, but Pandya invasions ultimately ended Chola dominance, as noted in inscriptions.",
+      "reference": "‘The Cholas’ by K.A. Nilakanta Sastri"
+    },
+    {
+      "id": 82,
+      "topic": "Art and Architecture",
+      "subtopic": "Chola Temples",
+      "type": "multiple",
+      "question": "Which Chola temples were built in the 11th century?",
+      "options": ["Brihadeeswara", "Gangaikonda Cholapuram", "Airavateswara", "Kampahareswara"],
+      "answer": ["Brihadeeswara", "Gangaikonda Cholapuram"],
+      "explanation": "Brihadeeswara (1010 CE) and Gangaikonda Cholapuram (1025 CE) were built in the 11th century by Rajaraja I and Rajendra I, respectively. Airavateswara and Kampahareswara, constructed later under Kulottunga II, reflect the evolution of Chola architecture.",
+      "reference": "‘The Great Temple at Thanjavur’ by George Michell"
+    },
+    {
+      "id": 83,
+      "topic": "Economy",
+      "subtopic": "Chola Agriculture",
+      "type": "assertion",
+      "question": "Assertion (A): Chola agriculture thrived in the Kaveri delta. Reason (R): The region had fertile soil.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Chola agriculture flourished in the Kaveri delta due to its fertile alluvial soil, ideal for rice and spices. Supported by irrigation systems like tanks and canals, this region’s productivity underpinned the empire’s economy, as evidenced by inscriptions detailing land management.",
+      "reference": "‘Economic History of Early India’ by R.S. Sharma"
+    },
+    {
+      "id": 84,
+      "topic": "History",
+      "subtopic": "Chola Military",
+      "type": "match",
+      "question": "Match the Chola rulers with their naval campaigns.",
+      "matchPairs": {
+        "Rajaraja I": "Sri Lanka",
+        "Rajendra I": "Srivijaya",
+        "Kulottunga I": "Maldives",
+        "Parantaka I": "Coastal raids"
+      },
+      "explanation": "Rajaraja I conquered Sri Lanka; Rajendra I raided Srivijaya; Kulottunga I controlled the Maldives; and Parantaka I conducted coastal raids. These naval campaigns, supported by advanced shipbuilding, established Chola dominance in the Indian Ocean.",
+      "reference": "‘The Chola Navy’ by R. Nagaswamy"
+    },
+    {
+      "id": 85,
+      "topic": "Religion",
+      "subtopic": "Chola Devotion",
+      "type": "single",
+      "question": "Which Chola king promoted the Nataraja cult?",
+      "options": ["Rajaraja I", "Rajendra I", "Parantaka I", "Kulottunga II"],
+      "answer": "Rajaraja I",
+      "explanation": "Rajaraja I promoted the Nataraja cult, commissioning bronze statues and incorporating Shiva’s cosmic dance into temple worship. His patronage, seen in Brihadeeswara’s iconography, elevated Nataraja as a symbol of Chola Shaivism, influencing art and religion.",
+      "reference": "‘The Dance of Siva’ by Ananda K. Coomaraswamy"
+    },
+    {
+      "id": 86,
+      "topic": "Culture",
+      "subtopic": "Chola Literature",
+      "type": "multiple",
+      "question": "Which poets were associated with the Chola period?",
+      "options": ["Kambar", "Appar", "Sambandar", "Thiruvalluvar"],
+      "answer": ["Kambar", "Appar", "Sambandar"],
+      "explanation": "Kambar composed the Kamba Ramayanam, while Appar and Sambandar wrote Tevaram hymns under Chola patronage. Thiruvalluvar, author of Thirukkural, belonged to the earlier Sangam period. These poets enriched Tamil literature, reflecting Chola cultural support.",
+      "reference": "‘Tamil Literature’ by Kamil Zvelebil"
+    },
+    {
+      "id": 87,
+      "topic": "Art and Architecture",
+      "subtopic": "Chola Temples",
+      "type": "assertion",
+      "question": "Assertion (A): Chola temples were administrative centers. Reason (R): They managed land and taxes.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Chola temples, like Brihadeeswara, functioned as administrative centers, managing vast land grants and collecting taxes, as evidenced by inscriptions. These roles supported temple maintenance, festivals, and community welfare, integrating economic and religious functions. This administrative significance, backed by royal patronage, made temples pivotal to Chola governance and societal organization.",
+      "reference": "‘South Indian Inscriptions, Volume II’ by Archaeological Survey of India"
+    },
+    {
+      "id": 88,
+      "topic": "History",
+      "subtopic": "Chola Rulers",
+      "type": "single",
+      "question": "Which Chola king was known for the title ‘Sungam Tavirtta Chola’?",
+      "options": ["Vikrama Chola", "Kulottunga II", "Rajendra II", "Rajaraja II"],
+      "answer": "Vikrama Chola",
+      "explanation": "Vikrama Chola (1118–1135 CE), titled ‘Sungam Tavirtta Chola’ (Abolisher of Tolls), reduced trade taxes to boost commerce. His reign strengthened Chola administration and temple patronage, maintaining stability before the empire’s later decline. His policies, recorded in inscriptions, reflect a focus on economic prosperity and cultural continuity.",
+      "reference": "‘The Cholas’ by K.A. Nilakanta Sastri"
+    },
+    {
+      "id": 89,
+      "topic": "Economy",
+      "subtopic": "Chola Trade",
+      "type": "multiple",
+      "question": "Which commodities were traded by Chola merchants with Arabia?",
+      "options": ["Pepper", "Silk", "Sandalwood", "Wheat"],
+      "answer": ["Pepper", "Silk", "Sandalwood"],
+      "explanation": "Chola merchants traded pepper, silk, and sandalwood with Arabia, leveraging ports like Nagapattinam. These goods, prized in Middle Eastern markets, fueled the Chola economy. Wheat was not a major export, as rice dominated South Indian agriculture. Inscriptions and Arab texts confirm these trade networks.",
+      "reference": "‘The Trading World of the Tamil Merchant’ by Kanakalatha Mukund"
+    },
+    {
+      "id": 90,
+      "topic": "Religion",
+      "subtopic": "Chola Devotion",
+      "type": "match",
+      "question": "Match the Chola religious figures with their contributions.",
+      "matchPairs": {
+        "Nambiyandar Nambi": "Compiled Tevaram",
+        "Appar": "Saiva hymns",
+        "Manikkavacakar": "Thiruvacakam",
+        "Sambandar": "Devotional poetry"
+      },
+      "explanation": "Nambiyandar Nambi compiled the Tevaram under Rajaraja I; Appar and Sambandar wrote Saiva hymns; Manikkavacakar composed the Thiruvacakam. These figures, patronized by the Cholas, enriched Shaivism, with their works shaping Tamil devotional literature and temple rituals.",
+      "reference": "‘Tamil Literature’ by Kamil Zvelebil"
+    },
+    {
+      "id": 91,
+      "topic": "Art and Architecture",
+      "subtopic": "Chola Sculptures",
+      "type": "single",
+      "question": "Which Chola temple is famous for its detailed narrative reliefs?",
+      "options": ["Brihadeeswara", "Airavateswara", "Gangaikonda Cholapuram", "Kampahareswara"],
+      "answer": "Airavateswara",
+      "explanation": "The Airavateswara Temple in Darasuram, built by Kulottunga II, is renowned for its detailed narrative reliefs depicting mythological stories and daily life. These intricate carvings, a hallmark of later Chola art, showcase the dynasty’s sculptural mastery and storytelling through stone.",
+      "reference": "‘Temples of South India’ by K.R. Srinivasan"
+    },
+    {
+      "id": 92,
+      "topic": "History",
+      "subtopic": "Chola Military",
+      "type": "assertion",
+      "question": "Assertion (A): The Cholas maintained a standing army. Reason (R): It was used for territorial expansion.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "The Cholas maintained a standing army, crucial for territorial expansion under rulers like Rajaraja I and Rajendra I. This professional force, supported by inscriptions detailing military campaigns, enabled conquests in Sri Lanka and Southeast Asia, securing Chola dominance in the region.",
+      "reference": "‘A History of South India’ by K.A. Nilakanta Sastri"
+    },
+    {
+      "id": 93,
+      "topic": "Administration",
+      "subtopic": "Chola Governance",
+      "type": "multiple",
+      "question": "Which aspects were managed by Chola village assemblies?",
+      "options": ["Irrigation", "Justice", "Education", "Military"],
+      "answer": ["Irrigation", "Justice", "Education"],
+      "explanation": "Chola village assemblies, like the ‘sabha,’ managed irrigation, justice, and education, as detailed in the Uttiramerur inscriptions. They oversaw tanks, resolved disputes, and supported schools, but military affairs were handled by the central administration, reflecting the Cholas’ decentralized governance model.",
+      "reference": "‘Uttaramerur Inscriptions’ by Archaeological Survey of India"
+    },
+    {
+      "id": 94,
+      "topic": "Culture",
+      "subtopic": "Chola Literature",
+      "type": "match",
+      "question": "Match the Chola-era texts with their authors.",
+      "matchPairs": {
+        "Kamba Ramayanam": "Kambar",
+        "Thiruvacakam": "Manikkavacakar",
+        "Tevaram": "Nayanars",
+        "Periya Puranam": "Sekkizhar"
+      },
+      "explanation": "Kambar wrote the Kamba Ramayanam; Manikkavacakar composed Thiruvacakam; Nayanars authored Tevaram hymns; and Sekkizhar penned Periya Puranam, a biography of Saiva saints. These works, patronized by the Cholas, enriched Tamil literature and Shaivite devotion.",
+      "reference": "‘Tamil Literature’ by Kamil Zvelebil"
+    },
+    {
+      "id": 95,
+      "topic": "Economy",
+      "subtopic": "Chola Trade",
+      "type": "single",
+      "question": "Which Chola port was a center for shipbuilding?",
+      "options": ["Nagapattinam", "Kaveripattinam", "Korkai", "Puhar"],
+      "answer": "Kaveripattinam",
+      "explanation": "Kaveripattinam, also called Puhar, was a major Chola port and shipbuilding center. Its strategic location supported the construction of vessels for trade and naval campaigns, as noted in Sangam literature and inscriptions, contributing to the Chola’s maritime dominance.",
+      "reference": "‘The Trading World of the Tamil Merchant’ by Kanakalatha Mukund"
+    },
+    {
+      "id": 96,
+      "topic": "History",
+      "subtopic": "Chola Diplomacy",
+      "type": "assertion",
+      "question": "Assertion (A): The Cholas had diplomatic ties with Sri Lanka. Reason (R): They conquered parts of the island.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "The Cholas maintained diplomatic ties with Sri Lanka, largely due to Rajaraja I’s conquest of its northern regions around 993 CE. This control, documented in inscriptions, facilitated trade and cultural exchange, with Chola influence shaping Sri Lankan Tamil culture.",
+      "reference": "‘The Cholas’ by K.A. Nilakanta Sastri"
+    },
+    {
+      "id": 97,
+      "topic": "Art and Architecture",
+      "subtopic": "Chola Bronzes",
+      "type": "multiple",
+      "question": "Which deities were commonly depicted in Chola bronzes?",
+      "options": ["Shiva", "Parvati", "Vishnu", "Ganesha"],
+      "answer": ["Shiva", "Parvati", "Ganesha"],
+      "explanation": "Chola bronzes frequently depicted Shiva (as Nataraja), Parvati, and Ganesha, reflecting their Shaivite devotion. Vishnu was less common, as the Cholas prioritized Shaivism. These bronzes, crafted with the lost-wax technique, were used in temple rituals, showcasing artistic and spiritual excellence.",
+      "reference": "‘Chola Bronzes’ by Vidya Dehejia"
+    },
+    {
+      "id": 98,
+      "topic": "Religion",
+      "subtopic": "Chola Devotion",
+      "type": "single",
+      "question": "Which Chola king patronized the Periya Puranam?",
+      "options": ["Kulottunga II", "Rajaraja I", "Rajendra I", "Vikrama Chola"],
+      "answer": "Kulottunga II",
+      "explanation": "Kulottunga II patronized the Periya Puranam, a Tamil epic by Sekkizhar narrating the lives of 63 Nayanar saints. This work, composed in the 12th century, reinforced Shaivism and Chola cultural identity, with its recitation becoming integral to temple traditions.",
+      "reference": "‘Tamil Literature’ by Kamil Zvelebil"
+    },
+    {
+      "id": 99,
+      "topic": "History",
+      "subtopic": "Chola Military",
+      "type": "match",
+      "question": "Match the Chola rulers with their key battles.",
+      "matchPairs": {
+        "Vikrama Chola": "Pandya campaigns",
+        "Rajendra II": "Koppam",
+        "Kulottunga III": "Kalinga",
+        "Rajaraja I": "Kandalur"
+      },
+      "explanation": "Vikrama Chola fought Pandya campaigns; Rajendra II battled at Koppam; Kulottunga III subdued Kalinga; and Rajaraja I won at Kandalur. These battles, recorded in inscriptions, highlight the Chola military’s strategic victories across different reigns.",
+      "reference": "‘A History of South India’ by K.A. Nilakanta Sastri"
+    },
+    {
+      "id": 100,
+      "topic": "Administration",
+      "subtopic": "Chola Governance",
+      "type": "assertion",
+      "question": "Assertion (A): Chola kings used inscriptions for governance. Reason (R): They recorded land grants and orders.",
+      "options": ["A and R are true, R explains A", "A and R are true, R does not explain A", "A is true, R is false", "A is false, R is true"],
+      "answer": "A and R are true, R explains A",
+      "explanation": "Chola kings used inscriptions, like those at Thanjavur, to record land grants, royal orders, and administrative details. These stone and copper-plate records, such as the Anbil Plates, facilitated governance, ensuring transparency and accountability in their sophisticated administrative system.",
+      "reference": "‘South Indian Inscriptions, Volume III’ by Archaeological Survey of India"
+    }
+  ]
+}

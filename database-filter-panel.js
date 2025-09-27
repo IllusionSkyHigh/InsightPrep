@@ -7,26 +7,26 @@
  */
 function analyzeAndCategorizeQuestionTypes() {
   try {
-    console.log('🔍 Starting enhanced question type analysis...');
+  // ...existing code...
     
     // Check if database is available
     if (!AppState.database) {
-      console.warn('❌ AppState.database is not available');
+  // ...existing code...
       return [];
     }
     
     // Get all questions with their types
     const questionsRes = AppState.database.exec("SELECT id, question_type FROM questions");
     
-    console.log('📊 Query result:', questionsRes);
+  // ...existing code...
     
     if (!questionsRes[0]?.values) {
-      console.warn('❌ No question data found in database');
+  // ...existing code...
       return [];
     }
     
     const questions = questionsRes[0].values;
-    console.log(`📝 Found ${questions.length} questions to analyze`);
+  // ...existing code...
     
     // Dynamic type counting - preserve all original types and add enhanced subcategories
     const typeCounts = {};
@@ -36,7 +36,7 @@ function analyzeAndCategorizeQuestionTypes() {
       const [questionId, questionType] = row;
       
       if (index < 5) {
-        console.log(`🔍 Question ${index + 1}:`, { questionId, questionType });
+  // ...existing code...
       }
       
       // Helper function to add type to mapping
@@ -63,9 +63,7 @@ function analyzeAndCategorizeQuestionTypes() {
           const allOptions = allOptionsRes[0]?.values || [];
           
           if (index < 10) {
-            console.log(`🔢 Question ${questionId} (${questionType}):`);
-            console.log(`   Correct count: ${correctCount}`);
-            console.log(`   All options:`, allOptions.map(([text, correct]) => `${correct ? '✓' : ' '} ${text.substring(0, 30)}`));
+            // ...existing code...
           }
           
           // Check if it's True/False by examining options
@@ -76,17 +74,17 @@ function analyzeAndCategorizeQuestionTypes() {
             const enhancedType = `${questionType} - True or False`;
             typeCounts[enhancedType] = (typeCounts[enhancedType] || 0) + 1;
             addToMapping(enhancedType, questionType);
-            if (index < 5) console.log(`✅ Categorized as ${enhancedType}`);
+            // ...existing code...
           } else if (correctCount > 1) {
             const enhancedType = `${questionType} - Multiple Correct`;
             typeCounts[enhancedType] = (typeCounts[enhancedType] || 0) + 1;
             addToMapping(enhancedType, questionType);
-            if (index < 10) console.log(`✅ Categorized as ${enhancedType} (${correctCount} correct answers)`);
+            // ...existing code...
           } else {
             const enhancedType = `${questionType} - Single Correct`;
             typeCounts[enhancedType] = (typeCounts[enhancedType] || 0) + 1;
             addToMapping(enhancedType, questionType);
-            if (index < 10) console.log(`✅ Categorized as ${enhancedType} (${correctCount} correct answers)`);
+            // ...existing code...
           }
         } catch (e) {
           console.error(`Error analyzing question ${questionId}:`, e);
@@ -98,16 +96,14 @@ function analyzeAndCategorizeQuestionTypes() {
         // Non-MCQ types - preserve as-is
         typeCounts[questionType] = (typeCounts[questionType] || 0) + 1;
         addToMapping(questionType, questionType);
-        if (index < 5) console.log(`✅ Preserved original type: ${questionType}`);
+  // ...existing code...
       }
     });
     
     // Convert to array format with only non-zero counts
     const result = [];
-    console.log('📊 Final type counts:', typeCounts);
-    console.log('🗂️ Type mappings:', Object.fromEntries(
-      Object.entries(typeMapping).map(([k, v]) => [k, Array.from(v)])
-    ));
+  // ...existing code...
+      Object.entries(typeMapping).map(([k, v]) => [k, Array.from(v)]);
     
     Object.entries(typeCounts).forEach(([typeName, count]) => {
       if (count > 0) {
@@ -120,7 +116,7 @@ function analyzeAndCategorizeQuestionTypes() {
       }
     });
     
-    console.log('✅ Enhanced types result:', result);
+  // ...existing code...
     return result;
     
   } catch (error) {
@@ -261,7 +257,7 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
       });
     }
   } catch (error) {
-    console.log("Subtopic column not found, using topic only:", error.message);
+  // ...existing code...
     // Fallback: use only topic column and create "General" subtopic for each topic
     try {
       const topicsRes = AppState.database.exec("SELECT DISTINCT topic FROM questions ORDER BY topic");
@@ -278,7 +274,7 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
   }
 
   // Debug: Log the topic-subtopic mapping
-  console.log("Database Topic-Subtopic Map:", topicSubtopicMap);
+  // ...existing code...
   
   // Store globally for tooltip access
   window.topicSubtopicMap = topicSubtopicMap;
@@ -495,8 +491,8 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
   
   // Fallback to original types if enhanced analysis failed or returned empty
   if (!enhancedTypes || enhancedTypes.length === 0) {
-    console.warn('⚠️ Enhanced type analysis failed, using original types as fallback');
-    console.log('📋 Original types from parameter:', types);
+  // ...existing code...
+  // ...existing code...
     
     // Get actual counts for each original type
     enhancedTypes = types.map(t => {
@@ -516,21 +512,21 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
       };
     });
     
-    console.log('✅ Fallback types with counts:', enhancedTypes);
+  // ...existing code...
   }
   
   // Calculate total questions for filtered types only
   let totalFilteredQuestions = 0;
   const typeCountsArray = []; // Make this accessible to updateQuestionTypeCounts
   
-  console.log('🔢 Calculating total filtered questions from enhanced types:', enhancedTypes);
+  // ...existing code...
   enhancedTypes.forEach(typeInfo => {
-    console.log(`➕ Adding ${typeInfo.count} from ${typeInfo.name}`);
+  // ...existing code...
     totalFilteredQuestions += typeInfo.count;
     typeCountsArray.push(typeInfo.count);
   });
   
-  console.log('📊 Total filtered questions:', totalFilteredQuestions);
+  // ...existing code...
   
   // Create enhanced type mapping for search functions
   window.enhancedTypeMapping = {};
@@ -613,21 +609,21 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
   
   // Function to update "Selected Types" count based on checked question types (Database mode) - EXACT GOLDEN 22
   updateSelectedTypesCountDB = function() {
-    console.log("updateSelectedTypesCountDB called"); // Debug log
+  // ...existing code...
     const typeChecks = typeDiv.querySelectorAll("input[type=checkbox]");
     const allTypesCheckbox = typeChecks[0]; // First checkbox is "Selected Types"
     const allTypesLabel = typeDiv.querySelector('label:first-child span');
     
-    console.log("Found", typeChecks.length, "checkboxes and label:", allTypesLabel); // Debug log
+  // ...existing code...
     
     if (!allTypesLabel) {
-      console.log("Could not find label span, trying alternative selector"); // Debug log
+  // ...existing code...
       const allTypesLabelAlt = typeDiv.querySelector('span');
       if (!allTypesLabelAlt) {
-        console.log("Could not find any span in typeDiv"); // Debug log
+  // ...existing code...
         return;
       }
-      console.log("Found alternative span:", allTypesLabelAlt); // Debug log
+  // ...existing code...
     }
     
     const spanToUpdate = allTypesLabel || typeDiv.querySelector('span');
@@ -644,22 +640,22 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
           if (match) {
             const count = parseInt(match[1]);
             totalSelectedCount += count;
-            console.log("Adding", count, "from", cb.value); // Debug log
+            // ...existing code...
           } else {
-            console.log("No match found for span text:", span.textContent); // Debug log
+            // ...existing code...
           }
         }
       }
     });
     
-    console.log("Total selected count:", totalSelectedCount); // Debug log
+  // ...existing code...
     
     // Update the "Selected Types" count display
     if (spanToUpdate) {
       spanToUpdate.textContent = `(${totalSelectedCount} question${totalSelectedCount === 1 ? '' : 's'})`;
-      console.log("Updated span to:", spanToUpdate.textContent); // Debug log
+  // ...existing code...
     } else {
-      console.log("Could not find span to update"); // Debug log
+  // ...existing code...
     }
   }; // End of updateSelectedTypesCountDB function
   
@@ -715,7 +711,7 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
       
       if (filteredQuestionsRes[0]?.values) {
         const filteredQuestions = filteredQuestionsRes[0].values;
-        console.log(`🔍 Re-analyzing ${filteredQuestions.length} filtered questions for enhanced types`);
+  // ...existing code...
         
         // Reset all enhanced type counts to 0
         const enhancedTypes = window.currentEnhancedTypes || [];
@@ -748,7 +744,7 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
                 addToNewCounts(`${questionType} - True or False`);
               } else if (correctCount > 1) {
                 addToNewCounts(`${questionType} - Multiple Correct`);
-                console.log(`🔄 Update: Question ${questionId} (${questionType}) → Multiple Correct (${correctCount} correct)`);
+                // ...existing code...
               } else {
                 addToNewCounts(`${questionType} - Single Correct`);
               }
@@ -1004,7 +1000,7 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
     // Add listeners to test mode radios
     testModeRadios.forEach(radio => {
       radio.addEventListener('change', () => {
-        console.log('Test mode changed to:', radio.value);
+  // ...existing code...
         // Update exam duration visibility and calculation
         updateExamDurationVisibility();
         // Update max questions when test mode changes
@@ -1109,17 +1105,17 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
         const maxQuestions = parseInt(this.max) || 1000;
         const currentValue = parseInt(this.value) || 0;
         
-        console.log(`Input validation: current=${currentValue}, max=${maxQuestions}`);
+  // ...existing code...
         
         // Enforce minimum value (must be at least 1)
         if (currentValue < 1) {
-          console.log("Value too small, setting to 1");
+          // ...existing code...
           this.value = 1;
         }
         
         // Enforce maximum value (cannot exceed available questions)
         if (currentValue > maxQuestions) {
-          console.log(`Value too large (${currentValue} > ${maxQuestions}), setting to ${maxQuestions}`);
+          // ...existing code...
           this.value = maxQuestions;
         }
         
@@ -1132,10 +1128,10 @@ function buildDbFilterPanel(topics, types, skipRestore = false) {
         const maxQuestions = parseInt(this.max) || 1000;
         const currentValue = parseInt(this.value) || 0;
         
-        console.log(`Blur validation: current=${currentValue}, max=${maxQuestions}`);
+  // ...existing code...
         
         if (currentValue < 1) {
-          console.log("Blur: Value too small, setting to 1");
+          // ...existing code...
           this.value = 1;
         } else if (currentValue > maxQuestions) {
           console.log(`Blur: Value too large (${currentValue} > ${maxQuestions}), setting to ${maxQuestions}`);

@@ -351,7 +351,7 @@ function buildFilterPanel(allQuestions, skipRestore = false) {
   }
 
   // Debug: Log the first few questions to see their structure
-  console.log("Sample questions for debugging:", allQuestions.slice(0, 3));
+  // ...removed debug log...
 
   // Build hierarchical topic-subtopic structure
   const topicSubtopicMap = new Map();
@@ -366,7 +366,7 @@ function buildFilterPanel(allQuestions, skipRestore = false) {
   });
 
   // Debug: Log the topic-subtopic mapping
-  console.log("Topic-Subtopic Map:", topicSubtopicMap);
+  // ...removed debug log...
 
   const types = [...new Set(allQuestions.map(q => q.type))];
 
@@ -893,17 +893,17 @@ function buildFilterPanel(allQuestions, skipRestore = false) {
         const maxQuestions = parseInt(this.max) || allQuestions.length;
         const currentValue = parseInt(this.value) || 0;
         
-        console.log(`JSON Input validation: current=${currentValue}, max=${maxQuestions}`);
+  // ...removed debug log...
         
         // Enforce minimum value (must be at least 1)
         if (currentValue < 1) {
-          console.log("JSON: Value too small, setting to 1");
+          // ...removed debug log...
           this.value = 1;
         }
         
         // Enforce maximum value (cannot exceed available questions)
         if (currentValue > maxQuestions) {
-          console.log(`JSON: Value too large (${currentValue} > ${maxQuestions}), setting to ${maxQuestions}`);
+          // ...removed debug log...
           this.value = maxQuestions;
         }
         
@@ -916,13 +916,13 @@ function buildFilterPanel(allQuestions, skipRestore = false) {
         const maxQuestions = parseInt(this.max) || allQuestions.length;
         const currentValue = parseInt(this.value) || 0;
         
-        console.log(`JSON Blur validation: current=${currentValue}, max=${maxQuestions}`);
+  // ...removed debug log...
         
         if (currentValue < 1) {
-          console.log("JSON Blur: Value too small, setting to 1");
+          // ...removed debug log...
           this.value = 1;
         } else if (currentValue > maxQuestions) {
-          console.log(`JSON Blur: Value too large (${currentValue} > ${maxQuestions}), setting to ${maxQuestions}`);
+          // ...removed debug log...
           this.value = maxQuestions;
         }
       });
@@ -1000,7 +1000,7 @@ function buildFilterPanel(allQuestions, skipRestore = false) {
     const maxQuestions = allQuestions.length;
     document.getElementById("numQuestions").value = Math.min(10, maxQuestions);
     
-    console.log("Reset all options to defaults");
+  // ...removed debug log...
   });
   
   buttonContainer.appendChild(resetBtn);

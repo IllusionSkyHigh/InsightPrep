@@ -1,4 +1,62 @@
-# 📘 JSON Format for Questions Da```json
+# JSON format for questions and exports (current)
+
+This document describes the JSON that the app can import and the payload it exports from the Options page “Export to JSON” button.
+
+Accepted roots (both are valid during import):
+- Object with a questions array: { meta?: object, questions: Question[] }
+- Bare array of questions: Question[]
+
+Notes
+- If an object root is used, the app preserves and may emit a meta block with export details.
+- When importing, the app accepts either shape (object.questions or direct array).
+
+Top-level export payload (produced by Export to JSON)
+
+```json
+{
+  "meta": {
+    "source": "database",          
+    "dbFileName": "questions.db",  
+    "exportedAt": "2025-09-27T11:22:33.456Z",
+    "count": 25,                    
+    "mode": "random"               
+  },
+  "questions": [
+    { /* Question objects, see schema below */ }
+  ]
+}
+```
+
+Question object schema
+
+Required fields
+- question: string – The prompt/text.
+- type: "single" | "multiple" | "match" | "assertion"
+
+Recommended fields
+- topic: string
+- subtopic: string
+
+Optional (commonly present)
+- id: number | string
+- options: string[] – Required for single, multiple, assertion, and True/False
+- answer:
+  - string for type="single" or type="assertion"
+  - string[] for type="multiple"
+  - for type="match", the app accepts either: matchPairs object OR answer set to that object
+- matchPairs: { [left: string]: string } – Preferred for type="match"
+- explanation: string
+- reference: string
+
+Preserved DB fields
+- When exporting from a database, items include extra fields (e.g., question_type) carried over from the DB. These are ignored by JSON mode and safe to keep.
+
+Question type details and examples
+
+1) MCQ – single correct
+- type = "single"
+- answer is a single string
+```json
 {
   "id": 2,
   "topic": "History",
@@ -7,61 +65,14 @@
   "question": "Who was the first President of India?",
   "options": ["Jawaharlal Nehru", "Dr. Rajendra Prasad", "S. Radhakrishnan", "Mahatma Gandhi"],
   "answer": "Dr. Rajendra Prasad",
-  "explanation": "Dr. Rajendra Prasad was India's first President, serving from 1950 to 1962.",
-  "reference": "Indian Polity"
-}
-``` 1. Base Structure
-
-```json
-{
-  "title": "General Knowledge Quiz",
-  "questions": [
-    {
-      "id": 1,
-      "topic": "Science",
-      "subtopic": "Astronomy",
-      "type": "single",
-      "question": "Which planet is known as the Red Planet?",
-      "options": ["Jupiter", "Mars", "Venus", "Saturn"],
-      "answer": "Mars",
-      "explanation": "Mars appears red due to iron oxide dust on its surface.",
-      "reference": "NCERT Science"
-    }
-  ]
-}
-```
-
----
-
-## 2. Question Types
-
-### MCQ (Single Correct)
-
-* Use `"type": "single"`.
-* `"answer"` is a **single string**.
-* Only one correct answer allowed.
-
-```json
-{
-  "id": 2,
-  "topic": "History",
-  "type": "single",
-  "question": "Who was the first President of India?",
-  "options": ["Jawaharlal Nehru", "Dr. Rajendra Prasad", "S. Radhakrishnan", "Mahatma Gandhi"],
-  "answer": "Dr. Rajendra Prasad",
-  "explanation": "Dr. Rajendra Prasad was India’s first President, serving from 1950 to 1962.",
+  "explanation": "Dr. Rajendra Prasad served from 1950 to 1962.",
   "reference": "Indian Polity"
 }
 ```
 
----
-
-### MCQ (Multiple Correct)
-
-* Use `"type": "multiple"`.
-* `"answer"` is an **array of strings** (to support multiple correct answers).
-* At least two entries in `answer`.
-
+2) MCQ – multiple correct
+- type = "multiple"
+- answer is an array of strings (2 or more)
 ```json
 {
   "id": 3,
@@ -76,14 +87,10 @@
 }
 ```
 
----
-
-### Assertion–Reason
-
-* Use `"type": "assertion"`.
-* Options must always include the **four standard patterns**.
-* `"answer"` is a single string containing the correct option.
-
+3) Assertion–Reason
+- type = "assertion"
+- options should contain the 4 standard patterns
+- answer is a single string equal to one of the options
 ```json
 {
   "id": 5,
@@ -98,18 +105,14 @@
     "A is false, R is true"
   ],
   "answer": "A is true, R is false",
-  "explanation": "The Earth revolves around the Sun, but the Sun does not orbit the Earth. The reason is false.",
+  "explanation": "The Earth revolves around the Sun; the stated reason is false.",
   "reference": "NCERT Science"
 }
 ```
 
----
-
-### Match-the-Following
-
-* Use `"type": "match"`.
-* Must include a `"matchPairs"` object with left–right key-value pairs.
-
+4) Match-the-Following
+- type = "match"
+- provide matchPairs; answer can be omitted OR set equal to matchPairs
 ```json
 {
   "id": 7,
@@ -123,18 +126,13 @@
     "Pasteur": "Germ Theory",
     "Darwin": "Theory of Evolution"
   },
-  "explanation": "Newton, Einstein, Pasteur, and Darwin are linked with their contributions.",
+  "explanation": "Standard scientist-to-discovery pairs.",
   "reference": "Science Encyclopedia"
 }
 ```
 
----
-
-### True/False
-
-* Store as `"type": "single"` with options `["True","False"]`.
-* `"answer"` is `"True"` or `"False"`.
-
+5) True/False
+- Represent as type = "single" with options ["True","False"] and a string answer
 ```json
 {
   "id": 8,
@@ -149,31 +147,19 @@
 }
 ```
 
----
+Import rules and validation
+- Root may be an object with questions or a bare array of questions.
+- For match questions, the app reads correct pairs from matchPairs or from answer if it’s an object.
+- Extra fields are ignored safely.
+- Keep JSON valid UTF-8, no trailing commas.
 
-## 3. Guidelines
+Export details
+- Produced when clicking “Export to JSON” on the Options page (available when the page is opened with ?json in the URL).
+- meta.mode is one of: "random", "balanced", or "sequential" (first N).
+- meta.count is the number of questions actually exported.
 
-* **Mandatory fields**:
-  `question`, `type`, `topic`, `explanation`
-* **Recommended fields**:
-  - `id` (recommended for import/export consistency; if omitted, DB autoincrement can assign it)
-  - `subtopic` (recommended for better organization and filtering; if omitted, defaults to "General")
-* **Optional field**:
-  `reference`
-* **Children**:
-
-  * `options[]` for MCQ, assertion, true/false
-  * `matchPairs` object for Match-the-Following
-* **Topic Organization**:
-  - `topic`: Main category (e.g., "Science", "History", "Geography")
-  - `subtopic`: Subcategory within the topic (e.g., "Physics", "Chemistry", "Astronomy" under "Science")
-  - The subtopic field enables hierarchical filtering in the test interface
-  - If subtopic is not provided, it defaults to "General"
-* **Distinguish clearly** between single vs multiple MCQ:
-
-  * `"type": "single"` → `answer` is string
-  * `"type": "multiple"` → `answer` is array of strings
-* **Keep JSON valid** (lint with `jq`, VSCode, or online tools).
-
----
+Tips
+- Use unique ids when possible (helps round-tripping between DB and JSON).
+- Prefer matchPairs for match questions; answer-as-object is still accepted.
+- Provide explanation/reference when available; the UI displays them in learning mode.
 
